@@ -8,8 +8,15 @@ module.exports = {
   importOrderParserPlugins: ["typescript", "jsx", "decorators-legacy"],
   importOrderSeparation: true,
   importOrderSortSpecifiers: true,
-  importOrderSortOrder: ["builtin", "external", "internal", "parent", "sibling", "index"],
+  importOrderSortOrder: [
+    "builtin",
+    "external",
+    "internal",
+    "parent",
+    "sibling",
+    "index",
+  ],
   importOrderMergeDuplicate: true,
   importOrderCombineTypeAndValue: true,
-  importOrderBuiltinModules: ["bun", "node"]
-}
+  importOrderBuiltinModules: ["bun", "node"],
+};
