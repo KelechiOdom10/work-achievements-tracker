@@ -1,7 +1,9 @@
 {
   "name": "work-achievements-tracker",
   "scripts": {
-    "dev": "bun run --hot server/index.ts"
+    "dev": "bun run --hot server/index.ts",
+    "format:check": "prettier --check .",
+    "format:write": "prettier --write ."
   },
   "dependencies": {
     "hono": "^4.7.8"
