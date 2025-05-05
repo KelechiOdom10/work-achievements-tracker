@@ -6,6 +6,7 @@
     "format:write": "prettier --write ."
   },
   "dependencies": {
+    "better-auth": "^1.2.7",
     "drizzle-orm": "^0.43.1",
     "hono": "^4.7.8",
     "postgres": "^3.4.5",
