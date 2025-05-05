@@ -3,7 +3,18 @@ import { HTTPException } from "hono/http-exception";
 
 import { type ErrorResponse } from "~/shared/types";
 
-const app = new Hono();
+import type { AuthType } from "./lib/auth";
+import auth from "./modules/auth";
+
+const app = new Hono<{ Bindings: AuthType }>({
+  strict: false,
+});
+
+const routes = [auth] as const;
+
+routes.forEach((route) => {
+  app.basePath("/api").route("/", route);
+});
 
 app.get("/", (c) => {
   return c.text("Hello Hono!");
@@ -31,7 +42,7 @@ app.onError((err, c) => {
               ? err.cause.formErrors === true
               : false,
         },
-        err.status,
+        err.status
       );
 
     return errorResponse;
@@ -46,7 +57,7 @@ app.onError((err, c) => {
           ? "Internal Server Error"
           : (err.stack ?? err.message),
     },
-    500,
+    500
   );
 });
 
