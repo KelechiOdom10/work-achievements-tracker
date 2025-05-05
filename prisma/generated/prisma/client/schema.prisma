@@ -25,8 +25,8 @@ model User {
   members     Member[]
   invitations Invitation[]
 
-  @@map("users")
   @@index([email])
+  @@map("users")
 }
 
 model Session {
@@ -42,8 +42,8 @@ model Session {
 
   activeOrganizationId String?
 
-  @@map("sessions")
   @@index([userId, token])
+  @@map("sessions")
 }
 
 model Account {
@@ -62,8 +62,8 @@ model Account {
   updatedAt             DateTime  @db.Timestamp(6)
   user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@map("accounts")
   @@index([userId])
+  @@map("accounts")
 }
 
 model Verification {
@@ -74,8 +74,8 @@ model Verification {
   createdAt  DateTime? @db.Timestamp(6)
   updatedAt  DateTime? @db.Timestamp(6)
 
-  @@map("verifications")
   @@index([identifier])
+  @@map("verifications")
 }
 
 model Organization {
@@ -89,8 +89,8 @@ model Organization {
   invitations Invitation[]
 
   @@unique([slug])
-  @@map("organizations")
   @@index([slug])
+  @@map("organizations")
 }
 
 model Member {
@@ -102,8 +102,8 @@ model Member {
   role           String
   createdAt      DateTime
 
-  @@map("members")
   @@index([organizationId, userId])
+  @@map("members")
 }
 
 model Invitation {
@@ -117,6 +117,6 @@ model Invitation {
   inviterId      String
   user           User         @relation(fields: [inviterId], references: [id], onDelete: Cascade)
 
-  @@map("invitations")
   @@index([organizationId, email])
+  @@map("invitations")
 }
