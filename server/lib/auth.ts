@@ -1,19 +1,15 @@
+import { PrismaClient } from "@prisma/client";
 import { betterAuth } from "better-auth";
-import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { prismaAdapter } from "better-auth/adapters/prisma";
 
-import { db } from "../db/adapter";
-import { account, session, user, verification } from "../db/schemas";
+const prisma = new PrismaClient();
 
 export const auth = betterAuth({
-  database: drizzleAdapter(db, {
-    provider: "pg",
-    schema: {
-      user,
-      session,
-      account,
-      verification,
-    },
+  database: prismaAdapter(prisma, {
+    provider: "postgresql",
   }),
+  // Allow requests from the frontend development server
+  trustedOrigins: ["http://localhost:3000"],
   socialProviders: {
     github: {
       clientId: process.env.GITHUB_CLIENT_ID as string,
@@ -21,3 +17,10 @@ export const auth = betterAuth({
     },
   },
 });
+
+export type AuthType = {
+  Variables: {
+    user: typeof auth.$Infer.Session.user | null;
+    session: typeof auth.$Infer.Session.session | null;
+  };
+};
