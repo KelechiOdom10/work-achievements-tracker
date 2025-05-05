@@ -1,14 +1,13 @@
 import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
+import { ZodError } from "zod";
 
 import { type ErrorResponse } from "~/shared/types";
 
 import type { AuthType } from "./lib/auth";
 import auth from "./modules/auth";
 
-const app = new Hono<{ Bindings: AuthType }>({
-  strict: false,
-});
+const app = new Hono<{ Bindings: AuthType }>();
 
 const routes = [auth] as const;
 
@@ -30,8 +29,8 @@ app.onError((err, c) => {
           success: false,
           // A message about the error
           message: err.message,
-          // The error message
-          error: err.message,
+          // The error status code
+          code: String(err.status),
           // Whether the error is a form error or not
           isFormError:
             // Check if the error object exists and has a formErrors property
@@ -48,11 +47,23 @@ app.onError((err, c) => {
     return errorResponse;
   }
 
+  if (err instanceof ZodError) {
+    return c.json<ErrorResponse>(
+      {
+        success: false,
+        code: "VALIDATION_ERROR",
+        message: err.message,
+        isFormError: true,
+      },
+      400
+    );
+  }
+
   return c.json<ErrorResponse>(
     {
       success: false,
-      message: "Internal Server Error",
-      error:
+      code: "INTERNAL_SERVER_ERROR",
+      message:
         process.env.NODE_ENV === "production"
           ? "Internal Server Error"
           : (err.stack ?? err.message),

@@ -1,13 +1,11 @@
 export type SuccessResponse<T = void> = {
-    success: boolean;
-    message: string;
+  success: true;
+  message: string;
 } & (T extends void ? {} : { data: T });
 
-
 export type ErrorResponse = {
-    success: boolean;
-    message: string;
-    error: string;
-    isFormError?: boolean;
-}
-    
+  success: false;
+  message: string;
+  code: string;
+  isFormError?: boolean;
+};
