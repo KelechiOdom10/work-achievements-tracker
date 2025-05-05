@@ -7,7 +7,7 @@ import { auth } from "~/lib/auth";
 export const requireAuth = createMiddleware(async (c, next) => {
   const session = await auth.api.getSession({ headers: c.req.raw.headers });
 
-  if (!session) {
+  if (!session || !session.user) {
     return c.json<ErrorResponse>(
       {
         success: false,
@@ -26,7 +26,7 @@ export const requireAuth = createMiddleware(async (c, next) => {
 export const requireOrganizationAccess = createMiddleware(async (c, next) => {
   const session = await auth.api.getSession({ headers: c.req.raw.headers });
 
-  if (!session) {
+  if (!session || !session.user) {
     return c.json<ErrorResponse>(
       {
         success: false,

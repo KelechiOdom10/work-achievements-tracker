@@ -1,4 +1,4 @@
-import type { ErrorHandler } from "hono";
+import type { ErrorHandler, NotFoundHandler } from "hono";
 import { HTTPException } from "hono/http-exception";
 import { ZodError } from "zod";
 
@@ -52,5 +52,16 @@ export const errorHandler: ErrorHandler = (err, c) => {
           : (err.stack ?? err.message),
     },
     500
+  );
+};
+
+export const notFoundHandler: NotFoundHandler = (c) => {
+  return c.json<ErrorResponse>(
+    {
+      success: false,
+      code: "NOT_FOUND",
+      message: "Not Found",
+    },
+    404
   );
 };
