@@ -1,13 +1,21 @@
 import { createMiddleware } from "hono/factory";
-import { HTTPException } from "hono/http-exception";
 
+import { type ErrorResponse } from "~/shared/types";
+import { prisma } from "~/db";
 import { auth } from "~/lib/auth";
 
-const privateRoutesMiddleware = createMiddleware(async (c, next) => {
+export const requireAuth = createMiddleware(async (c, next) => {
   const session = await auth.api.getSession({ headers: c.req.raw.headers });
 
   if (!session) {
-    throw new HTTPException(401, { message: "Unauthorized" });
+    return c.json<ErrorResponse>(
+      {
+        success: false,
+        code: "UNAUTHORIZED",
+        message: "Unauthorized",
+      },
+      401
+    );
   }
 
   c.set("user", session.user);
@@ -15,4 +23,52 @@ const privateRoutesMiddleware = createMiddleware(async (c, next) => {
   return next();
 });
 
-export default privateRoutesMiddleware;
+export const requireOrganizationAccess = createMiddleware(async (c, next) => {
+  const session = await auth.api.getSession({ headers: c.req.raw.headers });
+
+  if (!session) {
+    return c.json<ErrorResponse>(
+      {
+        success: false,
+        code: "UNAUTHORIZED",
+        message: "Unauthorized",
+      },
+      401
+    );
+  }
+
+  const organizationId = c.req.param("organizationId");
+
+  if (!organizationId) {
+    return c.json<ErrorResponse>(
+      {
+        success: false,
+        code: "BAD_REQUEST",
+        message: "Company ID is required",
+      },
+      400
+    );
+  }
+
+  const hasAccess = await prisma.member.findFirst({
+    where: {
+      userId: session.user.id,
+      organizationId,
+    },
+  });
+
+  if (!hasAccess) {
+    return c.json<ErrorResponse>(
+      {
+        success: false,
+        code: "UNAUTHORIZED",
+        message: "You do not have access to this company",
+      },
+      401
+    );
+  }
+
+  c.set("user", session.user);
+  c.set("session", session.session);
+  return next();
+});

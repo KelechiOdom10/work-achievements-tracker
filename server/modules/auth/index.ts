@@ -10,4 +10,4 @@ router.on(["POST", "GET"], "/auth/*", (c) => {
   return auth.handler(c.req.raw);
 });
 
-export default router;
+export { router as authRoute };
