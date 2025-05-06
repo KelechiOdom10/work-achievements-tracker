@@ -3,6 +3,7 @@ import { HTTPException } from "hono/http-exception";
 import { ZodError } from "zod";
 
 import { type ErrorResponse } from "~/shared/types";
+import env from "~/env";
 
 export const errorHandler: ErrorHandler = (err, c) => {
   if (err instanceof HTTPException) {
@@ -47,7 +48,7 @@ export const errorHandler: ErrorHandler = (err, c) => {
       success: false,
       code: "INTERNAL_SERVER_ERROR",
       message:
-        process.env.NODE_ENV === "production"
+        env.NODE_ENV === "production"
           ? "Internal Server Error"
           : (err.stack ?? err.message),
     },

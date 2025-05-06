@@ -2,11 +2,13 @@ import { PinoLogger, pinoLogger } from "hono-pino";
 import pino from "pino";
 import pretty from "pino-pretty";
 
+import env from "~/env";
+
 export const pinoLoggerMiddleware = () => {
   return pinoLogger({
     pino: pino(
       {
-        level: process.env.LOG_LEVEL || "info",
+        level: env.LOG_LEVEL,
         transport: {
           target: "pino-pretty",
           options: {
@@ -16,7 +18,7 @@ export const pinoLoggerMiddleware = () => {
           },
         },
       },
-      process.env.NODE_ENV === "production" ? undefined : pretty()
+      env.NODE_ENV === "production" ? undefined : pretty()
     ),
   });
 };
