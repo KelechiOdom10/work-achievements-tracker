@@ -12143,7 +12143,7 @@ export namespace Prisma {
     title: string
     description: string | null
     userId: string
-    companyId: string | null
+    companyId: string
     createdAt: Date
     updatedAt: Date
     _count: GoalCountAggregateOutputType | null
@@ -12174,7 +12174,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
-    company?: boolean | Goal$companyArgs<ExtArgs>
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
     achievements?: boolean | Goal$achievementsArgs<ExtArgs>
     _count?: boolean | GoalCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["goal"]>
@@ -12188,7 +12188,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
-    company?: boolean | Goal$companyArgs<ExtArgs>
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["goal"]>
 
   export type GoalSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -12200,7 +12200,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
-    company?: boolean | Goal$companyArgs<ExtArgs>
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["goal"]>
 
   export type GoalSelectScalar = {
@@ -12216,24 +12216,24 @@ export namespace Prisma {
   export type GoalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "userId" | "companyId" | "createdAt" | "updatedAt", ExtArgs["result"]["goal"]>
   export type GoalInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
-    company?: boolean | Goal$companyArgs<ExtArgs>
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
     achievements?: boolean | Goal$achievementsArgs<ExtArgs>
     _count?: boolean | GoalCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type GoalIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
-    company?: boolean | Goal$companyArgs<ExtArgs>
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
   }
   export type GoalIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
-    company?: boolean | Goal$companyArgs<ExtArgs>
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
   }
 
   export type $GoalPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Goal"
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
-      company: Prisma.$CompanyPayload<ExtArgs> | null
+      company: Prisma.$CompanyPayload<ExtArgs>
       achievements: Prisma.$AchievementPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -12241,7 +12241,7 @@ export namespace Prisma {
       title: string
       description: string | null
       userId: string
-      companyId: string | null
+      companyId: string
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["goal"]>
@@ -12639,7 +12639,7 @@ export namespace Prisma {
   export interface Prisma__GoalClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    company<T extends Goal$companyArgs<ExtArgs> = {}>(args?: Subset<T, Goal$companyArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    company<T extends CompanyDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CompanyDefaultArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     achievements<T extends Goal$achievementsArgs<ExtArgs> = {}>(args?: Subset<T, Goal$achievementsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AchievementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -13070,25 +13070,6 @@ export namespace Prisma {
      * Limit how many Goals to delete.
      */
     limit?: number
-  }
-
-  /**
-   * Goal.company
-   */
-  export type Goal$companyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Company
-     */
-    select?: CompanySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Company
-     */
-    omit?: CompanyOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CompanyInclude<ExtArgs> | null
-    where?: CompanyWhereInput
   }
 
   /**
@@ -14047,11 +14028,11 @@ export namespace Prisma {
     title?: StringFilter<"Goal"> | string
     description?: StringNullableFilter<"Goal"> | string | null
     userId?: StringFilter<"Goal"> | string
-    companyId?: StringNullableFilter<"Goal"> | string | null
+    companyId?: StringFilter<"Goal"> | string
     createdAt?: DateTimeFilter<"Goal"> | Date | string
     updatedAt?: DateTimeFilter<"Goal"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    company?: XOR<CompanyNullableScalarRelationFilter, CompanyWhereInput> | null
+    company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
     achievements?: AchievementListRelationFilter
   }
 
@@ -14060,7 +14041,7 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrderInput | SortOrder
     userId?: SortOrder
-    companyId?: SortOrderInput | SortOrder
+    companyId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
@@ -14076,11 +14057,11 @@ export namespace Prisma {
     title?: StringFilter<"Goal"> | string
     description?: StringNullableFilter<"Goal"> | string | null
     userId?: StringFilter<"Goal"> | string
-    companyId?: StringNullableFilter<"Goal"> | string | null
+    companyId?: StringFilter<"Goal"> | string
     createdAt?: DateTimeFilter<"Goal"> | Date | string
     updatedAt?: DateTimeFilter<"Goal"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    company?: XOR<CompanyNullableScalarRelationFilter, CompanyWhereInput> | null
+    company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
     achievements?: AchievementListRelationFilter
   }, "id">
 
@@ -14089,7 +14070,7 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrderInput | SortOrder
     userId?: SortOrder
-    companyId?: SortOrderInput | SortOrder
+    companyId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: GoalCountOrderByAggregateInput
@@ -14105,7 +14086,7 @@ export namespace Prisma {
     title?: StringWithAggregatesFilter<"Goal"> | string
     description?: StringNullableWithAggregatesFilter<"Goal"> | string | null
     userId?: StringWithAggregatesFilter<"Goal"> | string
-    companyId?: StringNullableWithAggregatesFilter<"Goal"> | string | null
+    companyId?: StringWithAggregatesFilter<"Goal"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Goal"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Goal"> | Date | string
   }
@@ -14820,7 +14801,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutGoalsInput
-    company?: CompanyCreateNestedOneWithoutGoalsInput
+    company: CompanyCreateNestedOneWithoutGoalsInput
     achievements?: AchievementCreateNestedManyWithoutGoalInput
   }
 
@@ -14829,7 +14810,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     userId: string
-    companyId?: string | null
+    companyId: string
     createdAt?: Date | string
     updatedAt?: Date | string
     achievements?: AchievementUncheckedCreateNestedManyWithoutGoalInput
@@ -14842,7 +14823,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutGoalsNestedInput
-    company?: CompanyUpdateOneWithoutGoalsNestedInput
+    company?: CompanyUpdateOneRequiredWithoutGoalsNestedInput
     achievements?: AchievementUpdateManyWithoutGoalNestedInput
   }
 
@@ -14851,7 +14832,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: StringFieldUpdateOperationsInput | string
-    companyId?: NullableStringFieldUpdateOperationsInput | string | null
+    companyId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     achievements?: AchievementUncheckedUpdateManyWithoutGoalNestedInput
@@ -14862,7 +14843,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     userId: string
-    companyId?: string | null
+    companyId: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -14880,7 +14861,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: StringFieldUpdateOperationsInput | string
-    companyId?: NullableStringFieldUpdateOperationsInput | string | null
+    companyId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -15439,11 +15420,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumEvidenceTypeFilter<$PrismaModel>
     _max?: NestedEnumEvidenceTypeFilter<$PrismaModel>
-  }
-
-  export type CompanyNullableScalarRelationFilter = {
-    is?: CompanyWhereInput | null
-    isNot?: CompanyWhereInput | null
   }
 
   export type GoalCountOrderByAggregateInput = {
@@ -16086,12 +16062,10 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutGoalsInput, UserUpdateWithoutGoalsInput>, UserUncheckedUpdateWithoutGoalsInput>
   }
 
-  export type CompanyUpdateOneWithoutGoalsNestedInput = {
+  export type CompanyUpdateOneRequiredWithoutGoalsNestedInput = {
     create?: XOR<CompanyCreateWithoutGoalsInput, CompanyUncheckedCreateWithoutGoalsInput>
     connectOrCreate?: CompanyCreateOrConnectWithoutGoalsInput
     upsert?: CompanyUpsertWithoutGoalsInput
-    disconnect?: CompanyWhereInput | boolean
-    delete?: CompanyWhereInput | boolean
     connect?: CompanyWhereUniqueInput
     update?: XOR<XOR<CompanyUpdateToOneWithWhereWithoutGoalsInput, CompanyUpdateWithoutGoalsInput>, CompanyUncheckedUpdateWithoutGoalsInput>
   }
@@ -16455,7 +16429,7 @@ export namespace Prisma {
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    company?: CompanyCreateNestedOneWithoutGoalsInput
+    company: CompanyCreateNestedOneWithoutGoalsInput
     achievements?: AchievementCreateNestedManyWithoutGoalInput
   }
 
@@ -16463,7 +16437,7 @@ export namespace Prisma {
     id?: string
     title: string
     description?: string | null
-    companyId?: string | null
+    companyId: string
     createdAt?: Date | string
     updatedAt?: Date | string
     achievements?: AchievementUncheckedCreateNestedManyWithoutGoalInput
@@ -16631,7 +16605,7 @@ export namespace Prisma {
     title?: StringFilter<"Goal"> | string
     description?: StringNullableFilter<"Goal"> | string | null
     userId?: StringFilter<"Goal"> | string
-    companyId?: StringNullableFilter<"Goal"> | string | null
+    companyId?: StringFilter<"Goal"> | string
     createdAt?: DateTimeFilter<"Goal"> | Date | string
     updatedAt?: DateTimeFilter<"Goal"> | Date | string
   }
@@ -17071,7 +17045,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutGoalsInput
-    company?: CompanyCreateNestedOneWithoutGoalsInput
+    company: CompanyCreateNestedOneWithoutGoalsInput
   }
 
   export type GoalUncheckedCreateWithoutAchievementsInput = {
@@ -17079,7 +17053,7 @@ export namespace Prisma {
     title: string
     description?: string | null
     userId: string
-    companyId?: string | null
+    companyId: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -17234,7 +17208,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutGoalsNestedInput
-    company?: CompanyUpdateOneWithoutGoalsNestedInput
+    company?: CompanyUpdateOneRequiredWithoutGoalsNestedInput
   }
 
   export type GoalUncheckedUpdateWithoutAchievementsInput = {
@@ -17242,7 +17216,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: StringFieldUpdateOperationsInput | string
-    companyId?: NullableStringFieldUpdateOperationsInput | string | null
+    companyId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -17723,7 +17697,7 @@ export namespace Prisma {
     id?: string
     title: string
     description?: string | null
-    companyId?: string | null
+    companyId: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -17886,7 +17860,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    company?: CompanyUpdateOneWithoutGoalsNestedInput
+    company?: CompanyUpdateOneRequiredWithoutGoalsNestedInput
     achievements?: AchievementUpdateManyWithoutGoalNestedInput
   }
 
@@ -17894,7 +17868,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    companyId?: NullableStringFieldUpdateOperationsInput | string | null
+    companyId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     achievements?: AchievementUncheckedUpdateManyWithoutGoalNestedInput
@@ -17904,7 +17878,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    companyId?: NullableStringFieldUpdateOperationsInput | string | null
+    companyId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

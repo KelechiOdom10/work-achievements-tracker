@@ -165,8 +165,8 @@ model Goal {
   description  String?
   userId       String
   user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  companyId    String?
-  company      Company?      @relation(fields: [companyId], references: [id], onDelete: SetNull)
+  companyId    String
+  company      Company       @relation(fields: [companyId], references: [id], onDelete: SetNull)
   achievements Achievement[]
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
