@@ -22,8 +22,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
-  members     Member[]
-  invitations Invitation[]
+  companies Company[]
 
   @@index([email])
   @@map("users")
@@ -40,7 +39,7 @@ model Session {
   userId    String   @db.Text
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  activeOrganizationId String?
+  activeCompanyId String?
 
   @@index([userId, token])
   @@map("sessions")
@@ -78,45 +77,17 @@ model Verification {
   @@map("verifications")
 }
 
-model Organization {
-  id          String       @id
-  name        String
-  slug        String?
-  logo        String?
-  createdAt   DateTime
-  metadata    String?
-  members     Member[]
-  invitations Invitation[]
+model Company {
+  id        String   @id
+  name      String
+  slug      String?
+  logo      String?
+  createdAt DateTime
+  metadata  String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([slug])
   @@index([slug])
-  @@map("organizations")
-}
-
-model Member {
-  id             String       @id
-  organizationId String
-  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  userId         String
-  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  role           String
-  createdAt      DateTime
-
-  @@index([organizationId, userId])
-  @@map("members")
-}
-
-model Invitation {
-  id             String       @id
-  organizationId String
-  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  email          String
-  role           String?
-  status         String
-  expiresAt      DateTime
-  inviterId      String
-  user           User         @relation(fields: [inviterId], references: [id], onDelete: Cascade)
-
-  @@index([organizationId, email])
-  @@map("invitations")
+  @@map("companies")
 }

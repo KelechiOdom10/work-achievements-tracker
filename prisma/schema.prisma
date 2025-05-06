@@ -22,6 +22,8 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
+  companies     Company[]
+
   @@map("users")
   @@index([email])
 }
@@ -36,6 +38,8 @@ model Session {
   userAgent String?  @db.Text
   userId    String   @db.Text
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  activeCompanyId String?
 
   @@map("sessions")
   @@index([userId, token])
@@ -72,3 +76,19 @@ model Verification {
   @@map("verifications")
   @@index([identifier])
 }
+
+model Company {
+  id          String       @id
+  name        String
+  slug        String?
+  logo        String?
+  createdAt   DateTime
+  metadata    String?
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade) 
+
+  @@unique([slug])
+  @@map("companies")
+  @@index([slug])
+}
+

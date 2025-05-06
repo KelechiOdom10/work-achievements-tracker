@@ -5,6 +5,7 @@
     "format:check": "prettier --check .",
     "format:write": "prettier --write .",
     "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
     "db:seed": "prisma db seed",
     "db:studio": "prisma studio"
   },
