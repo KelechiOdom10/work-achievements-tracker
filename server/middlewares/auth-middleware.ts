@@ -104,7 +104,7 @@ export const requireAdmin = createMiddleware(async (c, next) => {
     where: {
       userId: session.user.id,
       organizationId,
-      role: "ADMIN",
+      role: "admin",
     },
   });
 
