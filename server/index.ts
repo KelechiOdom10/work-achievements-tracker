@@ -1,21 +1,25 @@
-import { Hono } from "hono";
-import { compress } from "hono/compress";
+import { OpenAPIHono } from "@hono/zod-openapi";
 import { cors } from "hono/cors";
-import { logger } from "hono/logger";
 
 import type { AuthType } from "./lib/auth";
-import { errorHandler, notFoundHandler } from "./middlewares";
+import {
+  errorHandler,
+  notFoundHandler,
+  pinoLoggerMiddleware,
+  type PinoLoggerType,
+} from "./middlewares";
 import { authRoute } from "./modules/auth";
 
-const app = new Hono<{ Bindings: AuthType }>({
+interface AppBindings {
+  Variables: AuthType["Variables"] & PinoLoggerType["Variables"];
+}
+
+const app = new OpenAPIHono<AppBindings>({
   strict: false,
 });
 
 // Logger middleware
-app.use(logger());
-
-// Compress middleware
-app.use(compress({ encoding: "gzip" }));
+app.use(pinoLoggerMiddleware());
 
 // CORS configuration (tightened for security)
 app.use(
@@ -38,6 +42,14 @@ const routes = [authRoute] as const;
 
 routes.forEach((route) => {
   app.basePath("/api").route("/", route);
+});
+
+app.doc("/doc", {
+  openapi: "3.0.0",
+  info: {
+    version: "1.0.0",
+    title: "Work Achievements Tracker API",
+  },
 });
 
 // Error handlers
