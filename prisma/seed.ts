@@ -138,7 +138,29 @@ async function main() {
     cloud,
   };
 
-  // Achievements data
+  // Create goals per company
+  const companyList = [acme, beta, gamma, delta];
+  type GoalMap = Record<
+    string,
+    Awaited<ReturnType<typeof prisma.goal.create>>[]
+  >;
+  const goalsByCompany: GoalMap = {};
+  for (const company of companyList) {
+    if (!company || !company.id)
+      throw new Error("Company not found or missing id");
+    goalsByCompany[company.id] = [];
+    for (let i = 1; i <= 2; i++) {
+      const goal = await prisma.goal.create({
+        data: {
+          title: `Goal ${i} for ${company.name}`,
+          description: `Description for goal ${i} at ${company.name}`,
+          userId: user.id,
+          companyId: company.id,
+        },
+      });
+      goalsByCompany?.[company.id]?.push(goal);
+    }
+  }
   const achievementsData = [
     {
       title: "Launched New Product",
@@ -287,6 +309,19 @@ async function main() {
   // Create achievements and related records
   const achievements = [];
   for (const ach of achievementsData) {
+    // Assign a goal if available for the achievement's company
+    if (!ach.companyId) throw new Error("Achievement missing companyId");
+    let goalId: string | undefined = undefined;
+    const goalList = goalsByCompany[ach.companyId];
+    if (!goalList) {
+      throw new Error(`No goals found for companyId ${ach.companyId}`);
+    }
+    if (goalList.length > 0) {
+      const assignToGoal = Math.random() > 0.5;
+      if (assignToGoal) {
+        goalId = goalList[Math.floor(Math.random() * goalList.length)]?.id;
+      }
+    }
     const created = await prisma.achievement.create({
       data: {
         title: ach.title,
@@ -295,7 +330,8 @@ async function main() {
         impact: ach.impact,
         isPrivate: ach.isPrivate,
         userId: ach.userId,
-        companyId: ach.companyId!,
+        companyId: ach.companyId,
+        goalId,
         tags: {
           create: ach.tags.map((tagId: string) => ({
             tag: { connect: { id: tagId } },
