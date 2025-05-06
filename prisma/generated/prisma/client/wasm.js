@@ -177,6 +177,44 @@ exports.Prisma.CompanyScalarFieldEnum = {
   userId: 'userId'
 };
 
+exports.Prisma.AchievementScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  achievedAt: 'achievedAt',
+  impact: 'impact',
+  isPrivate: 'isPrivate',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId',
+  companyId: 'companyId'
+};
+
+exports.Prisma.TagScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  color: 'color',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AchievementTagScalarFieldEnum = {
+  achievementId: 'achievementId',
+  tagId: 'tagId',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.EvidenceScalarFieldEnum = {
+  id: 'id',
+  achievementId: 'achievementId',
+  url: 'url',
+  filePath: 'filePath',
+  type: 'type',
+  description: 'description',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -191,14 +229,28 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+exports.ImpactLevel = exports.$Enums.ImpactLevel = {
+  LOW: 'LOW',
+  MEDIUM: 'MEDIUM',
+  HIGH: 'HIGH'
+};
 
+exports.EvidenceType = exports.$Enums.EvidenceType = {
+  IMAGE: 'IMAGE',
+  PDF: 'PDF',
+  LINK: 'LINK'
+};
 
 exports.Prisma.ModelName = {
   User: 'User',
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',
-  Company: 'Company'
+  Company: 'Company',
+  Achievement: 'Achievement',
+  Tag: 'Tag',
+  AchievementTag: 'AchievementTag',
+  Evidence: 'Evidence'
 };
 
 /**

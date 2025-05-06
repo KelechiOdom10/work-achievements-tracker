@@ -22,7 +22,8 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
-  companies Company[]
+  companies    Company[]
+  achievements Achievement[]
 
   @@index([email])
   @@map("users")
@@ -84,10 +85,83 @@ model Company {
   logo      String?
   createdAt DateTime
   metadata  String?
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  achievements Achievement[]
 
   @@unique([slug])
   @@index([slug])
   @@map("companies")
+}
+
+model Achievement {
+  id          String       @id @default(cuid())
+  title       String
+  description String
+  achievedAt  DateTime
+  impact      ImpactLevel?
+  isPrivate   Boolean      @default(false)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  userId    String
+  companyId String
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  evidences Evidence[]
+  tags      AchievementTag[]
+
+  @@map("achievements")
+}
+
+model Tag {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  color     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  achievements AchievementTag[]
+
+  @@map("tags")
+}
+
+model AchievementTag {
+  achievementId String
+  tagId         String
+  createdAt     DateTime    @default(now())
+  achievement   Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+  tag           Tag         @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([achievementId, tagId])
+  @@map("achievement_tags")
+}
+
+model Evidence {
+  id            String       @id @default(cuid())
+  achievementId String
+  achievement   Achievement  @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+  url           String? // If file is stored externally
+  filePath      String? // If file is stored locally
+  type          EvidenceType
+  description   String?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@map("evidences")
+}
+
+enum ImpactLevel {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum EvidenceType {
+  IMAGE
+  PDF
+  LINK
 }

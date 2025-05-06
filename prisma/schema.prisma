@@ -22,10 +22,11 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
-  companies     Company[]
+  companies    Company[]
+  achievements Achievement[]
 
-  @@map("users")
   @@index([email])
+  @@map("users")
 }
 
 model Session {
@@ -41,8 +42,8 @@ model Session {
 
   activeCompanyId String?
 
-  @@map("sessions")
   @@index([userId, token])
+  @@map("sessions")
 }
 
 model Account {
@@ -61,8 +62,8 @@ model Account {
   updatedAt             DateTime  @db.Timestamp(6)
   user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@map("accounts")
   @@index([userId])
+  @@map("accounts")
 }
 
 model Verification {
@@ -73,22 +74,94 @@ model Verification {
   createdAt  DateTime? @db.Timestamp(6)
   updatedAt  DateTime? @db.Timestamp(6)
 
-  @@map("verifications")
   @@index([identifier])
+  @@map("verifications")
 }
 
 model Company {
-  id          String       @id
-  name        String
-  slug        String?
-  logo        String?
-  createdAt   DateTime
-  metadata    String?
-  userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade) 
+  id        String   @id
+  name      String
+  slug      String?
+  logo      String?
+  createdAt DateTime
+  metadata  String?
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  achievements Achievement[]
 
   @@unique([slug])
-  @@map("companies")
   @@index([slug])
+  @@map("companies")
 }
 
+model Achievement {
+  id          String       @id @default(cuid())
+  title       String
+  description String
+  achievedAt  DateTime
+  impact      ImpactLevel?
+  isPrivate   Boolean      @default(false)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  userId    String
+  companyId String
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  evidences Evidence[]
+  tags      AchievementTag[]
+
+  @@map("achievements")
+}
+
+model Tag {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  color     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  achievements AchievementTag[]
+
+  @@map("tags")
+}
+
+model AchievementTag {
+  achievementId String
+  tagId         String
+  createdAt     DateTime    @default(now())
+  achievement   Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+  tag           Tag         @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([achievementId, tagId])
+  @@map("achievement_tags")
+}
+
+model Evidence {
+  id            String       @id @default(cuid())
+  achievementId String
+  achievement   Achievement  @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+  url           String? // If file is stored externally
+  filePath      String? // If file is stored locally
+  type          EvidenceType
+  description   String?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@map("evidences")
+}
+
+enum ImpactLevel {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum EvidenceType {
+  IMAGE
+  PDF
+  LINK
+}
