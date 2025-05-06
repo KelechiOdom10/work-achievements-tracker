@@ -187,7 +187,8 @@ exports.Prisma.AchievementScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   userId: 'userId',
-  companyId: 'companyId'
+  companyId: 'companyId',
+  goalId: 'goalId'
 };
 
 exports.Prisma.TagScalarFieldEnum = {
@@ -211,6 +212,16 @@ exports.Prisma.EvidenceScalarFieldEnum = {
   filePath: 'filePath',
   type: 'type',
   description: 'description',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.GoalScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  userId: 'userId',
+  companyId: 'companyId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -250,7 +261,8 @@ exports.Prisma.ModelName = {
   Achievement: 'Achievement',
   Tag: 'Tag',
   AchievementTag: 'AchievementTag',
-  Evidence: 'Evidence'
+  Evidence: 'Evidence',
+  Goal: 'Goal'
 };
 
 /**

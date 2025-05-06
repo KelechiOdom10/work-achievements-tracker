@@ -58,6 +58,11 @@ export type AchievementTag = $Result.DefaultSelection<Prisma.$AchievementTagPayl
  * 
  */
 export type Evidence = $Result.DefaultSelection<Prisma.$EvidencePayload>
+/**
+ * Model Goal
+ * 
+ */
+export type Goal = $Result.DefaultSelection<Prisma.$GoalPayload>
 
 /**
  * Enums
@@ -304,6 +309,16 @@ export class PrismaClient<
     * ```
     */
   get evidence(): Prisma.EvidenceDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.goal`: Exposes CRUD operations for the **Goal** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Goals
+    * const goals = await prisma.goal.findMany()
+    * ```
+    */
+  get goal(): Prisma.GoalDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -752,7 +767,8 @@ export namespace Prisma {
     Achievement: 'Achievement',
     Tag: 'Tag',
     AchievementTag: 'AchievementTag',
-    Evidence: 'Evidence'
+    Evidence: 'Evidence',
+    Goal: 'Goal'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -771,7 +787,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "session" | "account" | "verification" | "company" | "achievement" | "tag" | "achievementTag" | "evidence"
+      modelProps: "user" | "session" | "account" | "verification" | "company" | "achievement" | "tag" | "achievementTag" | "evidence" | "goal"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1441,6 +1457,80 @@ export namespace Prisma {
           }
         }
       }
+      Goal: {
+        payload: Prisma.$GoalPayload<ExtArgs>
+        fields: Prisma.GoalFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.GoalFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GoalPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.GoalFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GoalPayload>
+          }
+          findFirst: {
+            args: Prisma.GoalFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GoalPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.GoalFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GoalPayload>
+          }
+          findMany: {
+            args: Prisma.GoalFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GoalPayload>[]
+          }
+          create: {
+            args: Prisma.GoalCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GoalPayload>
+          }
+          createMany: {
+            args: Prisma.GoalCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.GoalCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GoalPayload>[]
+          }
+          delete: {
+            args: Prisma.GoalDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GoalPayload>
+          }
+          update: {
+            args: Prisma.GoalUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GoalPayload>
+          }
+          deleteMany: {
+            args: Prisma.GoalDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.GoalUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.GoalUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GoalPayload>[]
+          }
+          upsert: {
+            args: Prisma.GoalUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GoalPayload>
+          }
+          aggregate: {
+            args: Prisma.GoalAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateGoal>
+          }
+          groupBy: {
+            args: Prisma.GoalGroupByArgs<ExtArgs>
+            result: $Utils.Optional<GoalGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.GoalCountArgs<ExtArgs>
+            result: $Utils.Optional<GoalCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1534,6 +1624,7 @@ export namespace Prisma {
     tag?: TagOmit
     achievementTag?: AchievementTagOmit
     evidence?: EvidenceOmit
+    goal?: GoalOmit
   }
 
   /* Types for Logging */
@@ -1632,6 +1723,7 @@ export namespace Prisma {
     sessions: number
     companies: number
     achievements: number
+    goals: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1639,6 +1731,7 @@ export namespace Prisma {
     sessions?: boolean | UserCountOutputTypeCountSessionsArgs
     companies?: boolean | UserCountOutputTypeCountCompaniesArgs
     achievements?: boolean | UserCountOutputTypeCountAchievementsArgs
+    goals?: boolean | UserCountOutputTypeCountGoalsArgs
   }
 
   // Custom InputTypes
@@ -1680,6 +1773,13 @@ export namespace Prisma {
     where?: AchievementWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountGoalsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GoalWhereInput
+  }
+
 
   /**
    * Count Type CompanyCountOutputType
@@ -1687,10 +1787,12 @@ export namespace Prisma {
 
   export type CompanyCountOutputType = {
     achievements: number
+    goals: number
   }
 
   export type CompanyCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     achievements?: boolean | CompanyCountOutputTypeCountAchievementsArgs
+    goals?: boolean | CompanyCountOutputTypeCountGoalsArgs
   }
 
   // Custom InputTypes
@@ -1709,6 +1811,13 @@ export namespace Prisma {
    */
   export type CompanyCountOutputTypeCountAchievementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AchievementWhereInput
+  }
+
+  /**
+   * CompanyCountOutputType without action
+   */
+  export type CompanyCountOutputTypeCountGoalsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GoalWhereInput
   }
 
 
@@ -1780,6 +1889,37 @@ export namespace Prisma {
    */
   export type TagCountOutputTypeCountAchievementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AchievementTagWhereInput
+  }
+
+
+  /**
+   * Count Type GoalCountOutputType
+   */
+
+  export type GoalCountOutputType = {
+    achievements: number
+  }
+
+  export type GoalCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    achievements?: boolean | GoalCountOutputTypeCountAchievementsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * GoalCountOutputType without action
+   */
+  export type GoalCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GoalCountOutputType
+     */
+    select?: GoalCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * GoalCountOutputType without action
+   */
+  export type GoalCountOutputTypeCountAchievementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AchievementWhereInput
   }
 
 
@@ -1971,6 +2111,7 @@ export namespace Prisma {
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     companies?: boolean | User$companiesArgs<ExtArgs>
     achievements?: boolean | User$achievementsArgs<ExtArgs>
+    goals?: boolean | User$goalsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2010,6 +2151,7 @@ export namespace Prisma {
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     companies?: boolean | User$companiesArgs<ExtArgs>
     achievements?: boolean | User$achievementsArgs<ExtArgs>
+    goals?: boolean | User$goalsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2022,6 +2164,7 @@ export namespace Prisma {
       sessions: Prisma.$SessionPayload<ExtArgs>[]
       companies: Prisma.$CompanyPayload<ExtArgs>[]
       achievements: Prisma.$AchievementPayload<ExtArgs>[]
+      goals: Prisma.$GoalPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2429,6 +2572,7 @@ export namespace Prisma {
     sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     companies<T extends User$companiesArgs<ExtArgs> = {}>(args?: Subset<T, User$companiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     achievements<T extends User$achievementsArgs<ExtArgs> = {}>(args?: Subset<T, User$achievementsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AchievementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    goals<T extends User$goalsArgs<ExtArgs> = {}>(args?: Subset<T, User$goalsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GoalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2946,6 +3090,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: AchievementScalarFieldEnum | AchievementScalarFieldEnum[]
+  }
+
+  /**
+   * User.goals
+   */
+  export type User$goalsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Goal
+     */
+    select?: GoalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Goal
+     */
+    omit?: GoalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoalInclude<ExtArgs> | null
+    where?: GoalWhereInput
+    orderBy?: GoalOrderByWithRelationInput | GoalOrderByWithRelationInput[]
+    cursor?: GoalWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: GoalScalarFieldEnum | GoalScalarFieldEnum[]
   }
 
   /**
@@ -6429,6 +6597,7 @@ export namespace Prisma {
     userId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     achievements?: boolean | Company$achievementsArgs<ExtArgs>
+    goals?: boolean | Company$goalsArgs<ExtArgs>
     _count?: boolean | CompanyCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["company"]>
 
@@ -6468,6 +6637,7 @@ export namespace Prisma {
   export type CompanyInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     achievements?: boolean | Company$achievementsArgs<ExtArgs>
+    goals?: boolean | Company$goalsArgs<ExtArgs>
     _count?: boolean | CompanyCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type CompanyIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6482,6 +6652,7 @@ export namespace Prisma {
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
       achievements: Prisma.$AchievementPayload<ExtArgs>[]
+      goals: Prisma.$GoalPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -6887,6 +7058,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     achievements<T extends Company$achievementsArgs<ExtArgs> = {}>(args?: Subset<T, Company$achievementsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AchievementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    goals<T extends Company$goalsArgs<ExtArgs> = {}>(args?: Subset<T, Company$goalsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GoalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7343,6 +7515,30 @@ export namespace Prisma {
   }
 
   /**
+   * Company.goals
+   */
+  export type Company$goalsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Goal
+     */
+    select?: GoalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Goal
+     */
+    omit?: GoalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoalInclude<ExtArgs> | null
+    where?: GoalWhereInput
+    orderBy?: GoalOrderByWithRelationInput | GoalOrderByWithRelationInput[]
+    cursor?: GoalWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: GoalScalarFieldEnum | GoalScalarFieldEnum[]
+  }
+
+  /**
    * Company without action
    */
   export type CompanyDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7382,6 +7578,7 @@ export namespace Prisma {
     updatedAt: Date | null
     userId: string | null
     companyId: string | null
+    goalId: string | null
   }
 
   export type AchievementMaxAggregateOutputType = {
@@ -7395,6 +7592,7 @@ export namespace Prisma {
     updatedAt: Date | null
     userId: string | null
     companyId: string | null
+    goalId: string | null
   }
 
   export type AchievementCountAggregateOutputType = {
@@ -7408,6 +7606,7 @@ export namespace Prisma {
     updatedAt: number
     userId: number
     companyId: number
+    goalId: number
     _all: number
   }
 
@@ -7423,6 +7622,7 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     companyId?: true
+    goalId?: true
   }
 
   export type AchievementMaxAggregateInputType = {
@@ -7436,6 +7636,7 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     companyId?: true
+    goalId?: true
   }
 
   export type AchievementCountAggregateInputType = {
@@ -7449,6 +7650,7 @@ export namespace Prisma {
     updatedAt?: true
     userId?: true
     companyId?: true
+    goalId?: true
     _all?: true
   }
 
@@ -7535,6 +7737,7 @@ export namespace Prisma {
     updatedAt: Date
     userId: string
     companyId: string
+    goalId: string | null
     _count: AchievementCountAggregateOutputType | null
     _min: AchievementMinAggregateOutputType | null
     _max: AchievementMaxAggregateOutputType | null
@@ -7565,10 +7768,12 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     companyId?: boolean
+    goalId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     company?: boolean | CompanyDefaultArgs<ExtArgs>
     evidences?: boolean | Achievement$evidencesArgs<ExtArgs>
     tags?: boolean | Achievement$tagsArgs<ExtArgs>
+    goal?: boolean | Achievement$goalArgs<ExtArgs>
     _count?: boolean | AchievementCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["achievement"]>
 
@@ -7583,8 +7788,10 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     companyId?: boolean
+    goalId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     company?: boolean | CompanyDefaultArgs<ExtArgs>
+    goal?: boolean | Achievement$goalArgs<ExtArgs>
   }, ExtArgs["result"]["achievement"]>
 
   export type AchievementSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -7598,8 +7805,10 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     companyId?: boolean
+    goalId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     company?: boolean | CompanyDefaultArgs<ExtArgs>
+    goal?: boolean | Achievement$goalArgs<ExtArgs>
   }, ExtArgs["result"]["achievement"]>
 
   export type AchievementSelectScalar = {
@@ -7613,23 +7822,27 @@ export namespace Prisma {
     updatedAt?: boolean
     userId?: boolean
     companyId?: boolean
+    goalId?: boolean
   }
 
-  export type AchievementOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "achievedAt" | "impact" | "isPrivate" | "createdAt" | "updatedAt" | "userId" | "companyId", ExtArgs["result"]["achievement"]>
+  export type AchievementOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "achievedAt" | "impact" | "isPrivate" | "createdAt" | "updatedAt" | "userId" | "companyId" | "goalId", ExtArgs["result"]["achievement"]>
   export type AchievementInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     company?: boolean | CompanyDefaultArgs<ExtArgs>
     evidences?: boolean | Achievement$evidencesArgs<ExtArgs>
     tags?: boolean | Achievement$tagsArgs<ExtArgs>
+    goal?: boolean | Achievement$goalArgs<ExtArgs>
     _count?: boolean | AchievementCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type AchievementIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     company?: boolean | CompanyDefaultArgs<ExtArgs>
+    goal?: boolean | Achievement$goalArgs<ExtArgs>
   }
   export type AchievementIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     company?: boolean | CompanyDefaultArgs<ExtArgs>
+    goal?: boolean | Achievement$goalArgs<ExtArgs>
   }
 
   export type $AchievementPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7639,6 +7852,7 @@ export namespace Prisma {
       company: Prisma.$CompanyPayload<ExtArgs>
       evidences: Prisma.$EvidencePayload<ExtArgs>[]
       tags: Prisma.$AchievementTagPayload<ExtArgs>[]
+      goal: Prisma.$GoalPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -7651,6 +7865,7 @@ export namespace Prisma {
       updatedAt: Date
       userId: string
       companyId: string
+      goalId: string | null
     }, ExtArgs["result"]["achievement"]>
     composites: {}
   }
@@ -8049,6 +8264,7 @@ export namespace Prisma {
     company<T extends CompanyDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CompanyDefaultArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     evidences<T extends Achievement$evidencesArgs<ExtArgs> = {}>(args?: Subset<T, Achievement$evidencesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EvidencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     tags<T extends Achievement$tagsArgs<ExtArgs> = {}>(args?: Subset<T, Achievement$tagsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AchievementTagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    goal<T extends Achievement$goalArgs<ExtArgs> = {}>(args?: Subset<T, Achievement$goalArgs<ExtArgs>>): Prisma__GoalClient<$Result.GetResult<Prisma.$GoalPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8088,6 +8304,7 @@ export namespace Prisma {
     readonly updatedAt: FieldRef<"Achievement", 'DateTime'>
     readonly userId: FieldRef<"Achievement", 'String'>
     readonly companyId: FieldRef<"Achievement", 'String'>
+    readonly goalId: FieldRef<"Achievement", 'String'>
   }
     
 
@@ -8529,6 +8746,25 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: AchievementTagScalarFieldEnum | AchievementTagScalarFieldEnum[]
+  }
+
+  /**
+   * Achievement.goal
+   */
+  export type Achievement$goalArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Goal
+     */
+    select?: GoalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Goal
+     */
+    omit?: GoalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoalInclude<ExtArgs> | null
+    where?: GoalWhereInput
   }
 
   /**
@@ -11758,6 +11994,1147 @@ export namespace Prisma {
 
 
   /**
+   * Model Goal
+   */
+
+  export type AggregateGoal = {
+    _count: GoalCountAggregateOutputType | null
+    _min: GoalMinAggregateOutputType | null
+    _max: GoalMaxAggregateOutputType | null
+  }
+
+  export type GoalMinAggregateOutputType = {
+    id: string | null
+    title: string | null
+    description: string | null
+    userId: string | null
+    companyId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type GoalMaxAggregateOutputType = {
+    id: string | null
+    title: string | null
+    description: string | null
+    userId: string | null
+    companyId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type GoalCountAggregateOutputType = {
+    id: number
+    title: number
+    description: number
+    userId: number
+    companyId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type GoalMinAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    userId?: true
+    companyId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type GoalMaxAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    userId?: true
+    companyId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type GoalCountAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    userId?: true
+    companyId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type GoalAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Goal to aggregate.
+     */
+    where?: GoalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Goals to fetch.
+     */
+    orderBy?: GoalOrderByWithRelationInput | GoalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: GoalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Goals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Goals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Goals
+    **/
+    _count?: true | GoalCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: GoalMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: GoalMaxAggregateInputType
+  }
+
+  export type GetGoalAggregateType<T extends GoalAggregateArgs> = {
+        [P in keyof T & keyof AggregateGoal]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateGoal[P]>
+      : GetScalarType<T[P], AggregateGoal[P]>
+  }
+
+
+
+
+  export type GoalGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GoalWhereInput
+    orderBy?: GoalOrderByWithAggregationInput | GoalOrderByWithAggregationInput[]
+    by: GoalScalarFieldEnum[] | GoalScalarFieldEnum
+    having?: GoalScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: GoalCountAggregateInputType | true
+    _min?: GoalMinAggregateInputType
+    _max?: GoalMaxAggregateInputType
+  }
+
+  export type GoalGroupByOutputType = {
+    id: string
+    title: string
+    description: string | null
+    userId: string
+    companyId: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: GoalCountAggregateOutputType | null
+    _min: GoalMinAggregateOutputType | null
+    _max: GoalMaxAggregateOutputType | null
+  }
+
+  type GetGoalGroupByPayload<T extends GoalGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<GoalGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof GoalGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], GoalGroupByOutputType[P]>
+            : GetScalarType<T[P], GoalGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type GoalSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    userId?: boolean
+    companyId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    company?: boolean | Goal$companyArgs<ExtArgs>
+    achievements?: boolean | Goal$achievementsArgs<ExtArgs>
+    _count?: boolean | GoalCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["goal"]>
+
+  export type GoalSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    userId?: boolean
+    companyId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    company?: boolean | Goal$companyArgs<ExtArgs>
+  }, ExtArgs["result"]["goal"]>
+
+  export type GoalSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    userId?: boolean
+    companyId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    company?: boolean | Goal$companyArgs<ExtArgs>
+  }, ExtArgs["result"]["goal"]>
+
+  export type GoalSelectScalar = {
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    userId?: boolean
+    companyId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type GoalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "userId" | "companyId" | "createdAt" | "updatedAt", ExtArgs["result"]["goal"]>
+  export type GoalInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    company?: boolean | Goal$companyArgs<ExtArgs>
+    achievements?: boolean | Goal$achievementsArgs<ExtArgs>
+    _count?: boolean | GoalCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type GoalIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    company?: boolean | Goal$companyArgs<ExtArgs>
+  }
+  export type GoalIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    company?: boolean | Goal$companyArgs<ExtArgs>
+  }
+
+  export type $GoalPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Goal"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      company: Prisma.$CompanyPayload<ExtArgs> | null
+      achievements: Prisma.$AchievementPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      title: string
+      description: string | null
+      userId: string
+      companyId: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["goal"]>
+    composites: {}
+  }
+
+  type GoalGetPayload<S extends boolean | null | undefined | GoalDefaultArgs> = $Result.GetResult<Prisma.$GoalPayload, S>
+
+  type GoalCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<GoalFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: GoalCountAggregateInputType | true
+    }
+
+  export interface GoalDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Goal'], meta: { name: 'Goal' } }
+    /**
+     * Find zero or one Goal that matches the filter.
+     * @param {GoalFindUniqueArgs} args - Arguments to find a Goal
+     * @example
+     * // Get one Goal
+     * const goal = await prisma.goal.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends GoalFindUniqueArgs>(args: SelectSubset<T, GoalFindUniqueArgs<ExtArgs>>): Prisma__GoalClient<$Result.GetResult<Prisma.$GoalPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Goal that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {GoalFindUniqueOrThrowArgs} args - Arguments to find a Goal
+     * @example
+     * // Get one Goal
+     * const goal = await prisma.goal.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends GoalFindUniqueOrThrowArgs>(args: SelectSubset<T, GoalFindUniqueOrThrowArgs<ExtArgs>>): Prisma__GoalClient<$Result.GetResult<Prisma.$GoalPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Goal that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GoalFindFirstArgs} args - Arguments to find a Goal
+     * @example
+     * // Get one Goal
+     * const goal = await prisma.goal.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends GoalFindFirstArgs>(args?: SelectSubset<T, GoalFindFirstArgs<ExtArgs>>): Prisma__GoalClient<$Result.GetResult<Prisma.$GoalPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Goal that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GoalFindFirstOrThrowArgs} args - Arguments to find a Goal
+     * @example
+     * // Get one Goal
+     * const goal = await prisma.goal.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends GoalFindFirstOrThrowArgs>(args?: SelectSubset<T, GoalFindFirstOrThrowArgs<ExtArgs>>): Prisma__GoalClient<$Result.GetResult<Prisma.$GoalPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Goals that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GoalFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Goals
+     * const goals = await prisma.goal.findMany()
+     * 
+     * // Get first 10 Goals
+     * const goals = await prisma.goal.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const goalWithIdOnly = await prisma.goal.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends GoalFindManyArgs>(args?: SelectSubset<T, GoalFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GoalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Goal.
+     * @param {GoalCreateArgs} args - Arguments to create a Goal.
+     * @example
+     * // Create one Goal
+     * const Goal = await prisma.goal.create({
+     *   data: {
+     *     // ... data to create a Goal
+     *   }
+     * })
+     * 
+     */
+    create<T extends GoalCreateArgs>(args: SelectSubset<T, GoalCreateArgs<ExtArgs>>): Prisma__GoalClient<$Result.GetResult<Prisma.$GoalPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Goals.
+     * @param {GoalCreateManyArgs} args - Arguments to create many Goals.
+     * @example
+     * // Create many Goals
+     * const goal = await prisma.goal.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends GoalCreateManyArgs>(args?: SelectSubset<T, GoalCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Goals and returns the data saved in the database.
+     * @param {GoalCreateManyAndReturnArgs} args - Arguments to create many Goals.
+     * @example
+     * // Create many Goals
+     * const goal = await prisma.goal.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Goals and only return the `id`
+     * const goalWithIdOnly = await prisma.goal.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends GoalCreateManyAndReturnArgs>(args?: SelectSubset<T, GoalCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GoalPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Goal.
+     * @param {GoalDeleteArgs} args - Arguments to delete one Goal.
+     * @example
+     * // Delete one Goal
+     * const Goal = await prisma.goal.delete({
+     *   where: {
+     *     // ... filter to delete one Goal
+     *   }
+     * })
+     * 
+     */
+    delete<T extends GoalDeleteArgs>(args: SelectSubset<T, GoalDeleteArgs<ExtArgs>>): Prisma__GoalClient<$Result.GetResult<Prisma.$GoalPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Goal.
+     * @param {GoalUpdateArgs} args - Arguments to update one Goal.
+     * @example
+     * // Update one Goal
+     * const goal = await prisma.goal.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends GoalUpdateArgs>(args: SelectSubset<T, GoalUpdateArgs<ExtArgs>>): Prisma__GoalClient<$Result.GetResult<Prisma.$GoalPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Goals.
+     * @param {GoalDeleteManyArgs} args - Arguments to filter Goals to delete.
+     * @example
+     * // Delete a few Goals
+     * const { count } = await prisma.goal.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends GoalDeleteManyArgs>(args?: SelectSubset<T, GoalDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Goals.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GoalUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Goals
+     * const goal = await prisma.goal.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends GoalUpdateManyArgs>(args: SelectSubset<T, GoalUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Goals and returns the data updated in the database.
+     * @param {GoalUpdateManyAndReturnArgs} args - Arguments to update many Goals.
+     * @example
+     * // Update many Goals
+     * const goal = await prisma.goal.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Goals and only return the `id`
+     * const goalWithIdOnly = await prisma.goal.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends GoalUpdateManyAndReturnArgs>(args: SelectSubset<T, GoalUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GoalPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Goal.
+     * @param {GoalUpsertArgs} args - Arguments to update or create a Goal.
+     * @example
+     * // Update or create a Goal
+     * const goal = await prisma.goal.upsert({
+     *   create: {
+     *     // ... data to create a Goal
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Goal we want to update
+     *   }
+     * })
+     */
+    upsert<T extends GoalUpsertArgs>(args: SelectSubset<T, GoalUpsertArgs<ExtArgs>>): Prisma__GoalClient<$Result.GetResult<Prisma.$GoalPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Goals.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GoalCountArgs} args - Arguments to filter Goals to count.
+     * @example
+     * // Count the number of Goals
+     * const count = await prisma.goal.count({
+     *   where: {
+     *     // ... the filter for the Goals we want to count
+     *   }
+     * })
+    **/
+    count<T extends GoalCountArgs>(
+      args?: Subset<T, GoalCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], GoalCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Goal.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GoalAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends GoalAggregateArgs>(args: Subset<T, GoalAggregateArgs>): Prisma.PrismaPromise<GetGoalAggregateType<T>>
+
+    /**
+     * Group by Goal.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GoalGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends GoalGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: GoalGroupByArgs['orderBy'] }
+        : { orderBy?: GoalGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, GoalGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetGoalGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Goal model
+   */
+  readonly fields: GoalFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Goal.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__GoalClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    company<T extends Goal$companyArgs<ExtArgs> = {}>(args?: Subset<T, Goal$companyArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    achievements<T extends Goal$achievementsArgs<ExtArgs> = {}>(args?: Subset<T, Goal$achievementsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AchievementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Goal model
+   */
+  interface GoalFieldRefs {
+    readonly id: FieldRef<"Goal", 'String'>
+    readonly title: FieldRef<"Goal", 'String'>
+    readonly description: FieldRef<"Goal", 'String'>
+    readonly userId: FieldRef<"Goal", 'String'>
+    readonly companyId: FieldRef<"Goal", 'String'>
+    readonly createdAt: FieldRef<"Goal", 'DateTime'>
+    readonly updatedAt: FieldRef<"Goal", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Goal findUnique
+   */
+  export type GoalFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Goal
+     */
+    select?: GoalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Goal
+     */
+    omit?: GoalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoalInclude<ExtArgs> | null
+    /**
+     * Filter, which Goal to fetch.
+     */
+    where: GoalWhereUniqueInput
+  }
+
+  /**
+   * Goal findUniqueOrThrow
+   */
+  export type GoalFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Goal
+     */
+    select?: GoalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Goal
+     */
+    omit?: GoalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoalInclude<ExtArgs> | null
+    /**
+     * Filter, which Goal to fetch.
+     */
+    where: GoalWhereUniqueInput
+  }
+
+  /**
+   * Goal findFirst
+   */
+  export type GoalFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Goal
+     */
+    select?: GoalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Goal
+     */
+    omit?: GoalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoalInclude<ExtArgs> | null
+    /**
+     * Filter, which Goal to fetch.
+     */
+    where?: GoalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Goals to fetch.
+     */
+    orderBy?: GoalOrderByWithRelationInput | GoalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Goals.
+     */
+    cursor?: GoalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Goals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Goals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Goals.
+     */
+    distinct?: GoalScalarFieldEnum | GoalScalarFieldEnum[]
+  }
+
+  /**
+   * Goal findFirstOrThrow
+   */
+  export type GoalFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Goal
+     */
+    select?: GoalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Goal
+     */
+    omit?: GoalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoalInclude<ExtArgs> | null
+    /**
+     * Filter, which Goal to fetch.
+     */
+    where?: GoalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Goals to fetch.
+     */
+    orderBy?: GoalOrderByWithRelationInput | GoalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Goals.
+     */
+    cursor?: GoalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Goals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Goals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Goals.
+     */
+    distinct?: GoalScalarFieldEnum | GoalScalarFieldEnum[]
+  }
+
+  /**
+   * Goal findMany
+   */
+  export type GoalFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Goal
+     */
+    select?: GoalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Goal
+     */
+    omit?: GoalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoalInclude<ExtArgs> | null
+    /**
+     * Filter, which Goals to fetch.
+     */
+    where?: GoalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Goals to fetch.
+     */
+    orderBy?: GoalOrderByWithRelationInput | GoalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Goals.
+     */
+    cursor?: GoalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Goals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Goals.
+     */
+    skip?: number
+    distinct?: GoalScalarFieldEnum | GoalScalarFieldEnum[]
+  }
+
+  /**
+   * Goal create
+   */
+  export type GoalCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Goal
+     */
+    select?: GoalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Goal
+     */
+    omit?: GoalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoalInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Goal.
+     */
+    data: XOR<GoalCreateInput, GoalUncheckedCreateInput>
+  }
+
+  /**
+   * Goal createMany
+   */
+  export type GoalCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Goals.
+     */
+    data: GoalCreateManyInput | GoalCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Goal createManyAndReturn
+   */
+  export type GoalCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Goal
+     */
+    select?: GoalSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Goal
+     */
+    omit?: GoalOmit<ExtArgs> | null
+    /**
+     * The data used to create many Goals.
+     */
+    data: GoalCreateManyInput | GoalCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoalIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Goal update
+   */
+  export type GoalUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Goal
+     */
+    select?: GoalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Goal
+     */
+    omit?: GoalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoalInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Goal.
+     */
+    data: XOR<GoalUpdateInput, GoalUncheckedUpdateInput>
+    /**
+     * Choose, which Goal to update.
+     */
+    where: GoalWhereUniqueInput
+  }
+
+  /**
+   * Goal updateMany
+   */
+  export type GoalUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Goals.
+     */
+    data: XOR<GoalUpdateManyMutationInput, GoalUncheckedUpdateManyInput>
+    /**
+     * Filter which Goals to update
+     */
+    where?: GoalWhereInput
+    /**
+     * Limit how many Goals to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Goal updateManyAndReturn
+   */
+  export type GoalUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Goal
+     */
+    select?: GoalSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Goal
+     */
+    omit?: GoalOmit<ExtArgs> | null
+    /**
+     * The data used to update Goals.
+     */
+    data: XOR<GoalUpdateManyMutationInput, GoalUncheckedUpdateManyInput>
+    /**
+     * Filter which Goals to update
+     */
+    where?: GoalWhereInput
+    /**
+     * Limit how many Goals to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoalIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Goal upsert
+   */
+  export type GoalUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Goal
+     */
+    select?: GoalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Goal
+     */
+    omit?: GoalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoalInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Goal to update in case it exists.
+     */
+    where: GoalWhereUniqueInput
+    /**
+     * In case the Goal found by the `where` argument doesn't exist, create a new Goal with this data.
+     */
+    create: XOR<GoalCreateInput, GoalUncheckedCreateInput>
+    /**
+     * In case the Goal was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<GoalUpdateInput, GoalUncheckedUpdateInput>
+  }
+
+  /**
+   * Goal delete
+   */
+  export type GoalDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Goal
+     */
+    select?: GoalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Goal
+     */
+    omit?: GoalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoalInclude<ExtArgs> | null
+    /**
+     * Filter which Goal to delete.
+     */
+    where: GoalWhereUniqueInput
+  }
+
+  /**
+   * Goal deleteMany
+   */
+  export type GoalDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Goals to delete
+     */
+    where?: GoalWhereInput
+    /**
+     * Limit how many Goals to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Goal.company
+   */
+  export type Goal$companyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Company
+     */
+    select?: CompanySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Company
+     */
+    omit?: CompanyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyInclude<ExtArgs> | null
+    where?: CompanyWhereInput
+  }
+
+  /**
+   * Goal.achievements
+   */
+  export type Goal$achievementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Achievement
+     */
+    select?: AchievementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Achievement
+     */
+    omit?: AchievementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AchievementInclude<ExtArgs> | null
+    where?: AchievementWhereInput
+    orderBy?: AchievementOrderByWithRelationInput | AchievementOrderByWithRelationInput[]
+    cursor?: AchievementWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AchievementScalarFieldEnum | AchievementScalarFieldEnum[]
+  }
+
+  /**
+   * Goal without action
+   */
+  export type GoalDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Goal
+     */
+    select?: GoalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Goal
+     */
+    omit?: GoalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoalInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -11853,7 +13230,8 @@ export namespace Prisma {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     userId: 'userId',
-    companyId: 'companyId'
+    companyId: 'companyId',
+    goalId: 'goalId'
   };
 
   export type AchievementScalarFieldEnum = (typeof AchievementScalarFieldEnum)[keyof typeof AchievementScalarFieldEnum]
@@ -11891,6 +13269,19 @@ export namespace Prisma {
   };
 
   export type EvidenceScalarFieldEnum = (typeof EvidenceScalarFieldEnum)[keyof typeof EvidenceScalarFieldEnum]
+
+
+  export const GoalScalarFieldEnum: {
+    id: 'id',
+    title: 'title',
+    description: 'description',
+    userId: 'userId',
+    companyId: 'companyId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type GoalScalarFieldEnum = (typeof GoalScalarFieldEnum)[keyof typeof GoalScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -12017,6 +13408,7 @@ export namespace Prisma {
     sessions?: SessionListRelationFilter
     companies?: CompanyListRelationFilter
     achievements?: AchievementListRelationFilter
+    goals?: GoalListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -12031,6 +13423,7 @@ export namespace Prisma {
     sessions?: SessionOrderByRelationAggregateInput
     companies?: CompanyOrderByRelationAggregateInput
     achievements?: AchievementOrderByRelationAggregateInput
+    goals?: GoalOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -12048,6 +13441,7 @@ export namespace Prisma {
     sessions?: SessionListRelationFilter
     companies?: CompanyListRelationFilter
     achievements?: AchievementListRelationFilter
+    goals?: GoalListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -12316,6 +13710,7 @@ export namespace Prisma {
     userId?: StringFilter<"Company"> | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     achievements?: AchievementListRelationFilter
+    goals?: GoalListRelationFilter
   }
 
   export type CompanyOrderByWithRelationInput = {
@@ -12328,6 +13723,7 @@ export namespace Prisma {
     userId?: SortOrder
     user?: UserOrderByWithRelationInput
     achievements?: AchievementOrderByRelationAggregateInput
+    goals?: GoalOrderByRelationAggregateInput
   }
 
   export type CompanyWhereUniqueInput = Prisma.AtLeast<{
@@ -12343,6 +13739,7 @@ export namespace Prisma {
     userId?: StringFilter<"Company"> | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     achievements?: AchievementListRelationFilter
+    goals?: GoalListRelationFilter
   }, "id" | "slug">
 
   export type CompanyOrderByWithAggregationInput = {
@@ -12385,10 +13782,12 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Achievement"> | Date | string
     userId?: StringFilter<"Achievement"> | string
     companyId?: StringFilter<"Achievement"> | string
+    goalId?: StringNullableFilter<"Achievement"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
     evidences?: EvidenceListRelationFilter
     tags?: AchievementTagListRelationFilter
+    goal?: XOR<GoalNullableScalarRelationFilter, GoalWhereInput> | null
   }
 
   export type AchievementOrderByWithRelationInput = {
@@ -12402,10 +13801,12 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     companyId?: SortOrder
+    goalId?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
     company?: CompanyOrderByWithRelationInput
     evidences?: EvidenceOrderByRelationAggregateInput
     tags?: AchievementTagOrderByRelationAggregateInput
+    goal?: GoalOrderByWithRelationInput
   }
 
   export type AchievementWhereUniqueInput = Prisma.AtLeast<{
@@ -12422,10 +13823,12 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Achievement"> | Date | string
     userId?: StringFilter<"Achievement"> | string
     companyId?: StringFilter<"Achievement"> | string
+    goalId?: StringNullableFilter<"Achievement"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
     evidences?: EvidenceListRelationFilter
     tags?: AchievementTagListRelationFilter
+    goal?: XOR<GoalNullableScalarRelationFilter, GoalWhereInput> | null
   }, "id">
 
   export type AchievementOrderByWithAggregationInput = {
@@ -12439,6 +13842,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     companyId?: SortOrder
+    goalId?: SortOrderInput | SortOrder
     _count?: AchievementCountOrderByAggregateInput
     _max?: AchievementMaxOrderByAggregateInput
     _min?: AchievementMinOrderByAggregateInput
@@ -12458,6 +13862,7 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Achievement"> | Date | string
     userId?: StringWithAggregatesFilter<"Achievement"> | string
     companyId?: StringWithAggregatesFilter<"Achievement"> | string
+    goalId?: StringNullableWithAggregatesFilter<"Achievement"> | string | null
   }
 
   export type TagWhereInput = {
@@ -12634,6 +14039,77 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Evidence"> | Date | string
   }
 
+  export type GoalWhereInput = {
+    AND?: GoalWhereInput | GoalWhereInput[]
+    OR?: GoalWhereInput[]
+    NOT?: GoalWhereInput | GoalWhereInput[]
+    id?: StringFilter<"Goal"> | string
+    title?: StringFilter<"Goal"> | string
+    description?: StringNullableFilter<"Goal"> | string | null
+    userId?: StringFilter<"Goal"> | string
+    companyId?: StringNullableFilter<"Goal"> | string | null
+    createdAt?: DateTimeFilter<"Goal"> | Date | string
+    updatedAt?: DateTimeFilter<"Goal"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    company?: XOR<CompanyNullableScalarRelationFilter, CompanyWhereInput> | null
+    achievements?: AchievementListRelationFilter
+  }
+
+  export type GoalOrderByWithRelationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    userId?: SortOrder
+    companyId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    company?: CompanyOrderByWithRelationInput
+    achievements?: AchievementOrderByRelationAggregateInput
+  }
+
+  export type GoalWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: GoalWhereInput | GoalWhereInput[]
+    OR?: GoalWhereInput[]
+    NOT?: GoalWhereInput | GoalWhereInput[]
+    title?: StringFilter<"Goal"> | string
+    description?: StringNullableFilter<"Goal"> | string | null
+    userId?: StringFilter<"Goal"> | string
+    companyId?: StringNullableFilter<"Goal"> | string | null
+    createdAt?: DateTimeFilter<"Goal"> | Date | string
+    updatedAt?: DateTimeFilter<"Goal"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    company?: XOR<CompanyNullableScalarRelationFilter, CompanyWhereInput> | null
+    achievements?: AchievementListRelationFilter
+  }, "id">
+
+  export type GoalOrderByWithAggregationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    userId?: SortOrder
+    companyId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: GoalCountOrderByAggregateInput
+    _max?: GoalMaxOrderByAggregateInput
+    _min?: GoalMinOrderByAggregateInput
+  }
+
+  export type GoalScalarWhereWithAggregatesInput = {
+    AND?: GoalScalarWhereWithAggregatesInput | GoalScalarWhereWithAggregatesInput[]
+    OR?: GoalScalarWhereWithAggregatesInput[]
+    NOT?: GoalScalarWhereWithAggregatesInput | GoalScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Goal"> | string
+    title?: StringWithAggregatesFilter<"Goal"> | string
+    description?: StringNullableWithAggregatesFilter<"Goal"> | string | null
+    userId?: StringWithAggregatesFilter<"Goal"> | string
+    companyId?: StringNullableWithAggregatesFilter<"Goal"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Goal"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Goal"> | Date | string
+  }
+
   export type UserCreateInput = {
     id: string
     name: string
@@ -12646,6 +14122,7 @@ export namespace Prisma {
     sessions?: SessionCreateNestedManyWithoutUserInput
     companies?: CompanyCreateNestedManyWithoutUserInput
     achievements?: AchievementCreateNestedManyWithoutUserInput
+    goals?: GoalCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -12660,6 +14137,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     companies?: CompanyUncheckedCreateNestedManyWithoutUserInput
     achievements?: AchievementUncheckedCreateNestedManyWithoutUserInput
+    goals?: GoalUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -12674,6 +14152,7 @@ export namespace Prisma {
     sessions?: SessionUpdateManyWithoutUserNestedInput
     companies?: CompanyUpdateManyWithoutUserNestedInput
     achievements?: AchievementUpdateManyWithoutUserNestedInput
+    goals?: GoalUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -12688,6 +14167,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     companies?: CompanyUncheckedUpdateManyWithoutUserNestedInput
     achievements?: AchievementUncheckedUpdateManyWithoutUserNestedInput
+    goals?: GoalUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -12986,6 +14466,7 @@ export namespace Prisma {
     metadata?: string | null
     user: UserCreateNestedOneWithoutCompaniesInput
     achievements?: AchievementCreateNestedManyWithoutCompanyInput
+    goals?: GoalCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateInput = {
@@ -12997,6 +14478,7 @@ export namespace Prisma {
     metadata?: string | null
     userId: string
     achievements?: AchievementUncheckedCreateNestedManyWithoutCompanyInput
+    goals?: GoalUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUpdateInput = {
@@ -13008,6 +14490,7 @@ export namespace Prisma {
     metadata?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutCompaniesNestedInput
     achievements?: AchievementUpdateManyWithoutCompanyNestedInput
+    goals?: GoalUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateInput = {
@@ -13019,6 +14502,7 @@ export namespace Prisma {
     metadata?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: StringFieldUpdateOperationsInput | string
     achievements?: AchievementUncheckedUpdateManyWithoutCompanyNestedInput
+    goals?: GoalUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyCreateManyInput = {
@@ -13063,6 +14547,7 @@ export namespace Prisma {
     company: CompanyCreateNestedOneWithoutAchievementsInput
     evidences?: EvidenceCreateNestedManyWithoutAchievementInput
     tags?: AchievementTagCreateNestedManyWithoutAchievementInput
+    goal?: GoalCreateNestedOneWithoutAchievementsInput
   }
 
   export type AchievementUncheckedCreateInput = {
@@ -13076,6 +14561,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     userId: string
     companyId: string
+    goalId?: string | null
     evidences?: EvidenceUncheckedCreateNestedManyWithoutAchievementInput
     tags?: AchievementTagUncheckedCreateNestedManyWithoutAchievementInput
   }
@@ -13093,6 +14579,7 @@ export namespace Prisma {
     company?: CompanyUpdateOneRequiredWithoutAchievementsNestedInput
     evidences?: EvidenceUpdateManyWithoutAchievementNestedInput
     tags?: AchievementTagUpdateManyWithoutAchievementNestedInput
+    goal?: GoalUpdateOneWithoutAchievementsNestedInput
   }
 
   export type AchievementUncheckedUpdateInput = {
@@ -13106,6 +14593,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
     companyId?: StringFieldUpdateOperationsInput | string
+    goalId?: NullableStringFieldUpdateOperationsInput | string | null
     evidences?: EvidenceUncheckedUpdateManyWithoutAchievementNestedInput
     tags?: AchievementTagUncheckedUpdateManyWithoutAchievementNestedInput
   }
@@ -13121,6 +14609,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     userId: string
     companyId: string
+    goalId?: string | null
   }
 
   export type AchievementUpdateManyMutationInput = {
@@ -13145,6 +14634,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
     companyId?: StringFieldUpdateOperationsInput | string
+    goalId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TagCreateInput = {
@@ -13323,6 +14813,78 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type GoalCreateInput = {
+    id?: string
+    title: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutGoalsInput
+    company?: CompanyCreateNestedOneWithoutGoalsInput
+    achievements?: AchievementCreateNestedManyWithoutGoalInput
+  }
+
+  export type GoalUncheckedCreateInput = {
+    id?: string
+    title: string
+    description?: string | null
+    userId: string
+    companyId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    achievements?: AchievementUncheckedCreateNestedManyWithoutGoalInput
+  }
+
+  export type GoalUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutGoalsNestedInput
+    company?: CompanyUpdateOneWithoutGoalsNestedInput
+    achievements?: AchievementUpdateManyWithoutGoalNestedInput
+  }
+
+  export type GoalUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: StringFieldUpdateOperationsInput | string
+    companyId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    achievements?: AchievementUncheckedUpdateManyWithoutGoalNestedInput
+  }
+
+  export type GoalCreateManyInput = {
+    id?: string
+    title: string
+    description?: string | null
+    userId: string
+    companyId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type GoalUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GoalUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: StringFieldUpdateOperationsInput | string
+    companyId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -13393,6 +14955,12 @@ export namespace Prisma {
     none?: AchievementWhereInput
   }
 
+  export type GoalListRelationFilter = {
+    every?: GoalWhereInput
+    some?: GoalWhereInput
+    none?: GoalWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -13411,6 +14979,10 @@ export namespace Prisma {
   }
 
   export type AchievementOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type GoalOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -13697,6 +15269,11 @@ export namespace Prisma {
     none?: AchievementTagWhereInput
   }
 
+  export type GoalNullableScalarRelationFilter = {
+    is?: GoalWhereInput | null
+    isNot?: GoalWhereInput | null
+  }
+
   export type EvidenceOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -13716,6 +15293,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     companyId?: SortOrder
+    goalId?: SortOrder
   }
 
   export type AchievementMaxOrderByAggregateInput = {
@@ -13729,6 +15307,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     companyId?: SortOrder
+    goalId?: SortOrder
   }
 
   export type AchievementMinOrderByAggregateInput = {
@@ -13742,6 +15321,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     userId?: SortOrder
     companyId?: SortOrder
+    goalId?: SortOrder
   }
 
   export type EnumImpactLevelNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -13861,6 +15441,41 @@ export namespace Prisma {
     _max?: NestedEnumEvidenceTypeFilter<$PrismaModel>
   }
 
+  export type CompanyNullableScalarRelationFilter = {
+    is?: CompanyWhereInput | null
+    isNot?: CompanyWhereInput | null
+  }
+
+  export type GoalCountOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    userId?: SortOrder
+    companyId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type GoalMaxOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    userId?: SortOrder
+    companyId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type GoalMinOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    userId?: SortOrder
+    companyId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
   export type AccountCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -13889,6 +15504,13 @@ export namespace Prisma {
     connect?: AchievementWhereUniqueInput | AchievementWhereUniqueInput[]
   }
 
+  export type GoalCreateNestedManyWithoutUserInput = {
+    create?: XOR<GoalCreateWithoutUserInput, GoalUncheckedCreateWithoutUserInput> | GoalCreateWithoutUserInput[] | GoalUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: GoalCreateOrConnectWithoutUserInput | GoalCreateOrConnectWithoutUserInput[]
+    createMany?: GoalCreateManyUserInputEnvelope
+    connect?: GoalWhereUniqueInput | GoalWhereUniqueInput[]
+  }
+
   export type AccountUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -13915,6 +15537,13 @@ export namespace Prisma {
     connectOrCreate?: AchievementCreateOrConnectWithoutUserInput | AchievementCreateOrConnectWithoutUserInput[]
     createMany?: AchievementCreateManyUserInputEnvelope
     connect?: AchievementWhereUniqueInput | AchievementWhereUniqueInput[]
+  }
+
+  export type GoalUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<GoalCreateWithoutUserInput, GoalUncheckedCreateWithoutUserInput> | GoalCreateWithoutUserInput[] | GoalUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: GoalCreateOrConnectWithoutUserInput | GoalCreateOrConnectWithoutUserInput[]
+    createMany?: GoalCreateManyUserInputEnvelope
+    connect?: GoalWhereUniqueInput | GoalWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -13989,6 +15618,20 @@ export namespace Prisma {
     deleteMany?: AchievementScalarWhereInput | AchievementScalarWhereInput[]
   }
 
+  export type GoalUpdateManyWithoutUserNestedInput = {
+    create?: XOR<GoalCreateWithoutUserInput, GoalUncheckedCreateWithoutUserInput> | GoalCreateWithoutUserInput[] | GoalUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: GoalCreateOrConnectWithoutUserInput | GoalCreateOrConnectWithoutUserInput[]
+    upsert?: GoalUpsertWithWhereUniqueWithoutUserInput | GoalUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: GoalCreateManyUserInputEnvelope
+    set?: GoalWhereUniqueInput | GoalWhereUniqueInput[]
+    disconnect?: GoalWhereUniqueInput | GoalWhereUniqueInput[]
+    delete?: GoalWhereUniqueInput | GoalWhereUniqueInput[]
+    connect?: GoalWhereUniqueInput | GoalWhereUniqueInput[]
+    update?: GoalUpdateWithWhereUniqueWithoutUserInput | GoalUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: GoalUpdateManyWithWhereWithoutUserInput | GoalUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: GoalScalarWhereInput | GoalScalarWhereInput[]
+  }
+
   export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -14045,6 +15688,20 @@ export namespace Prisma {
     deleteMany?: AchievementScalarWhereInput | AchievementScalarWhereInput[]
   }
 
+  export type GoalUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<GoalCreateWithoutUserInput, GoalUncheckedCreateWithoutUserInput> | GoalCreateWithoutUserInput[] | GoalUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: GoalCreateOrConnectWithoutUserInput | GoalCreateOrConnectWithoutUserInput[]
+    upsert?: GoalUpsertWithWhereUniqueWithoutUserInput | GoalUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: GoalCreateManyUserInputEnvelope
+    set?: GoalWhereUniqueInput | GoalWhereUniqueInput[]
+    disconnect?: GoalWhereUniqueInput | GoalWhereUniqueInput[]
+    delete?: GoalWhereUniqueInput | GoalWhereUniqueInput[]
+    connect?: GoalWhereUniqueInput | GoalWhereUniqueInput[]
+    update?: GoalUpdateWithWhereUniqueWithoutUserInput | GoalUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: GoalUpdateManyWithWhereWithoutUserInput | GoalUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: GoalScalarWhereInput | GoalScalarWhereInput[]
+  }
+
   export type UserCreateNestedOneWithoutSessionsInput = {
     create?: XOR<UserCreateWithoutSessionsInput, UserUncheckedCreateWithoutSessionsInput>
     connectOrCreate?: UserCreateOrConnectWithoutSessionsInput
@@ -14090,11 +15747,25 @@ export namespace Prisma {
     connect?: AchievementWhereUniqueInput | AchievementWhereUniqueInput[]
   }
 
+  export type GoalCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<GoalCreateWithoutCompanyInput, GoalUncheckedCreateWithoutCompanyInput> | GoalCreateWithoutCompanyInput[] | GoalUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: GoalCreateOrConnectWithoutCompanyInput | GoalCreateOrConnectWithoutCompanyInput[]
+    createMany?: GoalCreateManyCompanyInputEnvelope
+    connect?: GoalWhereUniqueInput | GoalWhereUniqueInput[]
+  }
+
   export type AchievementUncheckedCreateNestedManyWithoutCompanyInput = {
     create?: XOR<AchievementCreateWithoutCompanyInput, AchievementUncheckedCreateWithoutCompanyInput> | AchievementCreateWithoutCompanyInput[] | AchievementUncheckedCreateWithoutCompanyInput[]
     connectOrCreate?: AchievementCreateOrConnectWithoutCompanyInput | AchievementCreateOrConnectWithoutCompanyInput[]
     createMany?: AchievementCreateManyCompanyInputEnvelope
     connect?: AchievementWhereUniqueInput | AchievementWhereUniqueInput[]
+  }
+
+  export type GoalUncheckedCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<GoalCreateWithoutCompanyInput, GoalUncheckedCreateWithoutCompanyInput> | GoalCreateWithoutCompanyInput[] | GoalUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: GoalCreateOrConnectWithoutCompanyInput | GoalCreateOrConnectWithoutCompanyInput[]
+    createMany?: GoalCreateManyCompanyInputEnvelope
+    connect?: GoalWhereUniqueInput | GoalWhereUniqueInput[]
   }
 
   export type UserUpdateOneRequiredWithoutCompaniesNestedInput = {
@@ -14119,6 +15790,20 @@ export namespace Prisma {
     deleteMany?: AchievementScalarWhereInput | AchievementScalarWhereInput[]
   }
 
+  export type GoalUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<GoalCreateWithoutCompanyInput, GoalUncheckedCreateWithoutCompanyInput> | GoalCreateWithoutCompanyInput[] | GoalUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: GoalCreateOrConnectWithoutCompanyInput | GoalCreateOrConnectWithoutCompanyInput[]
+    upsert?: GoalUpsertWithWhereUniqueWithoutCompanyInput | GoalUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: GoalCreateManyCompanyInputEnvelope
+    set?: GoalWhereUniqueInput | GoalWhereUniqueInput[]
+    disconnect?: GoalWhereUniqueInput | GoalWhereUniqueInput[]
+    delete?: GoalWhereUniqueInput | GoalWhereUniqueInput[]
+    connect?: GoalWhereUniqueInput | GoalWhereUniqueInput[]
+    update?: GoalUpdateWithWhereUniqueWithoutCompanyInput | GoalUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: GoalUpdateManyWithWhereWithoutCompanyInput | GoalUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: GoalScalarWhereInput | GoalScalarWhereInput[]
+  }
+
   export type AchievementUncheckedUpdateManyWithoutCompanyNestedInput = {
     create?: XOR<AchievementCreateWithoutCompanyInput, AchievementUncheckedCreateWithoutCompanyInput> | AchievementCreateWithoutCompanyInput[] | AchievementUncheckedCreateWithoutCompanyInput[]
     connectOrCreate?: AchievementCreateOrConnectWithoutCompanyInput | AchievementCreateOrConnectWithoutCompanyInput[]
@@ -14131,6 +15816,20 @@ export namespace Prisma {
     update?: AchievementUpdateWithWhereUniqueWithoutCompanyInput | AchievementUpdateWithWhereUniqueWithoutCompanyInput[]
     updateMany?: AchievementUpdateManyWithWhereWithoutCompanyInput | AchievementUpdateManyWithWhereWithoutCompanyInput[]
     deleteMany?: AchievementScalarWhereInput | AchievementScalarWhereInput[]
+  }
+
+  export type GoalUncheckedUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<GoalCreateWithoutCompanyInput, GoalUncheckedCreateWithoutCompanyInput> | GoalCreateWithoutCompanyInput[] | GoalUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: GoalCreateOrConnectWithoutCompanyInput | GoalCreateOrConnectWithoutCompanyInput[]
+    upsert?: GoalUpsertWithWhereUniqueWithoutCompanyInput | GoalUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: GoalCreateManyCompanyInputEnvelope
+    set?: GoalWhereUniqueInput | GoalWhereUniqueInput[]
+    disconnect?: GoalWhereUniqueInput | GoalWhereUniqueInput[]
+    delete?: GoalWhereUniqueInput | GoalWhereUniqueInput[]
+    connect?: GoalWhereUniqueInput | GoalWhereUniqueInput[]
+    update?: GoalUpdateWithWhereUniqueWithoutCompanyInput | GoalUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: GoalUpdateManyWithWhereWithoutCompanyInput | GoalUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: GoalScalarWhereInput | GoalScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutAchievementsInput = {
@@ -14157,6 +15856,12 @@ export namespace Prisma {
     connectOrCreate?: AchievementTagCreateOrConnectWithoutAchievementInput | AchievementTagCreateOrConnectWithoutAchievementInput[]
     createMany?: AchievementTagCreateManyAchievementInputEnvelope
     connect?: AchievementTagWhereUniqueInput | AchievementTagWhereUniqueInput[]
+  }
+
+  export type GoalCreateNestedOneWithoutAchievementsInput = {
+    create?: XOR<GoalCreateWithoutAchievementsInput, GoalUncheckedCreateWithoutAchievementsInput>
+    connectOrCreate?: GoalCreateOrConnectWithoutAchievementsInput
+    connect?: GoalWhereUniqueInput
   }
 
   export type EvidenceUncheckedCreateNestedManyWithoutAchievementInput = {
@@ -14219,6 +15924,16 @@ export namespace Prisma {
     update?: AchievementTagUpdateWithWhereUniqueWithoutAchievementInput | AchievementTagUpdateWithWhereUniqueWithoutAchievementInput[]
     updateMany?: AchievementTagUpdateManyWithWhereWithoutAchievementInput | AchievementTagUpdateManyWithWhereWithoutAchievementInput[]
     deleteMany?: AchievementTagScalarWhereInput | AchievementTagScalarWhereInput[]
+  }
+
+  export type GoalUpdateOneWithoutAchievementsNestedInput = {
+    create?: XOR<GoalCreateWithoutAchievementsInput, GoalUncheckedCreateWithoutAchievementsInput>
+    connectOrCreate?: GoalCreateOrConnectWithoutAchievementsInput
+    upsert?: GoalUpsertWithoutAchievementsInput
+    disconnect?: GoalWhereInput | boolean
+    delete?: GoalWhereInput | boolean
+    connect?: GoalWhereUniqueInput
+    update?: XOR<XOR<GoalUpdateToOneWithWhereWithoutAchievementsInput, GoalUpdateWithoutAchievementsInput>, GoalUncheckedUpdateWithoutAchievementsInput>
   }
 
   export type EvidenceUncheckedUpdateManyWithoutAchievementNestedInput = {
@@ -14335,6 +16050,78 @@ export namespace Prisma {
     upsert?: AchievementUpsertWithoutEvidencesInput
     connect?: AchievementWhereUniqueInput
     update?: XOR<XOR<AchievementUpdateToOneWithWhereWithoutEvidencesInput, AchievementUpdateWithoutEvidencesInput>, AchievementUncheckedUpdateWithoutEvidencesInput>
+  }
+
+  export type UserCreateNestedOneWithoutGoalsInput = {
+    create?: XOR<UserCreateWithoutGoalsInput, UserUncheckedCreateWithoutGoalsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutGoalsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type CompanyCreateNestedOneWithoutGoalsInput = {
+    create?: XOR<CompanyCreateWithoutGoalsInput, CompanyUncheckedCreateWithoutGoalsInput>
+    connectOrCreate?: CompanyCreateOrConnectWithoutGoalsInput
+    connect?: CompanyWhereUniqueInput
+  }
+
+  export type AchievementCreateNestedManyWithoutGoalInput = {
+    create?: XOR<AchievementCreateWithoutGoalInput, AchievementUncheckedCreateWithoutGoalInput> | AchievementCreateWithoutGoalInput[] | AchievementUncheckedCreateWithoutGoalInput[]
+    connectOrCreate?: AchievementCreateOrConnectWithoutGoalInput | AchievementCreateOrConnectWithoutGoalInput[]
+    createMany?: AchievementCreateManyGoalInputEnvelope
+    connect?: AchievementWhereUniqueInput | AchievementWhereUniqueInput[]
+  }
+
+  export type AchievementUncheckedCreateNestedManyWithoutGoalInput = {
+    create?: XOR<AchievementCreateWithoutGoalInput, AchievementUncheckedCreateWithoutGoalInput> | AchievementCreateWithoutGoalInput[] | AchievementUncheckedCreateWithoutGoalInput[]
+    connectOrCreate?: AchievementCreateOrConnectWithoutGoalInput | AchievementCreateOrConnectWithoutGoalInput[]
+    createMany?: AchievementCreateManyGoalInputEnvelope
+    connect?: AchievementWhereUniqueInput | AchievementWhereUniqueInput[]
+  }
+
+  export type UserUpdateOneRequiredWithoutGoalsNestedInput = {
+    create?: XOR<UserCreateWithoutGoalsInput, UserUncheckedCreateWithoutGoalsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutGoalsInput
+    upsert?: UserUpsertWithoutGoalsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutGoalsInput, UserUpdateWithoutGoalsInput>, UserUncheckedUpdateWithoutGoalsInput>
+  }
+
+  export type CompanyUpdateOneWithoutGoalsNestedInput = {
+    create?: XOR<CompanyCreateWithoutGoalsInput, CompanyUncheckedCreateWithoutGoalsInput>
+    connectOrCreate?: CompanyCreateOrConnectWithoutGoalsInput
+    upsert?: CompanyUpsertWithoutGoalsInput
+    disconnect?: CompanyWhereInput | boolean
+    delete?: CompanyWhereInput | boolean
+    connect?: CompanyWhereUniqueInput
+    update?: XOR<XOR<CompanyUpdateToOneWithWhereWithoutGoalsInput, CompanyUpdateWithoutGoalsInput>, CompanyUncheckedUpdateWithoutGoalsInput>
+  }
+
+  export type AchievementUpdateManyWithoutGoalNestedInput = {
+    create?: XOR<AchievementCreateWithoutGoalInput, AchievementUncheckedCreateWithoutGoalInput> | AchievementCreateWithoutGoalInput[] | AchievementUncheckedCreateWithoutGoalInput[]
+    connectOrCreate?: AchievementCreateOrConnectWithoutGoalInput | AchievementCreateOrConnectWithoutGoalInput[]
+    upsert?: AchievementUpsertWithWhereUniqueWithoutGoalInput | AchievementUpsertWithWhereUniqueWithoutGoalInput[]
+    createMany?: AchievementCreateManyGoalInputEnvelope
+    set?: AchievementWhereUniqueInput | AchievementWhereUniqueInput[]
+    disconnect?: AchievementWhereUniqueInput | AchievementWhereUniqueInput[]
+    delete?: AchievementWhereUniqueInput | AchievementWhereUniqueInput[]
+    connect?: AchievementWhereUniqueInput | AchievementWhereUniqueInput[]
+    update?: AchievementUpdateWithWhereUniqueWithoutGoalInput | AchievementUpdateWithWhereUniqueWithoutGoalInput[]
+    updateMany?: AchievementUpdateManyWithWhereWithoutGoalInput | AchievementUpdateManyWithWhereWithoutGoalInput[]
+    deleteMany?: AchievementScalarWhereInput | AchievementScalarWhereInput[]
+  }
+
+  export type AchievementUncheckedUpdateManyWithoutGoalNestedInput = {
+    create?: XOR<AchievementCreateWithoutGoalInput, AchievementUncheckedCreateWithoutGoalInput> | AchievementCreateWithoutGoalInput[] | AchievementUncheckedCreateWithoutGoalInput[]
+    connectOrCreate?: AchievementCreateOrConnectWithoutGoalInput | AchievementCreateOrConnectWithoutGoalInput[]
+    upsert?: AchievementUpsertWithWhereUniqueWithoutGoalInput | AchievementUpsertWithWhereUniqueWithoutGoalInput[]
+    createMany?: AchievementCreateManyGoalInputEnvelope
+    set?: AchievementWhereUniqueInput | AchievementWhereUniqueInput[]
+    disconnect?: AchievementWhereUniqueInput | AchievementWhereUniqueInput[]
+    delete?: AchievementWhereUniqueInput | AchievementWhereUniqueInput[]
+    connect?: AchievementWhereUniqueInput | AchievementWhereUniqueInput[]
+    update?: AchievementUpdateWithWhereUniqueWithoutGoalInput | AchievementUpdateWithWhereUniqueWithoutGoalInput[]
+    updateMany?: AchievementUpdateManyWithWhereWithoutGoalInput | AchievementUpdateManyWithWhereWithoutGoalInput[]
+    deleteMany?: AchievementScalarWhereInput | AchievementScalarWhereInput[]
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -14598,6 +16385,7 @@ export namespace Prisma {
     createdAt: Date | string
     metadata?: string | null
     achievements?: AchievementCreateNestedManyWithoutCompanyInput
+    goals?: GoalCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutUserInput = {
@@ -14608,6 +16396,7 @@ export namespace Prisma {
     createdAt: Date | string
     metadata?: string | null
     achievements?: AchievementUncheckedCreateNestedManyWithoutCompanyInput
+    goals?: GoalUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutUserInput = {
@@ -14632,6 +16421,7 @@ export namespace Prisma {
     company: CompanyCreateNestedOneWithoutAchievementsInput
     evidences?: EvidenceCreateNestedManyWithoutAchievementInput
     tags?: AchievementTagCreateNestedManyWithoutAchievementInput
+    goal?: GoalCreateNestedOneWithoutAchievementsInput
   }
 
   export type AchievementUncheckedCreateWithoutUserInput = {
@@ -14644,6 +16434,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     companyId: string
+    goalId?: string | null
     evidences?: EvidenceUncheckedCreateNestedManyWithoutAchievementInput
     tags?: AchievementTagUncheckedCreateNestedManyWithoutAchievementInput
   }
@@ -14655,6 +16446,36 @@ export namespace Prisma {
 
   export type AchievementCreateManyUserInputEnvelope = {
     data: AchievementCreateManyUserInput | AchievementCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type GoalCreateWithoutUserInput = {
+    id?: string
+    title: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    company?: CompanyCreateNestedOneWithoutGoalsInput
+    achievements?: AchievementCreateNestedManyWithoutGoalInput
+  }
+
+  export type GoalUncheckedCreateWithoutUserInput = {
+    id?: string
+    title: string
+    description?: string | null
+    companyId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    achievements?: AchievementUncheckedCreateNestedManyWithoutGoalInput
+  }
+
+  export type GoalCreateOrConnectWithoutUserInput = {
+    where: GoalWhereUniqueInput
+    create: XOR<GoalCreateWithoutUserInput, GoalUncheckedCreateWithoutUserInput>
+  }
+
+  export type GoalCreateManyUserInputEnvelope = {
+    data: GoalCreateManyUserInput | GoalCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -14783,6 +16604,36 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Achievement"> | Date | string
     userId?: StringFilter<"Achievement"> | string
     companyId?: StringFilter<"Achievement"> | string
+    goalId?: StringNullableFilter<"Achievement"> | string | null
+  }
+
+  export type GoalUpsertWithWhereUniqueWithoutUserInput = {
+    where: GoalWhereUniqueInput
+    update: XOR<GoalUpdateWithoutUserInput, GoalUncheckedUpdateWithoutUserInput>
+    create: XOR<GoalCreateWithoutUserInput, GoalUncheckedCreateWithoutUserInput>
+  }
+
+  export type GoalUpdateWithWhereUniqueWithoutUserInput = {
+    where: GoalWhereUniqueInput
+    data: XOR<GoalUpdateWithoutUserInput, GoalUncheckedUpdateWithoutUserInput>
+  }
+
+  export type GoalUpdateManyWithWhereWithoutUserInput = {
+    where: GoalScalarWhereInput
+    data: XOR<GoalUpdateManyMutationInput, GoalUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type GoalScalarWhereInput = {
+    AND?: GoalScalarWhereInput | GoalScalarWhereInput[]
+    OR?: GoalScalarWhereInput[]
+    NOT?: GoalScalarWhereInput | GoalScalarWhereInput[]
+    id?: StringFilter<"Goal"> | string
+    title?: StringFilter<"Goal"> | string
+    description?: StringNullableFilter<"Goal"> | string | null
+    userId?: StringFilter<"Goal"> | string
+    companyId?: StringNullableFilter<"Goal"> | string | null
+    createdAt?: DateTimeFilter<"Goal"> | Date | string
+    updatedAt?: DateTimeFilter<"Goal"> | Date | string
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -14796,6 +16647,7 @@ export namespace Prisma {
     accounts?: AccountCreateNestedManyWithoutUserInput
     companies?: CompanyCreateNestedManyWithoutUserInput
     achievements?: AchievementCreateNestedManyWithoutUserInput
+    goals?: GoalCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -14809,6 +16661,7 @@ export namespace Prisma {
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     companies?: CompanyUncheckedCreateNestedManyWithoutUserInput
     achievements?: AchievementUncheckedCreateNestedManyWithoutUserInput
+    goals?: GoalUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -14838,6 +16691,7 @@ export namespace Prisma {
     accounts?: AccountUpdateManyWithoutUserNestedInput
     companies?: CompanyUpdateManyWithoutUserNestedInput
     achievements?: AchievementUpdateManyWithoutUserNestedInput
+    goals?: GoalUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -14851,6 +16705,7 @@ export namespace Prisma {
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     companies?: CompanyUncheckedUpdateManyWithoutUserNestedInput
     achievements?: AchievementUncheckedUpdateManyWithoutUserNestedInput
+    goals?: GoalUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAccountsInput = {
@@ -14864,6 +16719,7 @@ export namespace Prisma {
     sessions?: SessionCreateNestedManyWithoutUserInput
     companies?: CompanyCreateNestedManyWithoutUserInput
     achievements?: AchievementCreateNestedManyWithoutUserInput
+    goals?: GoalCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -14877,6 +16733,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     companies?: CompanyUncheckedCreateNestedManyWithoutUserInput
     achievements?: AchievementUncheckedCreateNestedManyWithoutUserInput
+    goals?: GoalUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -14906,6 +16763,7 @@ export namespace Prisma {
     sessions?: SessionUpdateManyWithoutUserNestedInput
     companies?: CompanyUpdateManyWithoutUserNestedInput
     achievements?: AchievementUpdateManyWithoutUserNestedInput
+    goals?: GoalUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -14919,6 +16777,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     companies?: CompanyUncheckedUpdateManyWithoutUserNestedInput
     achievements?: AchievementUncheckedUpdateManyWithoutUserNestedInput
+    goals?: GoalUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutCompaniesInput = {
@@ -14932,6 +16791,7 @@ export namespace Prisma {
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     achievements?: AchievementCreateNestedManyWithoutUserInput
+    goals?: GoalCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCompaniesInput = {
@@ -14945,6 +16805,7 @@ export namespace Prisma {
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     achievements?: AchievementUncheckedCreateNestedManyWithoutUserInput
+    goals?: GoalUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCompaniesInput = {
@@ -14964,6 +16825,7 @@ export namespace Prisma {
     user: UserCreateNestedOneWithoutAchievementsInput
     evidences?: EvidenceCreateNestedManyWithoutAchievementInput
     tags?: AchievementTagCreateNestedManyWithoutAchievementInput
+    goal?: GoalCreateNestedOneWithoutAchievementsInput
   }
 
   export type AchievementUncheckedCreateWithoutCompanyInput = {
@@ -14976,6 +16838,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
+    goalId?: string | null
     evidences?: EvidenceUncheckedCreateNestedManyWithoutAchievementInput
     tags?: AchievementTagUncheckedCreateNestedManyWithoutAchievementInput
   }
@@ -14987,6 +16850,36 @@ export namespace Prisma {
 
   export type AchievementCreateManyCompanyInputEnvelope = {
     data: AchievementCreateManyCompanyInput | AchievementCreateManyCompanyInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type GoalCreateWithoutCompanyInput = {
+    id?: string
+    title: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutGoalsInput
+    achievements?: AchievementCreateNestedManyWithoutGoalInput
+  }
+
+  export type GoalUncheckedCreateWithoutCompanyInput = {
+    id?: string
+    title: string
+    description?: string | null
+    userId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    achievements?: AchievementUncheckedCreateNestedManyWithoutGoalInput
+  }
+
+  export type GoalCreateOrConnectWithoutCompanyInput = {
+    where: GoalWhereUniqueInput
+    create: XOR<GoalCreateWithoutCompanyInput, GoalUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type GoalCreateManyCompanyInputEnvelope = {
+    data: GoalCreateManyCompanyInput | GoalCreateManyCompanyInput[]
     skipDuplicates?: boolean
   }
 
@@ -15012,6 +16905,7 @@ export namespace Prisma {
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     achievements?: AchievementUpdateManyWithoutUserNestedInput
+    goals?: GoalUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCompaniesInput = {
@@ -15025,6 +16919,7 @@ export namespace Prisma {
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     achievements?: AchievementUncheckedUpdateManyWithoutUserNestedInput
+    goals?: GoalUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AchievementUpsertWithWhereUniqueWithoutCompanyInput = {
@@ -15043,6 +16938,22 @@ export namespace Prisma {
     data: XOR<AchievementUpdateManyMutationInput, AchievementUncheckedUpdateManyWithoutCompanyInput>
   }
 
+  export type GoalUpsertWithWhereUniqueWithoutCompanyInput = {
+    where: GoalWhereUniqueInput
+    update: XOR<GoalUpdateWithoutCompanyInput, GoalUncheckedUpdateWithoutCompanyInput>
+    create: XOR<GoalCreateWithoutCompanyInput, GoalUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type GoalUpdateWithWhereUniqueWithoutCompanyInput = {
+    where: GoalWhereUniqueInput
+    data: XOR<GoalUpdateWithoutCompanyInput, GoalUncheckedUpdateWithoutCompanyInput>
+  }
+
+  export type GoalUpdateManyWithWhereWithoutCompanyInput = {
+    where: GoalScalarWhereInput
+    data: XOR<GoalUpdateManyMutationInput, GoalUncheckedUpdateManyWithoutCompanyInput>
+  }
+
   export type UserCreateWithoutAchievementsInput = {
     id: string
     name: string
@@ -15054,6 +16965,7 @@ export namespace Prisma {
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     companies?: CompanyCreateNestedManyWithoutUserInput
+    goals?: GoalCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAchievementsInput = {
@@ -15067,6 +16979,7 @@ export namespace Prisma {
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     companies?: CompanyUncheckedCreateNestedManyWithoutUserInput
+    goals?: GoalUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAchievementsInput = {
@@ -15082,6 +16995,7 @@ export namespace Prisma {
     createdAt: Date | string
     metadata?: string | null
     user: UserCreateNestedOneWithoutCompaniesInput
+    goals?: GoalCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutAchievementsInput = {
@@ -15092,6 +17006,7 @@ export namespace Prisma {
     createdAt: Date | string
     metadata?: string | null
     userId: string
+    goals?: GoalUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutAchievementsInput = {
@@ -15149,6 +17064,31 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type GoalCreateWithoutAchievementsInput = {
+    id?: string
+    title: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutGoalsInput
+    company?: CompanyCreateNestedOneWithoutGoalsInput
+  }
+
+  export type GoalUncheckedCreateWithoutAchievementsInput = {
+    id?: string
+    title: string
+    description?: string | null
+    userId: string
+    companyId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type GoalCreateOrConnectWithoutAchievementsInput = {
+    where: GoalWhereUniqueInput
+    create: XOR<GoalCreateWithoutAchievementsInput, GoalUncheckedCreateWithoutAchievementsInput>
+  }
+
   export type UserUpsertWithoutAchievementsInput = {
     update: XOR<UserUpdateWithoutAchievementsInput, UserUncheckedUpdateWithoutAchievementsInput>
     create: XOR<UserCreateWithoutAchievementsInput, UserUncheckedCreateWithoutAchievementsInput>
@@ -15171,6 +17111,7 @@ export namespace Prisma {
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     companies?: CompanyUpdateManyWithoutUserNestedInput
+    goals?: GoalUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAchievementsInput = {
@@ -15184,6 +17125,7 @@ export namespace Prisma {
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     companies?: CompanyUncheckedUpdateManyWithoutUserNestedInput
+    goals?: GoalUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type CompanyUpsertWithoutAchievementsInput = {
@@ -15205,6 +17147,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     metadata?: NullableStringFieldUpdateOperationsInput | string | null
     user?: UserUpdateOneRequiredWithoutCompaniesNestedInput
+    goals?: GoalUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutAchievementsInput = {
@@ -15215,6 +17158,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     metadata?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: StringFieldUpdateOperationsInput | string
+    goals?: GoalUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type EvidenceUpsertWithWhereUniqueWithoutAchievementInput = {
@@ -15272,6 +17216,37 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"AchievementTag"> | Date | string
   }
 
+  export type GoalUpsertWithoutAchievementsInput = {
+    update: XOR<GoalUpdateWithoutAchievementsInput, GoalUncheckedUpdateWithoutAchievementsInput>
+    create: XOR<GoalCreateWithoutAchievementsInput, GoalUncheckedCreateWithoutAchievementsInput>
+    where?: GoalWhereInput
+  }
+
+  export type GoalUpdateToOneWithWhereWithoutAchievementsInput = {
+    where?: GoalWhereInput
+    data: XOR<GoalUpdateWithoutAchievementsInput, GoalUncheckedUpdateWithoutAchievementsInput>
+  }
+
+  export type GoalUpdateWithoutAchievementsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutGoalsNestedInput
+    company?: CompanyUpdateOneWithoutGoalsNestedInput
+  }
+
+  export type GoalUncheckedUpdateWithoutAchievementsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: StringFieldUpdateOperationsInput | string
+    companyId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type AchievementTagCreateWithoutTagInput = {
     createdAt?: Date | string
     achievement: AchievementCreateNestedOneWithoutTagsInput
@@ -15320,6 +17295,7 @@ export namespace Prisma {
     user: UserCreateNestedOneWithoutAchievementsInput
     company: CompanyCreateNestedOneWithoutAchievementsInput
     evidences?: EvidenceCreateNestedManyWithoutAchievementInput
+    goal?: GoalCreateNestedOneWithoutAchievementsInput
   }
 
   export type AchievementUncheckedCreateWithoutTagsInput = {
@@ -15333,6 +17309,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     userId: string
     companyId: string
+    goalId?: string | null
     evidences?: EvidenceUncheckedCreateNestedManyWithoutAchievementInput
   }
 
@@ -15385,6 +17362,7 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutAchievementsNestedInput
     company?: CompanyUpdateOneRequiredWithoutAchievementsNestedInput
     evidences?: EvidenceUpdateManyWithoutAchievementNestedInput
+    goal?: GoalUpdateOneWithoutAchievementsNestedInput
   }
 
   export type AchievementUncheckedUpdateWithoutTagsInput = {
@@ -15398,6 +17376,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
     companyId?: StringFieldUpdateOperationsInput | string
+    goalId?: NullableStringFieldUpdateOperationsInput | string | null
     evidences?: EvidenceUncheckedUpdateManyWithoutAchievementNestedInput
   }
 
@@ -15440,6 +17419,7 @@ export namespace Prisma {
     user: UserCreateNestedOneWithoutAchievementsInput
     company: CompanyCreateNestedOneWithoutAchievementsInput
     tags?: AchievementTagCreateNestedManyWithoutAchievementInput
+    goal?: GoalCreateNestedOneWithoutAchievementsInput
   }
 
   export type AchievementUncheckedCreateWithoutEvidencesInput = {
@@ -15453,6 +17433,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     userId: string
     companyId: string
+    goalId?: string | null
     tags?: AchievementTagUncheckedCreateNestedManyWithoutAchievementInput
   }
 
@@ -15484,6 +17465,7 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutAchievementsNestedInput
     company?: CompanyUpdateOneRequiredWithoutAchievementsNestedInput
     tags?: AchievementTagUpdateManyWithoutAchievementNestedInput
+    goal?: GoalUpdateOneWithoutAchievementsNestedInput
   }
 
   export type AchievementUncheckedUpdateWithoutEvidencesInput = {
@@ -15497,7 +17479,196 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
     companyId?: StringFieldUpdateOperationsInput | string
+    goalId?: NullableStringFieldUpdateOperationsInput | string | null
     tags?: AchievementTagUncheckedUpdateManyWithoutAchievementNestedInput
+  }
+
+  export type UserCreateWithoutGoalsInput = {
+    id: string
+    name: string
+    email: string
+    emailVerified: boolean
+    image?: string | null
+    createdAt: Date | string
+    updatedAt: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    companies?: CompanyCreateNestedManyWithoutUserInput
+    achievements?: AchievementCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutGoalsInput = {
+    id: string
+    name: string
+    email: string
+    emailVerified: boolean
+    image?: string | null
+    createdAt: Date | string
+    updatedAt: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    companies?: CompanyUncheckedCreateNestedManyWithoutUserInput
+    achievements?: AchievementUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutGoalsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutGoalsInput, UserUncheckedCreateWithoutGoalsInput>
+  }
+
+  export type CompanyCreateWithoutGoalsInput = {
+    id: string
+    name: string
+    slug?: string | null
+    logo?: string | null
+    createdAt: Date | string
+    metadata?: string | null
+    user: UserCreateNestedOneWithoutCompaniesInput
+    achievements?: AchievementCreateNestedManyWithoutCompanyInput
+  }
+
+  export type CompanyUncheckedCreateWithoutGoalsInput = {
+    id: string
+    name: string
+    slug?: string | null
+    logo?: string | null
+    createdAt: Date | string
+    metadata?: string | null
+    userId: string
+    achievements?: AchievementUncheckedCreateNestedManyWithoutCompanyInput
+  }
+
+  export type CompanyCreateOrConnectWithoutGoalsInput = {
+    where: CompanyWhereUniqueInput
+    create: XOR<CompanyCreateWithoutGoalsInput, CompanyUncheckedCreateWithoutGoalsInput>
+  }
+
+  export type AchievementCreateWithoutGoalInput = {
+    id?: string
+    title: string
+    description: string
+    achievedAt: Date | string
+    impact?: $Enums.ImpactLevel | null
+    isPrivate?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutAchievementsInput
+    company: CompanyCreateNestedOneWithoutAchievementsInput
+    evidences?: EvidenceCreateNestedManyWithoutAchievementInput
+    tags?: AchievementTagCreateNestedManyWithoutAchievementInput
+  }
+
+  export type AchievementUncheckedCreateWithoutGoalInput = {
+    id?: string
+    title: string
+    description: string
+    achievedAt: Date | string
+    impact?: $Enums.ImpactLevel | null
+    isPrivate?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: string
+    companyId: string
+    evidences?: EvidenceUncheckedCreateNestedManyWithoutAchievementInput
+    tags?: AchievementTagUncheckedCreateNestedManyWithoutAchievementInput
+  }
+
+  export type AchievementCreateOrConnectWithoutGoalInput = {
+    where: AchievementWhereUniqueInput
+    create: XOR<AchievementCreateWithoutGoalInput, AchievementUncheckedCreateWithoutGoalInput>
+  }
+
+  export type AchievementCreateManyGoalInputEnvelope = {
+    data: AchievementCreateManyGoalInput | AchievementCreateManyGoalInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutGoalsInput = {
+    update: XOR<UserUpdateWithoutGoalsInput, UserUncheckedUpdateWithoutGoalsInput>
+    create: XOR<UserCreateWithoutGoalsInput, UserUncheckedCreateWithoutGoalsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutGoalsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutGoalsInput, UserUncheckedUpdateWithoutGoalsInput>
+  }
+
+  export type UserUpdateWithoutGoalsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    companies?: CompanyUpdateManyWithoutUserNestedInput
+    achievements?: AchievementUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutGoalsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    companies?: CompanyUncheckedUpdateManyWithoutUserNestedInput
+    achievements?: AchievementUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type CompanyUpsertWithoutGoalsInput = {
+    update: XOR<CompanyUpdateWithoutGoalsInput, CompanyUncheckedUpdateWithoutGoalsInput>
+    create: XOR<CompanyCreateWithoutGoalsInput, CompanyUncheckedCreateWithoutGoalsInput>
+    where?: CompanyWhereInput
+  }
+
+  export type CompanyUpdateToOneWithWhereWithoutGoalsInput = {
+    where?: CompanyWhereInput
+    data: XOR<CompanyUpdateWithoutGoalsInput, CompanyUncheckedUpdateWithoutGoalsInput>
+  }
+
+  export type CompanyUpdateWithoutGoalsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: NullableStringFieldUpdateOperationsInput | string | null
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    metadata?: NullableStringFieldUpdateOperationsInput | string | null
+    user?: UserUpdateOneRequiredWithoutCompaniesNestedInput
+    achievements?: AchievementUpdateManyWithoutCompanyNestedInput
+  }
+
+  export type CompanyUncheckedUpdateWithoutGoalsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: NullableStringFieldUpdateOperationsInput | string | null
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    metadata?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: StringFieldUpdateOperationsInput | string
+    achievements?: AchievementUncheckedUpdateManyWithoutCompanyNestedInput
+  }
+
+  export type AchievementUpsertWithWhereUniqueWithoutGoalInput = {
+    where: AchievementWhereUniqueInput
+    update: XOR<AchievementUpdateWithoutGoalInput, AchievementUncheckedUpdateWithoutGoalInput>
+    create: XOR<AchievementCreateWithoutGoalInput, AchievementUncheckedCreateWithoutGoalInput>
+  }
+
+  export type AchievementUpdateWithWhereUniqueWithoutGoalInput = {
+    where: AchievementWhereUniqueInput
+    data: XOR<AchievementUpdateWithoutGoalInput, AchievementUncheckedUpdateWithoutGoalInput>
+  }
+
+  export type AchievementUpdateManyWithWhereWithoutGoalInput = {
+    where: AchievementScalarWhereInput
+    data: XOR<AchievementUpdateManyMutationInput, AchievementUncheckedUpdateManyWithoutGoalInput>
   }
 
   export type AccountCreateManyUserInput = {
@@ -15545,6 +17716,16 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     companyId: string
+    goalId?: string | null
+  }
+
+  export type GoalCreateManyUserInput = {
+    id?: string
+    title: string
+    description?: string | null
+    companyId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type AccountUpdateWithoutUserInput = {
@@ -15633,6 +17814,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     metadata?: NullableStringFieldUpdateOperationsInput | string | null
     achievements?: AchievementUpdateManyWithoutCompanyNestedInput
+    goals?: GoalUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutUserInput = {
@@ -15643,6 +17825,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     metadata?: NullableStringFieldUpdateOperationsInput | string | null
     achievements?: AchievementUncheckedUpdateManyWithoutCompanyNestedInput
+    goals?: GoalUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateManyWithoutUserInput = {
@@ -15666,6 +17849,7 @@ export namespace Prisma {
     company?: CompanyUpdateOneRequiredWithoutAchievementsNestedInput
     evidences?: EvidenceUpdateManyWithoutAchievementNestedInput
     tags?: AchievementTagUpdateManyWithoutAchievementNestedInput
+    goal?: GoalUpdateOneWithoutAchievementsNestedInput
   }
 
   export type AchievementUncheckedUpdateWithoutUserInput = {
@@ -15678,6 +17862,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     companyId?: StringFieldUpdateOperationsInput | string
+    goalId?: NullableStringFieldUpdateOperationsInput | string | null
     evidences?: EvidenceUncheckedUpdateManyWithoutAchievementNestedInput
     tags?: AchievementTagUncheckedUpdateManyWithoutAchievementNestedInput
   }
@@ -15692,6 +17877,36 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     companyId?: StringFieldUpdateOperationsInput | string
+    goalId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type GoalUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    company?: CompanyUpdateOneWithoutGoalsNestedInput
+    achievements?: AchievementUpdateManyWithoutGoalNestedInput
+  }
+
+  export type GoalUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    companyId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    achievements?: AchievementUncheckedUpdateManyWithoutGoalNestedInput
+  }
+
+  export type GoalUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    companyId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type AchievementCreateManyCompanyInput = {
@@ -15704,6 +17919,16 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
+    goalId?: string | null
+  }
+
+  export type GoalCreateManyCompanyInput = {
+    id?: string
+    title: string
+    description?: string | null
+    userId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type AchievementUpdateWithoutCompanyInput = {
@@ -15718,6 +17943,7 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutAchievementsNestedInput
     evidences?: EvidenceUpdateManyWithoutAchievementNestedInput
     tags?: AchievementTagUpdateManyWithoutAchievementNestedInput
+    goal?: GoalUpdateOneWithoutAchievementsNestedInput
   }
 
   export type AchievementUncheckedUpdateWithoutCompanyInput = {
@@ -15730,6 +17956,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
+    goalId?: NullableStringFieldUpdateOperationsInput | string | null
     evidences?: EvidenceUncheckedUpdateManyWithoutAchievementNestedInput
     tags?: AchievementTagUncheckedUpdateManyWithoutAchievementNestedInput
   }
@@ -15744,6 +17971,36 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
+    goalId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type GoalUpdateWithoutCompanyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutGoalsNestedInput
+    achievements?: AchievementUpdateManyWithoutGoalNestedInput
+  }
+
+  export type GoalUncheckedUpdateWithoutCompanyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    achievements?: AchievementUncheckedUpdateManyWithoutGoalNestedInput
+  }
+
+  export type GoalUncheckedUpdateManyWithoutCompanyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type EvidenceCreateManyAchievementInput = {
@@ -15824,6 +18081,62 @@ export namespace Prisma {
   export type AchievementTagUncheckedUpdateManyWithoutTagInput = {
     achievementId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AchievementCreateManyGoalInput = {
+    id?: string
+    title: string
+    description: string
+    achievedAt: Date | string
+    impact?: $Enums.ImpactLevel | null
+    isPrivate?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: string
+    companyId: string
+  }
+
+  export type AchievementUpdateWithoutGoalInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    achievedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    impact?: NullableEnumImpactLevelFieldUpdateOperationsInput | $Enums.ImpactLevel | null
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutAchievementsNestedInput
+    company?: CompanyUpdateOneRequiredWithoutAchievementsNestedInput
+    evidences?: EvidenceUpdateManyWithoutAchievementNestedInput
+    tags?: AchievementTagUpdateManyWithoutAchievementNestedInput
+  }
+
+  export type AchievementUncheckedUpdateWithoutGoalInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    achievedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    impact?: NullableEnumImpactLevelFieldUpdateOperationsInput | $Enums.ImpactLevel | null
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
+    evidences?: EvidenceUncheckedUpdateManyWithoutAchievementNestedInput
+    tags?: AchievementTagUncheckedUpdateManyWithoutAchievementNestedInput
+  }
+
+  export type AchievementUncheckedUpdateManyWithoutGoalInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    achievedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    impact?: NullableEnumImpactLevelFieldUpdateOperationsInput | $Enums.ImpactLevel | null
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
   }
 
 

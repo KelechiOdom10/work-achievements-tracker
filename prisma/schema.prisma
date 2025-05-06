@@ -24,6 +24,7 @@ model User {
 
   companies    Company[]
   achievements Achievement[]
+  goals        Goal[]
 
   @@index([email])
   @@map("users")
@@ -90,6 +91,7 @@ model Company {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   achievements Achievement[]
+  goals        Goal[]
 
   @@unique([slug])
   @@index([slug])
@@ -113,6 +115,9 @@ model Achievement {
 
   evidences Evidence[]
   tags      AchievementTag[]
+
+  goalId String?
+  goal   Goal?   @relation(fields: [goalId], references: [id], onDelete: SetNull)
 
   @@map("achievements")
 }
@@ -152,6 +157,21 @@ model Evidence {
   updatedAt     DateTime     @updatedAt
 
   @@map("evidences")
+}
+
+model Goal {
+  id           String        @id @default(cuid())
+  title        String
+  description  String?
+  userId       String
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  companyId    String?
+  company      Company?      @relation(fields: [companyId], references: [id], onDelete: SetNull)
+  achievements Achievement[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@map("goals")
 }
 
 enum ImpactLevel {
