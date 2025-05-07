@@ -1,10 +1,7 @@
-import { Hono } from "hono";
+import { auth } from "~/lib/auth";
+import { createRouter } from "~/lib/create-app";
 
-import { auth, type AuthType } from "~/lib/auth";
-
-const router = new Hono<{ Bindings: AuthType }>({
-  strict: false,
-});
+const router = createRouter();
 
 router.on(["POST", "GET"], "/auth/*", (c) => {
   return auth.handler(c.req.raw);
