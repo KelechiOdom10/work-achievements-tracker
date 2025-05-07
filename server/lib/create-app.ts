@@ -9,10 +9,16 @@ import {
 } from "~/middlewares";
 import type { AppBindings } from "~/types";
 
-export const createHonoApp = () => {
-  const app = new OpenAPIHono<AppBindings>({
+export const createRouter = () => {
+  const router = new OpenAPIHono<AppBindings>({
     strict: false,
   });
+
+  return router;
+};
+
+export const createHonoApp = () => {
+  const app = createRouter();
 
   // Serve emoji favicon
   app.use(serveEmojiFavicon("🏆"));
