@@ -6,14 +6,8 @@ import {
   notFoundHandler,
   pinoLoggerMiddleware,
   serveEmojiFavicon,
-  type PinoLoggerType,
 } from "~/middlewares";
-
-import type { AuthType } from "./auth";
-
-interface AppBindings {
-  Variables: AuthType["Variables"] & PinoLoggerType["Variables"];
-}
+import type { AppBindings } from "~/types";
 
 export const createHonoApp = () => {
   const app = new OpenAPIHono<AppBindings>({
