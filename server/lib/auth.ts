@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
+import { openAPI } from "better-auth/plugins";
 
 import env from "~/env";
 
@@ -21,6 +22,7 @@ export const auth = betterAuth({
       clientSecret: env.GITHUB_CLIENT_SECRET,
     },
   },
+  plugins: [openAPI()],
 });
 
 export type AuthType = {
