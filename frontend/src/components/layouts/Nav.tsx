@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
-import { Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Sparkles } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export interface NavProps {
   logoOnly?: boolean;
@@ -8,7 +8,11 @@ export interface NavProps {
   navLinks?: Array<{ label: string; to: string }>;
 }
 
-export function Nav({ logoOnly = false, showAuthLinks = true, navLinks }: NavProps) {
+export function Nav({
+  logoOnly = false,
+  showAuthLinks = true,
+  navLinks,
+}: NavProps) {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
@@ -18,12 +22,14 @@ export function Nav({ logoOnly = false, showAuthLinks = true, navLinks }: NavPro
         </div>
         {!logoOnly && (
           <nav className="hidden md:flex items-center gap-6">
-            {(navLinks || [
-              { label: "Features", to: "#features" },
-              { label: "How It Works", to: "#how-it-works" },
-              { label: "Testimonials", to: "#testimonials" },
-              { label: "Pricing", to: "#pricing" },
-            ]).map(link => (
+            {(
+              navLinks || [
+                { label: "Features", to: "/#features" },
+                { label: "How It Works", to: "/#how-it-works" },
+                { label: "Testimonials", to: "/#testimonials" },
+                { label: "Pricing", to: "/#pricing" },
+              ]
+            ).map((link) => (
               <Link
                 key={link.label}
                 to={link.to}
@@ -44,7 +50,19 @@ export function Nav({ logoOnly = false, showAuthLinks = true, navLinks }: NavPro
             </Link>
             <Button>
               Get Started
-              <svg className="ml-2 h-4 w-4" fill="none" height="16" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+              <svg
+                className="ml-2 h-4 w-4"
+                fill="none"
+                height="16"
+                stroke="currentColor"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M5 12h14" />
+                <path d="M12 5l7 7-7 7" />
+              </svg>
             </Button>
           </div>
         )}
