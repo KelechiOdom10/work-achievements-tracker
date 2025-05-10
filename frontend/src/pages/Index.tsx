@@ -17,7 +17,7 @@ import { Link } from "react-router-dom";
 
 export default function LandingPage() {
   return (
-    <div className="flex min-h-screen flex-col bg-[#FCFCFC]">
+    <div className="flex min-h-screen flex-col bg-[#FCFCFC] dark:bg-background">
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-2">
@@ -84,10 +84,8 @@ export default function LandingPage() {
                 journey.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Button size="lg" className="h-12 px-8">
-                  Start tracking for free
-                </Button>
-                <Button size="lg" variant="outline" className="h-12 px-8">
+                <Button size="lg">Start tracking for free</Button>
+                <Button size="lg" variant="outline">
                   Watch demo
                 </Button>
               </div>
@@ -100,7 +98,7 @@ export default function LandingPage() {
                   width={1000}
                   height={600}
                   alt="Achievement tracker dashboard"
-                  className="w-full object-cover"
+                  className="w-full object-cover aspect-video"
                 />
               </div>
             </div>
@@ -127,32 +125,38 @@ export default function LandingPage() {
 
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
               <FeatureCard
-                icon={<CheckCircle className="h-10 w-10 text-primary" />}
+                icon={<CheckCircle />}
+                iconColorVariant="green"
                 title="Achievement Tracking"
                 description="Document and organize your work accomplishments with rich media attachments and contextual tags."
               />
               <FeatureCard
-                icon={<Clock className="h-10 w-10 text-primary" />}
+                icon={<Clock />}
+                iconColorVariant="blue"
                 title="Real-time Updates"
                 description="Add achievements as they happen with our mobile app, ensuring nothing gets forgotten."
               />
               <FeatureCard
-                icon={<BarChart3 className="h-10 w-10 text-primary" />}
+                icon={<BarChart3 />}
+                iconColorVariant="orange"
                 title="Growth Analytics"
                 description="Visualize your professional growth with beautiful charts and insights about your progress."
               />
               <FeatureCard
-                icon={<Award className="h-10 w-10 text-primary" />}
+                icon={<Award />}
+                iconColorVariant="purple"
                 title="Milestone Marking"
                 description="Highlight significant career milestones and celebrate your professional journey."
               />
               <FeatureCard
-                icon={<Target className="h-10 w-10 text-primary" />}
+                icon={<Target />}
+                iconColorVariant="pink"
                 title="Goal Setting"
                 description="Set career goals and track your progress toward achieving them with actionable steps."
               />
               <FeatureCard
-                icon={<ArrowRight className="h-10 w-10 text-primary" />}
+                icon={<ArrowRight />}
+                iconColorVariant="cyan"
                 title="Export & Share"
                 description="Generate beautiful reports for performance reviews or share achievements with your network."
               />
