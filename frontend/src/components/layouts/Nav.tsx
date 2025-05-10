@@ -1,5 +1,5 @@
-import { siteConfig } from "";
 import { Button } from "@/components/ui/button";
+import { siteConfig } from "@/shared/constants";
 import { Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 
