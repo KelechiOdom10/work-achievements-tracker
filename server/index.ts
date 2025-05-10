@@ -1,8 +1,11 @@
+import { configureOpenAPI } from "./lib/configure-openapi";
 import { createHonoApp } from "./lib/create-app";
 import { authRoute } from "./modules/auth";
-import { userRoute } from "./modules/user/user.route";
+import { userRoute } from "./modules/user";
 
 const app = createHonoApp();
+
+configureOpenAPI(app);
 
 // Home Route
 app.get("/", (c) => {
@@ -14,15 +17,7 @@ app.get("/", (c) => {
 const routes = [authRoute, userRoute] as const;
 
 routes.forEach((route) => {
-  app.basePath("/api").route("/", route);
-});
-
-app.doc("/doc", {
-  openapi: "3.0.0",
-  info: {
-    version: "1.0.0",
-    title: "Work Achievements Tracker API",
-  },
+  app.route("/api", route);
 });
 
 export default app;

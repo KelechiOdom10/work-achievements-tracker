@@ -61,7 +61,7 @@ export const notFoundHandler: NotFoundHandler = (c) => {
     {
       success: false,
       code: "NOT_FOUND",
-      message: "Not Found",
+      message: `Not found: ${c.req.path}`,
     },
     404
   );
