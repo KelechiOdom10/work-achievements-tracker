@@ -1,9 +1,12 @@
 import { PrismaClient } from "@prisma/client";
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
-import { openAPI } from "better-auth/plugins";
+import { magicLink, openAPI } from "better-auth/plugins";
 
+import { siteConfig } from "~/shared/constants";
 import env from "~/env";
+
+import { sendMagicLinkEmail } from "./emails";
 
 const prisma = new PrismaClient();
 
@@ -13,16 +16,39 @@ export const auth = betterAuth({
   }),
   // Allow requests from the frontend development server
   trustedOrigins: ["http://localhost:3000"],
-  emailAndPassword: {
-    enabled: true,
-  },
   socialProviders: {
     github: {
       clientId: env.GITHUB_CLIENT_ID,
       clientSecret: env.GITHUB_CLIENT_SECRET,
     },
   },
-  plugins: [openAPI()],
+  rateLimit: {
+    enabled: true,
+  },
+  account: {
+    accountLinking: { enabled: true },
+  },
+  session: {
+    cookieCache: {
+      enabled: true,
+      maxAge: 5 * 60, // 5 minutes in seconds
+    },
+  },
+  plugins: [
+    openAPI(),
+    magicLink({
+      sendMagicLink: async ({ email, url }) => {
+        const to = email;
+        const subject = `Your ${siteConfig.name} Login Link`;
+
+        await sendMagicLinkEmail({
+          to,
+          subject,
+          url,
+        });
+      },
+    }),
+  ],
 });
 
 export type AuthType = {

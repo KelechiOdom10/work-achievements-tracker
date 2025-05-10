@@ -1,3 +1,4 @@
+import { siteConfig } from "";
 import { Button } from "@/components/ui/button";
 import { Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -18,7 +19,9 @@ export function Nav({
       <div className="container flex h-16 items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
           <Sparkles className="h-6 w-6 text-primary" />
-          <span className="text-xl font-semibold tracking-tight">Achieve</span>
+          <span className="text-xl font-semibold tracking-tight">
+            {siteConfig.name}
+          </span>
         </Link>
         {!logoOnly && (
           <nav className="hidden md:flex items-center gap-6">
