@@ -7,8 +7,8 @@ This document tracks the next backend/server tasks for AchieveLog, especially fo
 ## Core Setup
 
 - [x] User module basic route (GET /user/:id)
-- [ ] Integrate authentication middleware for protected routes
-- [ ] Error response standardization (using shared types)
+- [x] Integrate authentication middleware for protected routes
+- [x] Error response standardization (using shared types)
 
 ## User Endpoints
 
@@ -20,10 +20,10 @@ This document tracks the next backend/server tasks for AchieveLog, especially fo
 
 ## Achievement Endpoints
 
-- [ ] Get achievements for user (`GET /user/:id/achievements`)
-- [ ] Create achievement (`POST /user/:id/achievements`)
-- [ ] Update achievement (`PATCH /achievements/:achievementId`)
-- [ ] Delete achievement (`DELETE /achievements/:achievementId`)
+- [x] Get achievements for user (`GET /user/:id/achievements`)
+- [x] Create achievement (`POST /user/:id/achievements`)
+- [x] Update achievement (`PATCH /achievements/:achievementId`)
+- [x] Delete achievement (`DELETE /achievements/:achievementId`)
 
 ## Goal Endpoints
 
@@ -34,15 +34,15 @@ This document tracks the next backend/server tasks for AchieveLog, especially fo
 
 ## Company Endpoints
 
-- [ ] Get companies for user (`GET /user/:id/companies`)
-- [ ] Add company (`POST /user/:id/companies`)
-- [ ] Update company (`PATCH /companies/:companyId`)
-- [ ] Delete company (`DELETE /companies/:companyId`)
+- [x] Get companies for user (`GET /user/:id/companies`)
+- [x] Add company (`POST /user/:id/companies`)
+- [x] Update company (`PATCH /companies/:companyId`)
+- [x] Delete company (`DELETE /companies/:companyId`)
 
 ## Middleware & Utilities
 
-- [ ] Implement and test authentication middleware
-- [ ] Add request validation using Zod schemas
+- [x] Implement and test authentication middleware
+- [x] Add request validation using Zod schemas
 - [ ] Add logging middleware
 
 ## OpenAPI & Docs
@@ -58,4 +58,4 @@ This document tracks the next backend/server tasks for AchieveLog, especially fo
 - Mark tasks as complete with `[x]`
 - Add notes or blockers under each section as needed
 
-_Last updated: 2025-05-11_
+_Last updated: 2025-05-11 at 20:15_
