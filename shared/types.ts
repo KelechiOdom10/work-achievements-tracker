@@ -1,13 +1,13 @@
 import { z } from "@hono/zod-openapi";
 
 export const SuccessResponseSchema = <T extends z.ZodTypeAny = z.ZodVoid>(
-  dataSchema: T
+  dataSchema?: T
 ) =>
   z
     .object({
       success: z.literal(true),
       message: z.string(),
-      data: dataSchema,
+      data: dataSchema ?? z.undefined(),
     })
     .openapi("SuccessResponse");
 export type SuccessResponse<T extends z.ZodTypeAny = z.ZodVoid> = z.infer<
