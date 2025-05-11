@@ -1,5 +1,17 @@
 import { createRoute, z } from "@hono/zod-openapi";
 
+import { ErrorResponseSchema, SuccessResponseSchema } from "~/shared/types";
+
+const UserDataSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  email: z.string(),
+  emailVerified: z.boolean(),
+  image: z.string().optional(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+});
+
 export const getUserRoute = createRoute({
   method: "get",
   path: "/{id}",
@@ -21,19 +33,25 @@ export const getUserRoute = createRoute({
       description: "Get user",
       content: {
         "application/json": {
-          schema: z
-            .object({
-              user: z.object({
-                id: z.string(),
-                name: z.string(),
-                email: z.string(),
-                emailVerified: z.boolean(),
-                image: z.string().optional(),
-                createdAt: z.date(),
-                updatedAt: z.date(),
-              }),
-            })
-            .openapi("UserResponse"),
+          schema: SuccessResponseSchema(
+            z.object({ user: UserDataSchema })
+          ).openapi("UserSuccessResponse"),
+        },
+      },
+    },
+    404: {
+      description: "User not found",
+      content: {
+        "application/json": {
+          schema: ErrorResponseSchema.openapi("ErrorResponse"),
+        },
+      },
+    },
+    500: {
+      description: "Internal server error",
+      content: {
+        "application/json": {
+          schema: ErrorResponseSchema.openapi("ErrorResponse"),
         },
       },
     },

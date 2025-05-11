@@ -24,6 +24,8 @@ const EnvSchema = z.object({
   LOG_LEVEL: z
     .enum(["fatal", "error", "warn", "info", "debug", "trace"])
     .default("info"),
+
+  PLUNK_API_KEY: z.string(),
 });
 
 export type env = z.infer<typeof EnvSchema>;

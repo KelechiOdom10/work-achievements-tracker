@@ -1,16 +1,11 @@
-import plunkImport from "@plunk/node";
+import Plunk from "@plunk/node";
 import { render } from "@react-email/components";
-import type { ReactElement } from "react";
+
+import env from "~/env";
+
 import { MagicLinkEmail } from "./magic-link-email";
 
-const Plunk = (
-  plunkImport as unknown as {
-    default: typeof plunkImport;
-  }
-).default;
-
-// See https://github.com/useplunk/node/issues/2 for why Plunk.default
-const plunk = new Plunk(process.env.PLUNK_API_KEY || "");
+const plunk = new Plunk(env.PLUNK_API_KEY || "");
 
 export const sendMagicLinkEmail = async ({
   to,
@@ -22,6 +17,7 @@ export const sendMagicLinkEmail = async ({
   url: string;
 }) => {
   const body = await render(
+    // @ts-expect-error - render is not typed
     <MagicLinkEmail to={to} subject={subject} url={url} />
   );
 

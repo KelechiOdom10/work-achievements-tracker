@@ -8,14 +8,17 @@ export const userRoute = createRouter()
     const { id } = c.req.param();
 
     return c.json({
-      user: {
-        id,
-        name: "",
-        email: "",
-        emailVerified: false,
-        image: "",
-        createdAt: new Date(),
-        updatedAt: new Date(),
+      success: true,
+      data: {
+        user: {
+          id,
+          name: "",
+          email: "",
+          emailVerified: false,
+          image: "",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
       },
     });
   });
