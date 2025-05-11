@@ -1,6 +1,6 @@
 import { GuestLayout } from "@/components/layouts/GuestLayout";
 import { useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router";
 
 const NotFound = () => {
   const location = useLocation();

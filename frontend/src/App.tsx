@@ -1,12 +1,12 @@
-
-import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
+import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { ThemeProvider } from "next-themes";
+import { createBrowserRouter, RouterProvider } from "react-router";
+
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import { ThemeProvider } from "next-themes";
 
 const queryClient = new QueryClient();
 

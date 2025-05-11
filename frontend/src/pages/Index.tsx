@@ -5,7 +5,7 @@ import { PricingSection } from "@/components/landing/PricingSection";
 import { TestimonialsSection } from "@/components/landing/TestimonialsSection";
 import { GuestLayout } from "@/components/layouts/GuestLayout";
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router";
 
 export default function LandingPage() {
   const location = useLocation();
