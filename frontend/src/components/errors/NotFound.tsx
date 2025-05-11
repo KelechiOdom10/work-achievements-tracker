@@ -2,7 +2,7 @@ import { GuestLayout } from "@/components/layouts/GuestLayout";
 import { Link, useLocation } from "@tanstack/react-router";
 import { useEffect } from "react";
 
-const NotFound = () => {
+export const NotFound = () => {
   const location = useLocation();
 
   useEffect(() => {
@@ -26,5 +26,3 @@ const NotFound = () => {
     </GuestLayout>
   );
 };
-
-export default NotFound;
