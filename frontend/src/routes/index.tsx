@@ -4,10 +4,14 @@ import { HowItWorksSection } from "@/components/landing/HowItWorksSection";
 import { PricingSection } from "@/components/landing/PricingSection";
 import { TestimonialsSection } from "@/components/landing/TestimonialsSection";
 import { GuestLayout } from "@/components/layouts/GuestLayout";
+import { createFileRoute, useLocation } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { useLocation } from "react-router";
 
-export default function LandingPage() {
+export const Route = createFileRoute("/")({
+  component: Index,
+});
+
+function Index() {
   const location = useLocation();
 
   useEffect(() => {
