@@ -1,7 +1,7 @@
 import { createRoute, z } from "@hono/zod-openapi";
 
 import { ErrorResponseSchema, SuccessResponseSchema } from "~/shared/types";
-import { requireAuth } from "~/middlewares";
+import { requireAuth, requireOwnership } from "~/middlewares";
 
 import {
   CompanyCreateInputSchema,
@@ -10,6 +10,11 @@ import {
   CompanyUpdateInputSchema,
   CompanyWhereInputSchema,
 } from "../../../prisma/generated/zod";
+
+const requireCompanyOwner = requireOwnership({
+  model: "company",
+  idParam: "companyId",
+});
 
 // GET /companies
 export const getUserCompaniesRoute = createRoute({
@@ -159,7 +164,7 @@ export const updateCompanyRoute = createRoute({
         "application/json": {
           schema: SuccessResponseSchema(
             z.object({ company: CompanySchema })
-          ).openapi("CompanySuccessResponse"),
+          ).openapi("CompanyUpdateSuccessResponse"),
         },
       },
     },
@@ -188,7 +193,7 @@ export const updateCompanyRoute = createRoute({
       },
     },
   },
-  middleware: [requireAuth],
+  middleware: [requireAuth, requireCompanyOwner],
 });
 
 // DELETE /companies/:companyId
@@ -243,7 +248,7 @@ export const deleteCompanyRoute = createRoute({
       },
     },
   },
-  middleware: [requireAuth],
+  middleware: [requireAuth, requireCompanyOwner],
 });
 
 export type GetCompaniesRoute = typeof getUserCompaniesRoute;

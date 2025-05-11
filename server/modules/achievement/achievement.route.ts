@@ -1,7 +1,7 @@
 import { createRoute, z } from "@hono/zod-openapi";
 
 import { ErrorResponseSchema, SuccessResponseSchema } from "~/shared/types";
-import { requireAuth } from "~/middlewares";
+import { requireAuth, requireOwnership } from "~/middlewares";
 
 import {
   AchievementCreateInputSchema,
@@ -10,6 +10,11 @@ import {
   AchievementUpdateInputSchema,
   AchievementWhereInputSchema,
 } from "../../../prisma/generated/zod";
+
+const requireAchievementOwner = requireOwnership({
+  model: "achievement",
+  idParam: "achievementId",
+});
 
 // GET /achievements
 export const getUserAchievementsRoute = createRoute({
@@ -188,7 +193,7 @@ export const updateAchievementRoute = createRoute({
       },
     },
   },
-  middleware: [requireAuth],
+  middleware: [requireAuth, requireAchievementOwner],
 });
 
 // DELETE /achievements/:achievementId
@@ -239,7 +244,7 @@ export const deleteAchievementRoute = createRoute({
       },
     },
   },
-  middleware: [requireAuth],
+  middleware: [requireAuth, requireAchievementOwner],
 });
 
 export type GetAchievementsRoute = typeof getUserAchievementsRoute;

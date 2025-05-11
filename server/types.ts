@@ -5,6 +5,7 @@ import {
 } from "@hono/zod-openapi";
 import type { Schema } from "hono";
 
+import type { PrismaClient } from "../prisma/generated/prisma/client";
 import type { AuthType } from "./lib/auth";
 import type { PinoLoggerType } from "./middlewares";
 
@@ -18,3 +19,13 @@ export type AppRouteHandler<R extends RouteConfig> = RouteHandler<
   R,
   AppBindings
 >;
+
+type IgnorePrismaBuiltins<S extends string> = string extends S
+  ? string
+  : S extends ""
+    ? S
+    : S extends `$${string}`
+      ? never
+      : S;
+
+export type ModelName = IgnorePrismaBuiltins<keyof PrismaClient & string>;
