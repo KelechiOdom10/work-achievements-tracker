@@ -8,8 +8,8 @@ const UserDataSchema = z.object({
   email: z.string(),
   emailVerified: z.boolean(),
   image: z.string().optional(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
 });
 
 export const getUserRoute = createRoute({
@@ -34,7 +34,9 @@ export const getUserRoute = createRoute({
       content: {
         "application/json": {
           schema: SuccessResponseSchema(
-            z.object({ user: UserDataSchema })
+            z.object({
+              user: UserDataSchema,
+            })
           ).openapi("UserSuccessResponse"),
         },
       },
@@ -43,7 +45,7 @@ export const getUserRoute = createRoute({
       description: "User not found",
       content: {
         "application/json": {
-          schema: ErrorResponseSchema.openapi("ErrorResponse"),
+          schema: ErrorResponseSchema,
         },
       },
     },
@@ -51,9 +53,11 @@ export const getUserRoute = createRoute({
       description: "Internal server error",
       content: {
         "application/json": {
-          schema: ErrorResponseSchema.openapi("ErrorResponse"),
+          schema: ErrorResponseSchema,
         },
       },
     },
   },
 });
+
+export type GetUserRoute = typeof getUserRoute;
