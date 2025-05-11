@@ -1,5 +1,6 @@
 import type { MiddlewareHandler } from "hono";
 
+import { type ErrorResponse } from "~/shared/types";
 import { prisma } from "~/db";
 import type { ModelName } from "~/types";
 
@@ -17,7 +18,14 @@ export function requireOwnership({
     const resourceId = c.req.param(idParam);
 
     if (!user || !resourceId) {
-      return c.json({ success: false, message: "Unauthorized" }, 401);
+      return c.json<ErrorResponse>(
+        {
+          success: false,
+          code: "UNAUTHORIZED",
+          message: "Unauthorized",
+        },
+        401
+      );
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -27,7 +35,14 @@ export function requireOwnership({
     });
 
     if (!resource || resource[userIdField] !== user.id) {
-      return c.json({ success: false, message: "Forbidden" }, 403);
+      return c.json<ErrorResponse>(
+        {
+          success: false,
+          code: "FORBIDDEN",
+          message: "Forbidden",
+        },
+        403
+      );
     }
 
     return next();
