@@ -1,4 +1,3 @@
-import { PrismaClient } from "@prisma/client";
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { magicLink, openAPI } from "better-auth/plugins";
@@ -6,6 +5,7 @@ import { magicLink, openAPI } from "better-auth/plugins";
 import { siteConfig } from "~/shared/constants";
 import env from "~/env";
 
+import { PrismaClient } from "../../prisma/generated/prisma/client";
 import { sendMagicLinkEmail } from "./emails";
 
 const prisma = new PrismaClient();
