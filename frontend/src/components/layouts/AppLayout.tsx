@@ -1,42 +1,44 @@
-import React, { useState } from "react";
-import { cn } from "@/lib/utils";
 import {
-  Trophy,
-  Target,
-  Milestone,
-  Calendar,
   BarChart,
-  Settings,
-  ChevronDown,
   Briefcase,
-  Sun,
+  Calendar,
+  ChevronDown,
+  Milestone,
   Moon,
+  Settings,
+  Sun,
+  Target,
+  Trophy,
 } from "lucide-react";
+import { useTheme } from "next-themes";
+import React, { useState } from "react";
+
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
-  SidebarTrigger,
-  SidebarProvider,
-  SidebarMenuItem,
   SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+  SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
+
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
-import { useTheme } from "next-themes";
 
 const CompanySwitcher: React.FC = () => {
   const { state } = useSidebar();

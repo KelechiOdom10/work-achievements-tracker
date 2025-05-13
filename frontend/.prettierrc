@@ -1,0 +1,16 @@
+{
+  "trailingComma": "es5",
+  "singleQuote": false,
+  "plugins": ["@ianvs/prettier-plugin-sort-imports"],
+  "importOrder": [
+    "<THIRD_PARTY_MODULES>",
+    "",
+    "<BUILTIN_MODULES>",
+    "",
+    "^types$",
+    "^@\\/shared\\/(.*)$",
+    "^@\\/(.*)$",
+    "",
+    "^[./]"
+  ]
+}

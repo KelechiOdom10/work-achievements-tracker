@@ -1,7 +1,8 @@
-import { Button } from "@/components/ui/button";
-import { siteConfig } from "@/shared/constants";
 import { Link } from "@tanstack/react-router";
 import { Sparkles } from "lucide-react";
+
+import { siteConfig } from "@/shared/constants";
+import { Button } from "@/components/ui/button";
 
 export interface NavProps {
   logoOnly?: boolean;

@@ -1,5 +1,6 @@
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import type { ReactNode } from "react";
+
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 interface FeatureCardProps {
   icon: ReactNode;
@@ -17,7 +18,12 @@ interface FeatureCardProps {
     | "amber";
 }
 
-export function FeatureCard({ icon, title, description, iconColorVariant }: FeatureCardProps) {
+export function FeatureCard({
+  icon,
+  title,
+  description,
+  iconColorVariant,
+}: FeatureCardProps) {
   // Map color variant to Tailwind classes
   const colorClassMap: Record<string, string> = {
     red: "text-red-500/90 bg-red-100/50 dark:bg-red-100/5",
@@ -30,7 +36,8 @@ export function FeatureCard({ icon, title, description, iconColorVariant }: Feat
     cyan: "text-cyan-500/90 bg-cyan-100/50 dark:bg-cyan-100/5",
     amber: "text-amber-500/90 bg-amber-100/50 dark:bg-amber-100/5",
   };
-  const colorClass = colorClassMap[iconColorVariant || "blue"] || colorClassMap["blue"];
+  const colorClass =
+    colorClassMap[iconColorVariant || "blue"] || colorClassMap["blue"];
 
   return (
     <Card className="overflow-hidden transition-all hover:shadow-md hover:translate-y-[-4px] duration-300">

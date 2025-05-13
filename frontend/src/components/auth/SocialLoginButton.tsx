@@ -1,6 +1,7 @@
-import { authClient } from "@/lib/auth-client";
 import { useState, type ComponentProps } from "react";
 import { toast } from "sonner";
+
+import { authClient } from "@/lib/auth-client";
 
 import { Button } from "../ui/button";
 

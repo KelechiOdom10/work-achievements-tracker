@@ -1,11 +1,12 @@
+import { createFileRoute, useLocation } from "@tanstack/react-router";
+import { useEffect } from "react";
+
 import { FeaturesSection } from "@/components/landing/FeaturesSection";
 import { HeroSection } from "@/components/landing/HeroSection";
 import { HowItWorksSection } from "@/components/landing/HowItWorksSection";
 import { PricingSection } from "@/components/landing/PricingSection";
 import { TestimonialsSection } from "@/components/landing/TestimonialsSection";
 import { GuestLayout } from "@/components/layouts/GuestLayout";
-import { createFileRoute, useLocation } from "@tanstack/react-router";
-import { useEffect } from "react";
 
 export const Route = createFileRoute("/")({
   component: Index,

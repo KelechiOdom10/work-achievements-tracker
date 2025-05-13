@@ -1,5 +1,6 @@
-import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
+
+import { cn } from "@/lib/utils";
 
 import { Footer, FooterProps } from "./Footer";
 import { Nav, NavProps } from "./Nav";
