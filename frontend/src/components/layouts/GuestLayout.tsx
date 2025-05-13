@@ -1,7 +1,8 @@
-
+import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
-import { Nav, NavProps } from "./Nav";
+
 import { Footer, FooterProps } from "./Footer";
+import { Nav, NavProps } from "./Nav";
 
 type NavPropsDiscriminated =
   | { showNav: true; navProps?: NavProps }
@@ -14,12 +15,18 @@ type FooterPropsDiscriminated =
 export type GuestLayoutProps = {
   children: ReactNode;
   className?: string;
-} & NavPropsDiscriminated & FooterPropsDiscriminated;
+} & NavPropsDiscriminated &
+  FooterPropsDiscriminated;
 
 export function GuestLayout(props: GuestLayoutProps) {
   const { children, className = "" } = props;
   return (
-    <div className={`flex min-h-screen flex-col bg-[#FCFCFC] dark:bg-background ${className}`}>
+    <div
+      className={cn(
+        `flex min-h-screen flex-col bg-[#FCFCFC] dark:bg-background`,
+        className
+      )}
+    >
       {props.showNav && <Nav {...(props.navProps || {})} />}
       <main className="flex-1">{children}</main>
       {props.showFooter && <Footer {...(props.footerProps || {})} />}

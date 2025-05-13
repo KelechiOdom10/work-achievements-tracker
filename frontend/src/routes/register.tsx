@@ -1,8 +1,8 @@
-import { LoginForm } from "@/components/auth/LoginForm";
+import { RegisterForm } from "@/components/auth/RegisterForm";
 import { GuestLayout } from "@/components/layouts/GuestLayout";
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/login")({
+export const Route = createFileRoute("/register")({
   component: RouteComponent,
 });
 
@@ -17,7 +17,7 @@ function RouteComponent() {
       showFooter={false}
     >
       <div className="w-full max-w-sm mx-auto pt-24">
-        <LoginForm />
+        <RegisterForm />
       </div>
     </GuestLayout>
   );

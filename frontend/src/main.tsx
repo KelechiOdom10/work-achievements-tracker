@@ -1,16 +1,41 @@
-import { createRouter, RouterProvider } from "@tanstack/react-router";
-import { StrictMode } from "react";
+import React, { ErrorInfo, StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 
 import "./index.css";
 
-// Import the generated route tree
-import { routeTree } from "./routeTree.gen";
+import { App } from "./app";
+import { router } from "./lib/router";
 
-// Create a new router instance
-const router = createRouter({ routeTree });
+class ErrorBoundary extends React.Component<
+  {
+    children: React.ReactNode;
+  },
+  { hasError: boolean; error: Error | null; errorInfo: ErrorInfo | null }
+> {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null, errorInfo: null };
+  }
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error, errorInfo: null };
+  }
+  componentDidCatch(error, errorInfo) {
+    this.setState({ error, errorInfo });
+    // Optionally log error to an error reporting service
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <pre style={{ color: "red", whiteSpace: "pre-wrap" }}>
+          {String(this.state.error)}\n
+          {this.state.errorInfo ? this.state.errorInfo.componentStack : ""}
+        </pre>
+      );
+    }
+    return this.props.children;
+  }
+}
 
-// Register the router instance for type safety
 declare module "@tanstack/react-router" {
   interface Register {
     router: typeof router;
@@ -23,7 +48,9 @@ if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <StrictMode>
-      <RouterProvider router={router} />
+      <ErrorBoundary>
+        <App />
+      </ErrorBoundary>
     </StrictMode>
   );
 }
