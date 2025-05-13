@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Sparkles } from "lucide-react";
 
 import { siteConfig } from "@/shared/constants";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 
 export interface NavProps {
   logoOnly?: boolean;
@@ -52,7 +52,10 @@ export function Nav({
             >
               Log in
             </Link>
-            <Button>
+            <Link
+              to="/register"
+              className={buttonVariants({ variant: "default" })}
+            >
               Get Started
               <svg
                 className="ml-2 h-4 w-4"
@@ -67,7 +70,7 @@ export function Nav({
                 <path d="M5 12h14" />
                 <path d="M12 5l7 7-7 7" />
               </svg>
-            </Button>
+            </Link>
           </div>
         )}
       </div>
