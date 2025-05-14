@@ -1,20 +1,58 @@
-import { Link } from "@tanstack/react-router";
+import { getRouteApi, Link } from "@tanstack/react-router";
 import { Sparkles } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 
+import { siteConfig } from "@/shared/constants";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 
 import { SocialLoginButton } from "./SocialLoginButton";
+
+const routeApi = getRouteApi("/(auth)");
 
 export function RegisterForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
+  const navigate = routeApi.useNavigate();
+  const { next } = routeApi.useSearch();
+
+  const [isPending, setIsPending] = useState(false);
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!email || !name) return;
+
+    authClient.signIn.magicLink({
+      email,
+      name,
+      callbackURL: `${siteConfig.url}${next}`,
+      fetchOptions: {
+        onResponse: () => {
+          setIsPending(false);
+        },
+        onRequest: () => {
+          setIsPending(true);
+        },
+        onSuccess: () => {
+          navigate({ to: `/verify`, state: { email } });
+        },
+        onError: ({ error }) => {
+          toast.error(error.message);
+        },
+      },
+    });
+  };
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="flex flex-col gap-6">
           <div className="flex flex-col items-center gap-2">
             <Link
@@ -28,7 +66,11 @@ export function RegisterForm({
             </h1>
             <div className="text-center text-base">
               Already have an account?{" "}
-              <Link to="/login" className="underline underline-offset-4">
+              <Link
+                to="/login"
+                search={{ next }}
+                className="underline underline-offset-4"
+              >
                 Login
               </Link>
             </div>
@@ -36,7 +78,14 @@ export function RegisterForm({
           <div className="flex flex-col gap-6">
             <div className="grid gap-2">
               <Label htmlFor="name">Full Name</Label>
-              <Input id="name" type="text" placeholder="John Doe" required />
+              <Input
+                id="name"
+                type="text"
+                placeholder="John Doe"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
@@ -45,10 +94,12 @@ export function RegisterForm({
                 type="email"
                 placeholder="m@example.com"
                 required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-            <Button type="submit" className="w-full">
-              Create Account
+            <Button type="submit" className="w-full" disabled={isPending}>
+              {isPending ? "Creating account..." : "Create Account"}
             </Button>
           </div>
           <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
