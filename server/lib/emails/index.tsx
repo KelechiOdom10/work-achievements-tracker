@@ -1,4 +1,5 @@
 import Plunk from "@plunk/node";
+import { render } from "@react-email/render";
 import * as React from "react";
 
 import env from "~/env";
@@ -16,12 +17,11 @@ export const sendMagicLinkEmail = async ({
   subject: string;
   url: string;
 }) => {
-  const body = await render(
-    // @ts-expect-error - render is not typed
-    <MagicLinkEmail to={to} subject={subject} url={url} />
-  );
-
   try {
+    const body = await render(
+      <MagicLinkEmail to={to} subject={subject} url={url} />
+    );
+
     const message = await plunk.emails.send({
       to,
       subject,
