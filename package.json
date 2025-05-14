@@ -16,7 +16,7 @@
     "@hono/zod-openapi": "^0.19.6",
     "@plunk/node": "^3.0.3",
     "@prisma/client": "^6.7.0",
-    "@react-email/components": "^0.0.39",
+    "@react-email/components": "0.0.41",
     "@scalar/hono-api-reference": "^0.8.8",
     "better-auth": "^1.2.7",
     "dotenv": "^16.5.0",
@@ -36,10 +36,12 @@
     "@eslint/js": "^9.26.0",
     "@ianvs/prettier-plugin-sort-imports": "^4.4.1",
     "@types/bun": "latest",
+    "@types/react": "^19.1.4",
+    "@types/react-dom": "^19.1.5",
     "eslint": "^9.26.0",
     "globals": "^16.0.0",
     "prettier": "^3.5.3",
-    "react-email": "^4.0.13",
+    "react-email": "4.0.13",
     "typescript-eslint": "^8.31.1"
   }
 }
