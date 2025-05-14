@@ -1,5 +1,5 @@
 import Plunk from "@plunk/node";
-import { render } from "@react-email/components";
+import * as React from "react";
 
 import env from "~/env";
 

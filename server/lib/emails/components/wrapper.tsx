@@ -11,6 +11,7 @@ import {
   Text,
   type ContainerProps,
 } from "@react-email/components";
+import React from "react";
 
 import { siteConfig } from "~/shared/constants";
 
@@ -37,7 +38,7 @@ export const EmailWrapper = ({
               <Img
                 src={`${siteConfig.url}/logo.png`}
                 alt={`${siteConfig.name} Logo`}
-                className="-ml-5 h-12 w-auto"
+                className="h-10"
               />
             </Link>
 

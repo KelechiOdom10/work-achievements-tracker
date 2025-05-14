@@ -5,8 +5,11 @@
     "target": "ESNext",
     "module": "ESNext",
     "moduleDetection": "force",
-    "jsx": "react-jsx",
-    "jsxImportSource": "hono/jsx",
+    "jsx": "react",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+
+    "resolveJsonModule": true,
     "allowJs": true,
 
     // Bundler mode
