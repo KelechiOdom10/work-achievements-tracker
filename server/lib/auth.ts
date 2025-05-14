@@ -15,7 +15,7 @@ export const auth = betterAuth({
     provider: "postgresql",
   }),
   // Allow requests from the frontend development server
-  trustedOrigins: ["http://localhost:3000"],
+  trustedOrigins: ["http://localhost:8080"],
   socialProviders: {
     github: {
       clientId: env.GITHUB_CLIENT_ID,
@@ -34,10 +34,20 @@ export const auth = betterAuth({
       maxAge: 5 * 60, // 5 minutes in seconds
     },
   },
+  // advanced: {
+  //   defaultCookieAttributes: {
+  //     sameSite: "none",
+  //     secure: true,
+  //     partitioned: true,
+  //   },
+  // },
   plugins: [
     openAPI(),
     magicLink({
       sendMagicLink: async ({ email, url }) => {
+        console.log("Sending magic link to", email);
+        console.log("Magic link URL:", url);
+
         const to = email;
         const subject = `Your ${siteConfig.name} Login Link`;
 
