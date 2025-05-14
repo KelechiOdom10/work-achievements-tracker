@@ -14,6 +14,7 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as AboutImport } from './routes/about'
 import { Route as authRouteImport } from './routes/(auth)/route'
 import { Route as IndexImport } from './routes/index'
+import { Route as authVerifyImport } from './routes/(auth)/verify'
 import { Route as authRegisterImport } from './routes/(auth)/register'
 import { Route as authLoginImport } from './routes/(auth)/login'
 
@@ -34,6 +35,12 @@ const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
+} as any)
+
+const authVerifyRoute = authVerifyImport.update({
+  id: '/verify',
+  path: '/verify',
+  getParentRoute: () => authRouteRoute,
 } as any)
 
 const authRegisterRoute = authRegisterImport.update({
@@ -87,6 +94,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authRegisterImport
       parentRoute: typeof authRouteImport
     }
+    '/(auth)/verify': {
+      id: '/(auth)/verify'
+      path: '/verify'
+      fullPath: '/verify'
+      preLoaderRoute: typeof authVerifyImport
+      parentRoute: typeof authRouteImport
+    }
   }
 }
 
@@ -95,11 +109,13 @@ declare module '@tanstack/react-router' {
 interface authRouteRouteChildren {
   authLoginRoute: typeof authLoginRoute
   authRegisterRoute: typeof authRegisterRoute
+  authVerifyRoute: typeof authVerifyRoute
 }
 
 const authRouteRouteChildren: authRouteRouteChildren = {
   authLoginRoute: authLoginRoute,
   authRegisterRoute: authRegisterRoute,
+  authVerifyRoute: authVerifyRoute,
 }
 
 const authRouteRouteWithChildren = authRouteRoute._addFileChildren(
@@ -111,6 +127,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/login': typeof authLoginRoute
   '/register': typeof authRegisterRoute
+  '/verify': typeof authVerifyRoute
 }
 
 export interface FileRoutesByTo {
@@ -118,6 +135,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/login': typeof authLoginRoute
   '/register': typeof authRegisterRoute
+  '/verify': typeof authVerifyRoute
 }
 
 export interface FileRoutesById {
@@ -127,13 +145,14 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/(auth)/login': typeof authLoginRoute
   '/(auth)/register': typeof authRegisterRoute
+  '/(auth)/verify': typeof authVerifyRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/login' | '/register'
+  fullPaths: '/' | '/about' | '/login' | '/register' | '/verify'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/login' | '/register'
+  to: '/' | '/about' | '/login' | '/register' | '/verify'
   id:
     | '__root__'
     | '/'
@@ -141,6 +160,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/(auth)/login'
     | '/(auth)/register'
+    | '/(auth)/verify'
   fileRoutesById: FileRoutesById
 }
 
@@ -178,7 +198,8 @@ export const routeTree = rootRoute
       "filePath": "(auth)/route.tsx",
       "children": [
         "/(auth)/login",
-        "/(auth)/register"
+        "/(auth)/register",
+        "/(auth)/verify"
       ]
     },
     "/about": {
@@ -190,6 +211,10 @@ export const routeTree = rootRoute
     },
     "/(auth)/register": {
       "filePath": "(auth)/register.tsx",
+      "parent": "/(auth)"
+    },
+    "/(auth)/verify": {
+      "filePath": "(auth)/verify.tsx",
       "parent": "/(auth)"
     }
   }

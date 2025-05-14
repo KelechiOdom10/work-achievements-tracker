@@ -2,12 +2,21 @@ import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 
 import { GuestLayout } from "@/components/layouts/GuestLayout";
 
+type AuthSearchParams = {
+  next?: string;
+};
+
 export const Route = createFileRoute("/(auth)")({
   component: AuthLayoutComponent,
+  validateSearch: (search: Record<string, unknown>): AuthSearchParams => {
+    return {
+      next: (search.next as string) || "/app",
+    };
+  },
   beforeLoad: (ctx) => {
     if (ctx.context.auth?.isAuthenticated) {
       return redirect({
-        to: "/",
+        to: ctx.search.next,
       });
     }
   },

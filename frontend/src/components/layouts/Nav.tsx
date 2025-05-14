@@ -1,8 +1,9 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useRouter } from "@tanstack/react-router";
 import { Sparkles } from "lucide-react";
 
 import { siteConfig } from "@/shared/constants";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { authClient } from "@/lib/auth-client";
 
 export interface NavProps {
   logoOnly?: boolean;
@@ -15,6 +16,10 @@ export function Nav({
   showAuthLinks = true,
   navLinks,
 }: NavProps) {
+  const router = useRouter();
+  const navigate = router.navigate;
+  const { data: session } = authClient.useSession();
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
@@ -46,31 +51,48 @@ export function Nav({
         )}
         {showAuthLinks && (
           <div className="flex items-center gap-4">
-            <Link
-              to="/login"
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              Log in
-            </Link>
-            <Link
-              to="/register"
-              className={buttonVariants({ variant: "default" })}
-            >
-              Get Started
-              <svg
-                className="ml-2 h-4 w-4"
-                fill="none"
-                height="16"
-                stroke="currentColor"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-                width="16"
-                xmlns="http://www.w3.org/2000/svg"
+            {!session?.user ? (
+              <>
+                <Link
+                  to="/login"
+                  className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  Log in
+                </Link>
+                <Link
+                  to="/register"
+                  className={buttonVariants({ variant: "default" })}
+                >
+                  Get Started
+                  <svg
+                    className="ml-2 h-4 w-4"
+                    fill="none"
+                    height="16"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                    width="16"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M5 12h14" />
+                    <path d="M12 5l7 7-7 7" />
+                  </svg>
+                </Link>
+              </>
+            ) : (
+              <Button
+                onClick={() => {
+                  authClient.signOut().then(() => {
+                    router.invalidate().finally(() => {
+                      navigate({ to: "/" });
+                    });
+                  });
+                }}
+                className={buttonVariants({ variant: "default" })}
               >
-                <path d="M5 12h14" />
-                <path d="M12 5l7 7-7 7" />
-              </svg>
-            </Link>
+                Sign out
+              </Button>
+            )}
           </div>
         )}
       </div>
