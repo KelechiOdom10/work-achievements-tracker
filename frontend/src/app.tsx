@@ -1,6 +1,6 @@
 import { RouterProvider } from "@tanstack/react-router";
 
-import { AuthContext } from "./context";
+import { type AuthContext } from "./context";
 import { authClient } from "./lib/auth-client";
 import { queryClient } from "./lib/query-client";
 import { router } from "./lib/router";

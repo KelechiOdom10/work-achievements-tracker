@@ -14,9 +14,9 @@
 
     // Bundler mode
     "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
     "verbatimModuleSyntax": true,
-    "noEmit": true,
+    // "noEmit": true,
 
     // Best practices
     "strict": true,
@@ -30,8 +30,8 @@
     "noPropertyAccessFromIndexSignature": false,
 
     "paths": {
-      "~/shared/*": ["./shared/*"],
-      "~/*": ["./server/*"]
+      "~/*": ["./server/*"],
+      "~/shared/*": ["./shared/*"]
     }
   }
 }
