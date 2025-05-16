@@ -8,4 +8,9 @@ export const companyRoute = createRouter()
   .openapi(routes.getUserCompaniesRoute, handlers.getUserCompaniesHandler)
   .openapi(routes.createCompanyRoute, handlers.createCompanyHandler)
   .openapi(routes.updateCompanyRoute, handlers.updateCompanyHandler)
-  .openapi(routes.deleteCompanyRoute, handlers.deleteCompanyHandler);
+  .openapi(routes.deleteCompanyRoute, handlers.deleteCompanyHandler)
+  .openapi(
+    routes.getUserActiveCompanyRoute,
+    handlers.getUserActiveCompanyHandler
+  )
+  .openapi(routes.setActiveCompanyRoute, handlers.setActiveCompanyHandler);

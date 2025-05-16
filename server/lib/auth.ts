@@ -34,6 +34,12 @@ export const auth = betterAuth({
       enabled: true,
       maxAge: 5 * 60, // 5 minutes in seconds
     },
+    additionalFields: {
+      activeCompanyId: {
+        type: "string",
+        required: false,
+      },
+    },
   },
   //   advanced: {
   //     cookies: {

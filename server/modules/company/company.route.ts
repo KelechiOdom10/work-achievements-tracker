@@ -251,7 +251,92 @@ export const deleteCompanyRoute = createRoute({
   middleware: [requireAuth, requireCompanyOwner],
 });
 
+// GET /companies/active
+export const getUserActiveCompanyRoute = createRoute({
+  method: "get",
+  path: "/active",
+  description: "Get user's active company or first company",
+  tags: ["Company"],
+  responses: {
+    200: {
+      description: "Active company",
+      content: {
+        "application/json": {
+          schema: SuccessResponseSchema(
+            z.object({
+              company: CompanySchema.nullable(),
+              hasCompanies: z.boolean(),
+            })
+          ).openapi("ActiveCompanySuccessResponse"),
+        },
+      },
+    },
+    401: {
+      description: "Unauthorized",
+      content: {
+        "application/json": { schema: ErrorResponseSchema },
+      },
+    },
+    500: {
+      description: "Internal server error",
+      content: {
+        "application/json": { schema: ErrorResponseSchema },
+      },
+    },
+  },
+  middleware: [requireAuth],
+});
+
+// POST /companies/active/{companyId}
+export const setActiveCompanyRoute = createRoute({
+  method: "post",
+  path: "/active/{companyId}",
+  description: "Set active company for user session",
+  tags: ["Company"],
+  request: {
+    params: z.object({ companyId: z.string() }),
+  },
+  responses: {
+    200: {
+      description: "Active company updated",
+      content: {
+        "application/json": {
+          schema: SuccessResponseSchema().openapi({
+            type: "object",
+            title: "SetActiveCompanySuccessResponse",
+            example: {
+              success: true,
+              message: "Active company updated",
+            },
+          }),
+        },
+      },
+    },
+    401: {
+      description: "Unauthorized",
+      content: {
+        "application/json": { schema: ErrorResponseSchema },
+      },
+    },
+    404: {
+      description: "Company not found",
+      content: {
+        "application/json": { schema: ErrorResponseSchema },
+      },
+    },
+    500: {
+      description: "Internal server error",
+      content: {
+        "application/json": { schema: ErrorResponseSchema },
+      },
+    },
+  },
+  middleware: [requireAuth],
+});
+
 export type GetCompaniesRoute = typeof getUserCompaniesRoute;
 export type CreateCompanyRoute = typeof createCompanyRoute;
 export type UpdateCompanyRoute = typeof updateCompanyRoute;
 export type DeleteCompanyRoute = typeof deleteCompanyRoute;
+export type GetActiveCompanyRoute = typeof getUserActiveCompanyRoute;
+export type SetActiveCompanyRoute = typeof setActiveCompanyRoute;
