@@ -20,6 +20,7 @@ export function LoginForm({
 }: React.ComponentPropsWithoutRef<"div">) {
   const navigate = routeApi.useNavigate();
   const { next } = routeApi.useSearch();
+  const redirectURL = `${siteConfig.url}${next}`;
 
   const [email, setEmail] = useState("");
   const [isPending, setIsPending] = useState(false);
@@ -30,7 +31,7 @@ export function LoginForm({
 
     authClient.signIn.magicLink({
       email,
-      callbackURL: `${siteConfig.url}${next}`,
+      callbackURL: redirectURL,
       fetchOptions: {
         onResponse: () => {
           setIsPending(false);
@@ -96,12 +97,12 @@ export function LoginForm({
             <SocialLoginButton
               provider="google"
               label="Google"
-              redirectURL={next}
+              redirectURL={redirectURL}
             />
             <SocialLoginButton
               provider="github"
               label="GitHub"
-              redirectURL={next}
+              redirectURL={redirectURL}
             />
           </div>
         </div>

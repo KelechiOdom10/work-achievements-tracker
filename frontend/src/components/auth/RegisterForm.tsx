@@ -20,6 +20,7 @@ export function RegisterForm({
 }: React.ComponentPropsWithoutRef<"div">) {
   const navigate = routeApi.useNavigate();
   const { next } = routeApi.useSearch();
+  const redirectURL = `${siteConfig.url}${next}`;
 
   const [isPending, setIsPending] = useState(false);
   const [email, setEmail] = useState("");
@@ -32,7 +33,7 @@ export function RegisterForm({
     authClient.signIn.magicLink({
       email,
       name,
-      callbackURL: `${siteConfig.url}${next}`,
+      callbackURL: redirectURL,
       fetchOptions: {
         onResponse: () => {
           setIsPending(false);
@@ -111,12 +112,12 @@ export function RegisterForm({
             <SocialLoginButton
               provider="google"
               label="Google"
-              redirectURL="/app"
+              redirectURL={redirectURL}
             />
             <SocialLoginButton
               provider="github"
               label="GitHub"
-              redirectURL="/app"
+              redirectURL={redirectURL}
             />
           </div>
         </div>

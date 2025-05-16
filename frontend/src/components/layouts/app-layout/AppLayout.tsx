@@ -4,13 +4,9 @@ import {
   Calendar,
   ChevronDown,
   Milestone,
-  Moon,
-  Settings,
-  Sun,
   Target,
   Trophy,
 } from "lucide-react";
-import { useTheme } from "next-themes";
 import React, { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -31,14 +27,16 @@ import {
   SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { cn } from "@/lib/utils";
-
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "../ui/tooltip";
+} from "@/components/ui/tooltip";
+import { authClient } from "@/lib/auth-client";
+import { cn } from "@/lib/utils";
+
+import { NavUser } from "./NavUser";
 
 const CompanySwitcher: React.FC = () => {
   const { state } = useSidebar();
@@ -81,44 +79,13 @@ const CompanySwitcher: React.FC = () => {
   );
 };
 
-const ThemeSwitcher: React.FC = () => {
-  const { theme, setTheme } = useTheme();
-  const { state } = useSidebar();
-  const isCollapsed = state === "collapsed";
-
-  const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
-  };
-
-  return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <SidebarMenuButton onClick={toggleTheme}>
-            {theme === "dark" ? (
-              <Sun className="h-4 w-4" />
-            ) : (
-              <Moon className="h-4 w-4" />
-            )}
-            {!isCollapsed && (
-              <span>{theme === "dark" ? "Light Mode" : "Dark Mode"}</span>
-            )}
-          </SidebarMenuButton>
-        </TooltipTrigger>
-        <TooltipContent side="right">
-          {theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"}
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
-  );
-};
-
 interface AppLayoutProps {
   children: React.ReactNode;
 }
 
 export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   const [activeItem, setActiveItem] = useState("dashboard");
+  const { data: session } = authClient.useSession();
 
   const handleItemClick = (itemId: string) => {
     setActiveItem(itemId);
@@ -179,18 +146,15 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
             </SidebarMenuItem>
           </SidebarContent>
           <SidebarFooter className="list-none">
-            <SidebarMenuItem>
-              <ThemeSwitcher />
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton
-                onClick={() => handleItemClick("settings")}
-                isActive={activeItem === "settings"}
-              >
-                <Settings className="h-4 w-4" />
-                <span>Settings</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
+            {session && (
+              <NavUser
+                user={{
+                  name: session.user.name,
+                  email: session.user.email,
+                  avatar: session.user.image ?? "",
+                }}
+              />
+            )}
           </SidebarFooter>
         </Sidebar>
         <main

@@ -21,12 +21,13 @@ export const auth = betterAuth({
       clientId: env.GITHUB_CLIENT_ID,
       clientSecret: env.GITHUB_CLIENT_SECRET,
     },
+    google: {
+      clientId: env.GOOGLE_CLIENT_ID,
+      clientSecret: env.GOOGLE_CLIENT_SECRET,
+    },
   },
   rateLimit: {
     enabled: true,
-  },
-  account: {
-    accountLinking: { enabled: true },
   },
   session: {
     cookieCache: {
@@ -34,13 +35,17 @@ export const auth = betterAuth({
       maxAge: 5 * 60, // 5 minutes in seconds
     },
   },
-  // advanced: {
-  //   defaultCookieAttributes: {
-  //     sameSite: "none",
-  //     secure: true,
-  //     partitioned: true,
+  //   advanced: {
+  //     cookies: {
+  //       sessionToken: {
+  //         attributes: {
+  //           sameSite: "none",
+  //           secure: true,
+  //           partitioned: true, // New browser standards will mandate this for foreign cookies
+  //         },
+  //       },
+  //     },
   //   },
-  // },
   plugins: [
     openAPI(),
     magicLink({
