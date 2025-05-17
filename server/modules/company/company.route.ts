@@ -4,7 +4,7 @@ import { ErrorResponseSchema, SuccessResponseSchema } from "~/shared/types";
 import { requireAuth, requireOwnership } from "~/middlewares";
 
 import {
-  CompanyCreateInputSchema,
+  CompanyCreateWithoutUserInputSchema,
   CompanyOrderByWithRelationInputSchema,
   CompanySchema,
   CompanyUpdateInputSchema,
@@ -89,7 +89,7 @@ export const createCompanyRoute = createRoute({
     body: {
       content: {
         "application/json": {
-          schema: CompanyCreateInputSchema.openapi({
+          schema: CompanyCreateWithoutUserInputSchema.openapi({
             type: "object",
             title: "CompanyCreateInput",
           }),
