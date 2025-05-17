@@ -126,7 +126,7 @@ export type Verification = z.infer<typeof VerificationSchema>
 /////////////////////////////////////////
 
 export const CompanySchema = z.object({
-  id: z.string(),
+  id: z.string().cuid(),
   name: z.string(),
   slug: z.string().nullable(),
   logo: z.string().nullable(),
@@ -898,18 +898,18 @@ export const CompanyOrderByWithRelationInputSchema: z.ZodType<Prisma.CompanyOrde
 
 export const CompanyWhereUniqueInputSchema: z.ZodType<Prisma.CompanyWhereUniqueInput> = z.union([
   z.object({
-    id: z.string(),
+    id: z.string().cuid(),
     slug: z.string()
   }),
   z.object({
-    id: z.string(),
+    id: z.string().cuid(),
   }),
   z.object({
     slug: z.string(),
   }),
 ])
 .and(z.object({
-  id: z.string().optional(),
+  id: z.string().cuid().optional(),
   slug: z.string().optional(),
   AND: z.union([ z.lazy(() => CompanyWhereInputSchema),z.lazy(() => CompanyWhereInputSchema).array() ]).optional(),
   OR: z.lazy(() => CompanyWhereInputSchema).array().optional(),
@@ -1664,11 +1664,11 @@ export const VerificationUncheckedUpdateManyInputSchema: z.ZodType<Prisma.Verifi
 }).strict();
 
 export const CompanyCreateInputSchema: z.ZodType<Prisma.CompanyCreateInput> = z.object({
-  id: z.string(),
+  id: z.string().cuid().optional(),
   name: z.string(),
   slug: z.string().optional().nullable(),
   logo: z.string().optional().nullable(),
-  createdAt: z.coerce.date(),
+  createdAt: z.coerce.date().optional(),
   metadata: z.string().optional().nullable(),
   user: z.lazy(() => UserCreateNestedOneWithoutCompaniesInputSchema),
   achievements: z.lazy(() => AchievementCreateNestedManyWithoutCompanyInputSchema).optional(),
@@ -1676,11 +1676,11 @@ export const CompanyCreateInputSchema: z.ZodType<Prisma.CompanyCreateInput> = z.
 }).strict();
 
 export const CompanyUncheckedCreateInputSchema: z.ZodType<Prisma.CompanyUncheckedCreateInput> = z.object({
-  id: z.string(),
+  id: z.string().cuid().optional(),
   name: z.string(),
   slug: z.string().optional().nullable(),
   logo: z.string().optional().nullable(),
-  createdAt: z.coerce.date(),
+  createdAt: z.coerce.date().optional(),
   metadata: z.string().optional().nullable(),
   userId: z.string(),
   achievements: z.lazy(() => AchievementUncheckedCreateNestedManyWithoutCompanyInputSchema).optional(),
@@ -1688,7 +1688,7 @@ export const CompanyUncheckedCreateInputSchema: z.ZodType<Prisma.CompanyUnchecke
 }).strict();
 
 export const CompanyUpdateInputSchema: z.ZodType<Prisma.CompanyUpdateInput> = z.object({
-  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   slug: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   logo: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -1700,7 +1700,7 @@ export const CompanyUpdateInputSchema: z.ZodType<Prisma.CompanyUpdateInput> = z.
 }).strict();
 
 export const CompanyUncheckedUpdateInputSchema: z.ZodType<Prisma.CompanyUncheckedUpdateInput> = z.object({
-  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   slug: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   logo: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -1712,17 +1712,17 @@ export const CompanyUncheckedUpdateInputSchema: z.ZodType<Prisma.CompanyUnchecke
 }).strict();
 
 export const CompanyCreateManyInputSchema: z.ZodType<Prisma.CompanyCreateManyInput> = z.object({
-  id: z.string(),
+  id: z.string().cuid().optional(),
   name: z.string(),
   slug: z.string().optional().nullable(),
   logo: z.string().optional().nullable(),
-  createdAt: z.coerce.date(),
+  createdAt: z.coerce.date().optional(),
   metadata: z.string().optional().nullable(),
   userId: z.string()
 }).strict();
 
 export const CompanyUpdateManyMutationInputSchema: z.ZodType<Prisma.CompanyUpdateManyMutationInput> = z.object({
-  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   slug: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   logo: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -1731,7 +1731,7 @@ export const CompanyUpdateManyMutationInputSchema: z.ZodType<Prisma.CompanyUpdat
 }).strict();
 
 export const CompanyUncheckedUpdateManyInputSchema: z.ZodType<Prisma.CompanyUncheckedUpdateManyInput> = z.object({
-  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   slug: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   logo: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -3577,22 +3577,22 @@ export const SessionCreateManyUserInputEnvelopeSchema: z.ZodType<Prisma.SessionC
 }).strict();
 
 export const CompanyCreateWithoutUserInputSchema: z.ZodType<Prisma.CompanyCreateWithoutUserInput> = z.object({
-  id: z.string(),
+  id: z.string().cuid().optional(),
   name: z.string(),
   slug: z.string().optional().nullable(),
   logo: z.string().optional().nullable(),
-  createdAt: z.coerce.date(),
+  createdAt: z.coerce.date().optional(),
   metadata: z.string().optional().nullable(),
   achievements: z.lazy(() => AchievementCreateNestedManyWithoutCompanyInputSchema).optional(),
   goals: z.lazy(() => GoalCreateNestedManyWithoutCompanyInputSchema).optional()
 }).strict();
 
 export const CompanyUncheckedCreateWithoutUserInputSchema: z.ZodType<Prisma.CompanyUncheckedCreateWithoutUserInput> = z.object({
-  id: z.string(),
+  id: z.string().cuid().optional(),
   name: z.string(),
   slug: z.string().optional().nullable(),
   logo: z.string().optional().nullable(),
-  createdAt: z.coerce.date(),
+  createdAt: z.coerce.date().optional(),
   metadata: z.string().optional().nullable(),
   achievements: z.lazy(() => AchievementUncheckedCreateNestedManyWithoutCompanyInputSchema).optional(),
   goals: z.lazy(() => GoalUncheckedCreateNestedManyWithoutCompanyInputSchema).optional()
@@ -4187,22 +4187,22 @@ export const UserCreateOrConnectWithoutAchievementsInputSchema: z.ZodType<Prisma
 }).strict();
 
 export const CompanyCreateWithoutAchievementsInputSchema: z.ZodType<Prisma.CompanyCreateWithoutAchievementsInput> = z.object({
-  id: z.string(),
+  id: z.string().cuid().optional(),
   name: z.string(),
   slug: z.string().optional().nullable(),
   logo: z.string().optional().nullable(),
-  createdAt: z.coerce.date(),
+  createdAt: z.coerce.date().optional(),
   metadata: z.string().optional().nullable(),
   user: z.lazy(() => UserCreateNestedOneWithoutCompaniesInputSchema),
   goals: z.lazy(() => GoalCreateNestedManyWithoutCompanyInputSchema).optional()
 }).strict();
 
 export const CompanyUncheckedCreateWithoutAchievementsInputSchema: z.ZodType<Prisma.CompanyUncheckedCreateWithoutAchievementsInput> = z.object({
-  id: z.string(),
+  id: z.string().cuid().optional(),
   name: z.string(),
   slug: z.string().optional().nullable(),
   logo: z.string().optional().nullable(),
-  createdAt: z.coerce.date(),
+  createdAt: z.coerce.date().optional(),
   metadata: z.string().optional().nullable(),
   userId: z.string(),
   goals: z.lazy(() => GoalUncheckedCreateNestedManyWithoutCompanyInputSchema).optional()
@@ -4339,7 +4339,7 @@ export const CompanyUpdateToOneWithWhereWithoutAchievementsInputSchema: z.ZodTyp
 }).strict();
 
 export const CompanyUpdateWithoutAchievementsInputSchema: z.ZodType<Prisma.CompanyUpdateWithoutAchievementsInput> = z.object({
-  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   slug: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   logo: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -4350,7 +4350,7 @@ export const CompanyUpdateWithoutAchievementsInputSchema: z.ZodType<Prisma.Compa
 }).strict();
 
 export const CompanyUncheckedUpdateWithoutAchievementsInputSchema: z.ZodType<Prisma.CompanyUncheckedUpdateWithoutAchievementsInput> = z.object({
-  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   slug: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   logo: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -4716,22 +4716,22 @@ export const UserCreateOrConnectWithoutGoalsInputSchema: z.ZodType<Prisma.UserCr
 }).strict();
 
 export const CompanyCreateWithoutGoalsInputSchema: z.ZodType<Prisma.CompanyCreateWithoutGoalsInput> = z.object({
-  id: z.string(),
+  id: z.string().cuid().optional(),
   name: z.string(),
   slug: z.string().optional().nullable(),
   logo: z.string().optional().nullable(),
-  createdAt: z.coerce.date(),
+  createdAt: z.coerce.date().optional(),
   metadata: z.string().optional().nullable(),
   user: z.lazy(() => UserCreateNestedOneWithoutCompaniesInputSchema),
   achievements: z.lazy(() => AchievementCreateNestedManyWithoutCompanyInputSchema).optional()
 }).strict();
 
 export const CompanyUncheckedCreateWithoutGoalsInputSchema: z.ZodType<Prisma.CompanyUncheckedCreateWithoutGoalsInput> = z.object({
-  id: z.string(),
+  id: z.string().cuid().optional(),
   name: z.string(),
   slug: z.string().optional().nullable(),
   logo: z.string().optional().nullable(),
-  createdAt: z.coerce.date(),
+  createdAt: z.coerce.date().optional(),
   metadata: z.string().optional().nullable(),
   userId: z.string(),
   achievements: z.lazy(() => AchievementUncheckedCreateNestedManyWithoutCompanyInputSchema).optional()
@@ -4833,7 +4833,7 @@ export const CompanyUpdateToOneWithWhereWithoutGoalsInputSchema: z.ZodType<Prism
 }).strict();
 
 export const CompanyUpdateWithoutGoalsInputSchema: z.ZodType<Prisma.CompanyUpdateWithoutGoalsInput> = z.object({
-  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   slug: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   logo: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -4844,7 +4844,7 @@ export const CompanyUpdateWithoutGoalsInputSchema: z.ZodType<Prisma.CompanyUpdat
 }).strict();
 
 export const CompanyUncheckedUpdateWithoutGoalsInputSchema: z.ZodType<Prisma.CompanyUncheckedUpdateWithoutGoalsInput> = z.object({
-  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   slug: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   logo: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -4897,11 +4897,11 @@ export const SessionCreateManyUserInputSchema: z.ZodType<Prisma.SessionCreateMan
 }).strict();
 
 export const CompanyCreateManyUserInputSchema: z.ZodType<Prisma.CompanyCreateManyUserInput> = z.object({
-  id: z.string(),
+  id: z.string().cuid().optional(),
   name: z.string(),
   slug: z.string().optional().nullable(),
   logo: z.string().optional().nullable(),
-  createdAt: z.coerce.date(),
+  createdAt: z.coerce.date().optional(),
   metadata: z.string().optional().nullable()
 }).strict();
 
@@ -5006,7 +5006,7 @@ export const SessionUncheckedUpdateManyWithoutUserInputSchema: z.ZodType<Prisma.
 }).strict();
 
 export const CompanyUpdateWithoutUserInputSchema: z.ZodType<Prisma.CompanyUpdateWithoutUserInput> = z.object({
-  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   slug: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   logo: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -5017,7 +5017,7 @@ export const CompanyUpdateWithoutUserInputSchema: z.ZodType<Prisma.CompanyUpdate
 }).strict();
 
 export const CompanyUncheckedUpdateWithoutUserInputSchema: z.ZodType<Prisma.CompanyUncheckedUpdateWithoutUserInput> = z.object({
-  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   slug: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   logo: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
@@ -5028,7 +5028,7 @@ export const CompanyUncheckedUpdateWithoutUserInputSchema: z.ZodType<Prisma.Comp
 }).strict();
 
 export const CompanyUncheckedUpdateManyWithoutUserInputSchema: z.ZodType<Prisma.CompanyUncheckedUpdateManyWithoutUserInput> = z.object({
-  id: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+  id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   slug: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
   logo: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),

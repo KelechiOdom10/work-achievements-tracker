@@ -84,11 +84,11 @@ model Verification {
 }
 
 model Company {
-  id        String   @id
+  id        String   @id @default(cuid())
   name      String
   slug      String?
   logo      String?
-  createdAt DateTime
+  createdAt DateTime @default(now())
   metadata  String?
 
   userId String

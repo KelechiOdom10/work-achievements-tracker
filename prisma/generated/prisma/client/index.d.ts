@@ -14439,11 +14439,11 @@ export namespace Prisma {
   }
 
   export type CompanyCreateInput = {
-    id: string
+    id?: string
     name: string
     slug?: string | null
     logo?: string | null
-    createdAt: Date | string
+    createdAt?: Date | string
     metadata?: string | null
     user: UserCreateNestedOneWithoutCompaniesInput
     achievements?: AchievementCreateNestedManyWithoutCompanyInput
@@ -14451,11 +14451,11 @@ export namespace Prisma {
   }
 
   export type CompanyUncheckedCreateInput = {
-    id: string
+    id?: string
     name: string
     slug?: string | null
     logo?: string | null
-    createdAt: Date | string
+    createdAt?: Date | string
     metadata?: string | null
     userId: string
     achievements?: AchievementUncheckedCreateNestedManyWithoutCompanyInput
@@ -14487,11 +14487,11 @@ export namespace Prisma {
   }
 
   export type CompanyCreateManyInput = {
-    id: string
+    id?: string
     name: string
     slug?: string | null
     logo?: string | null
-    createdAt: Date | string
+    createdAt?: Date | string
     metadata?: string | null
     userId: string
   }
@@ -16352,22 +16352,22 @@ export namespace Prisma {
   }
 
   export type CompanyCreateWithoutUserInput = {
-    id: string
+    id?: string
     name: string
     slug?: string | null
     logo?: string | null
-    createdAt: Date | string
+    createdAt?: Date | string
     metadata?: string | null
     achievements?: AchievementCreateNestedManyWithoutCompanyInput
     goals?: GoalCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutUserInput = {
-    id: string
+    id?: string
     name: string
     slug?: string | null
     logo?: string | null
-    createdAt: Date | string
+    createdAt?: Date | string
     metadata?: string | null
     achievements?: AchievementUncheckedCreateNestedManyWithoutCompanyInput
     goals?: GoalUncheckedCreateNestedManyWithoutCompanyInput
@@ -16962,22 +16962,22 @@ export namespace Prisma {
   }
 
   export type CompanyCreateWithoutAchievementsInput = {
-    id: string
+    id?: string
     name: string
     slug?: string | null
     logo?: string | null
-    createdAt: Date | string
+    createdAt?: Date | string
     metadata?: string | null
     user: UserCreateNestedOneWithoutCompaniesInput
     goals?: GoalCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutAchievementsInput = {
-    id: string
+    id?: string
     name: string
     slug?: string | null
     logo?: string | null
-    createdAt: Date | string
+    createdAt?: Date | string
     metadata?: string | null
     userId: string
     goals?: GoalUncheckedCreateNestedManyWithoutCompanyInput
@@ -17491,22 +17491,22 @@ export namespace Prisma {
   }
 
   export type CompanyCreateWithoutGoalsInput = {
-    id: string
+    id?: string
     name: string
     slug?: string | null
     logo?: string | null
-    createdAt: Date | string
+    createdAt?: Date | string
     metadata?: string | null
     user: UserCreateNestedOneWithoutCompaniesInput
     achievements?: AchievementCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutGoalsInput = {
-    id: string
+    id?: string
     name: string
     slug?: string | null
     logo?: string | null
-    createdAt: Date | string
+    createdAt?: Date | string
     metadata?: string | null
     userId: string
     achievements?: AchievementUncheckedCreateNestedManyWithoutCompanyInput
@@ -17672,11 +17672,11 @@ export namespace Prisma {
   }
 
   export type CompanyCreateManyUserInput = {
-    id: string
+    id?: string
     name: string
     slug?: string | null
     logo?: string | null
-    createdAt: Date | string
+    createdAt?: Date | string
     metadata?: string | null
   }
 
