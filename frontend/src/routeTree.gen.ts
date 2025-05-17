@@ -11,6 +11,7 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as OnboardingImport } from './routes/onboarding'
 import { Route as AboutImport } from './routes/about'
 import { Route as AppRouteImport } from './routes/app/route'
 import { Route as authRouteImport } from './routes/(auth)/route'
@@ -18,8 +19,16 @@ import { Route as IndexImport } from './routes/index'
 import { Route as authVerifyImport } from './routes/(auth)/verify'
 import { Route as authRegisterImport } from './routes/(auth)/register'
 import { Route as authLoginImport } from './routes/(auth)/login'
+import { Route as AppCompaniesIndexImport } from './routes/app/companies/index'
+import { Route as AppCompaniesCompanySlugRouteImport } from './routes/app/companies/$companySlug/route'
 
 // Create/Update Routes
+
+const OnboardingRoute = OnboardingImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const AboutRoute = AboutImport.update({
   id: '/about',
@@ -62,6 +71,19 @@ const authLoginRoute = authLoginImport.update({
   getParentRoute: () => authRouteRoute,
 } as any)
 
+const AppCompaniesIndexRoute = AppCompaniesIndexImport.update({
+  id: '/companies/',
+  path: '/companies/',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+
+const AppCompaniesCompanySlugRouteRoute =
+  AppCompaniesCompanySlugRouteImport.update({
+    id: '/companies/$companySlug',
+    path: '/companies/$companySlug',
+    getParentRoute: () => AppRouteRoute,
+  } as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -94,6 +116,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutImport
       parentRoute: typeof rootRoute
     }
+    '/onboarding': {
+      id: '/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingImport
+      parentRoute: typeof rootRoute
+    }
     '/(auth)/login': {
       id: '/(auth)/login'
       path: '/login'
@@ -114,6 +143,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/verify'
       preLoaderRoute: typeof authVerifyImport
       parentRoute: typeof authRouteImport
+    }
+    '/app/companies/$companySlug': {
+      id: '/app/companies/$companySlug'
+      path: '/companies/$companySlug'
+      fullPath: '/app/companies/$companySlug'
+      preLoaderRoute: typeof AppCompaniesCompanySlugRouteImport
+      parentRoute: typeof AppRouteImport
+    }
+    '/app/companies/': {
+      id: '/app/companies/'
+      path: '/companies'
+      fullPath: '/app/companies'
+      preLoaderRoute: typeof AppCompaniesIndexImport
+      parentRoute: typeof AppRouteImport
     }
   }
 }
@@ -136,64 +179,110 @@ const authRouteRouteWithChildren = authRouteRoute._addFileChildren(
   authRouteRouteChildren,
 )
 
+interface AppRouteRouteChildren {
+  AppCompaniesCompanySlugRouteRoute: typeof AppCompaniesCompanySlugRouteRoute
+  AppCompaniesIndexRoute: typeof AppCompaniesIndexRoute
+}
+
+const AppRouteRouteChildren: AppRouteRouteChildren = {
+  AppCompaniesCompanySlugRouteRoute: AppCompaniesCompanySlugRouteRoute,
+  AppCompaniesIndexRoute: AppCompaniesIndexRoute,
+}
+
+const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(
+  AppRouteRouteChildren,
+)
+
 export interface FileRoutesByFullPath {
   '/': typeof authRouteRouteWithChildren
-  '/app': typeof AppRouteRoute
+  '/app': typeof AppRouteRouteWithChildren
   '/about': typeof AboutRoute
+  '/onboarding': typeof OnboardingRoute
   '/login': typeof authLoginRoute
   '/register': typeof authRegisterRoute
   '/verify': typeof authVerifyRoute
+  '/app/companies/$companySlug': typeof AppCompaniesCompanySlugRouteRoute
+  '/app/companies': typeof AppCompaniesIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof authRouteRouteWithChildren
-  '/app': typeof AppRouteRoute
+  '/app': typeof AppRouteRouteWithChildren
   '/about': typeof AboutRoute
+  '/onboarding': typeof OnboardingRoute
   '/login': typeof authLoginRoute
   '/register': typeof authRegisterRoute
   '/verify': typeof authVerifyRoute
+  '/app/companies/$companySlug': typeof AppCompaniesCompanySlugRouteRoute
+  '/app/companies': typeof AppCompaniesIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/(auth)': typeof authRouteRouteWithChildren
-  '/app': typeof AppRouteRoute
+  '/app': typeof AppRouteRouteWithChildren
   '/about': typeof AboutRoute
+  '/onboarding': typeof OnboardingRoute
   '/(auth)/login': typeof authLoginRoute
   '/(auth)/register': typeof authRegisterRoute
   '/(auth)/verify': typeof authVerifyRoute
+  '/app/companies/$companySlug': typeof AppCompaniesCompanySlugRouteRoute
+  '/app/companies/': typeof AppCompaniesIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/app' | '/about' | '/login' | '/register' | '/verify'
+  fullPaths:
+    | '/'
+    | '/app'
+    | '/about'
+    | '/onboarding'
+    | '/login'
+    | '/register'
+    | '/verify'
+    | '/app/companies/$companySlug'
+    | '/app/companies'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/app' | '/about' | '/login' | '/register' | '/verify'
+  to:
+    | '/'
+    | '/app'
+    | '/about'
+    | '/onboarding'
+    | '/login'
+    | '/register'
+    | '/verify'
+    | '/app/companies/$companySlug'
+    | '/app/companies'
   id:
     | '__root__'
     | '/'
     | '/(auth)'
     | '/app'
     | '/about'
+    | '/onboarding'
     | '/(auth)/login'
     | '/(auth)/register'
     | '/(auth)/verify'
+    | '/app/companies/$companySlug'
+    | '/app/companies/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   authRouteRoute: typeof authRouteRouteWithChildren
-  AppRouteRoute: typeof AppRouteRoute
+  AppRouteRoute: typeof AppRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
+  OnboardingRoute: typeof OnboardingRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   authRouteRoute: authRouteRouteWithChildren,
-  AppRouteRoute: AppRouteRoute,
+  AppRouteRoute: AppRouteRouteWithChildren,
   AboutRoute: AboutRoute,
+  OnboardingRoute: OnboardingRoute,
 }
 
 export const routeTree = rootRoute
@@ -209,7 +298,8 @@ export const routeTree = rootRoute
         "/",
         "/(auth)",
         "/app",
-        "/about"
+        "/about",
+        "/onboarding"
       ]
     },
     "/": {
@@ -224,10 +314,17 @@ export const routeTree = rootRoute
       ]
     },
     "/app": {
-      "filePath": "app/route.tsx"
+      "filePath": "app/route.tsx",
+      "children": [
+        "/app/companies/$companySlug",
+        "/app/companies/"
+      ]
     },
     "/about": {
       "filePath": "about.tsx"
+    },
+    "/onboarding": {
+      "filePath": "onboarding.tsx"
     },
     "/(auth)/login": {
       "filePath": "(auth)/login.tsx",
@@ -240,6 +337,14 @@ export const routeTree = rootRoute
     "/(auth)/verify": {
       "filePath": "(auth)/verify.tsx",
       "parent": "/(auth)"
+    },
+    "/app/companies/$companySlug": {
+      "filePath": "app/companies/$companySlug/route.tsx",
+      "parent": "/app"
+    },
+    "/app/companies/": {
+      "filePath": "app/companies/index.tsx",
+      "parent": "/app"
     }
   }
 }

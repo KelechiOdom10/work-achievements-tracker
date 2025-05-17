@@ -29,9 +29,8 @@
       "@/hooks/*": ["src/hooks/*"],
       "@/lib/*": ["src/lib/*"],
       "@/routes/*": ["src/routes/*"],
-      "@/shared/*": ["../shared/*"],
-      "~/*": ["../server/*"],
-      "~/shared/*": ["../shared/*"]
+      "@shared/*": ["../shared/*"],
+      "~/*": ["../server/*"]
     }
   },
   "include": ["src"],

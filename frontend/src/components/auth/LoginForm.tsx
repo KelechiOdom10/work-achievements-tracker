@@ -1,9 +1,9 @@
+import { siteConfig } from "@shared/constants";
 import { getRouteApi, Link } from "@tanstack/react-router";
 import { Sparkles } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
-import { siteConfig } from "@/shared/constants";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";

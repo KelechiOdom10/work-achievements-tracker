@@ -1,7 +1,7 @@
+import { siteConfig } from "@shared/constants";
 import { Link, useRouter } from "@tanstack/react-router";
 import { Sparkles } from "lucide-react";
 
-import { siteConfig } from "@/shared/constants";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
 
