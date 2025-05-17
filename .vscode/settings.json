@@ -9,6 +9,5 @@
     "typescriptreact",
     "javascript",
     "javascriptreact"
-  ],
-  "tailwindCSS.classAttributes": ["class", "className", "cn", "cva"]
+  ]
 }
