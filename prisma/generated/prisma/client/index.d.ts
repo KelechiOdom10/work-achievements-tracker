@@ -6563,7 +6563,7 @@ export namespace Prisma {
   export type CompanyGroupByOutputType = {
     id: string
     name: string
-    slug: string | null
+    slug: string
     logo: string | null
     createdAt: Date
     metadata: string | null
@@ -6657,7 +6657,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       name: string
-      slug: string | null
+      slug: string
       logo: string | null
       createdAt: Date
       metadata: string | null
@@ -13684,7 +13684,7 @@ export namespace Prisma {
     NOT?: CompanyWhereInput | CompanyWhereInput[]
     id?: StringFilter<"Company"> | string
     name?: StringFilter<"Company"> | string
-    slug?: StringNullableFilter<"Company"> | string | null
+    slug?: StringFilter<"Company"> | string
     logo?: StringNullableFilter<"Company"> | string | null
     createdAt?: DateTimeFilter<"Company"> | Date | string
     metadata?: StringNullableFilter<"Company"> | string | null
@@ -13697,7 +13697,7 @@ export namespace Prisma {
   export type CompanyOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
-    slug?: SortOrderInput | SortOrder
+    slug?: SortOrder
     logo?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     metadata?: SortOrderInput | SortOrder
@@ -13714,7 +13714,7 @@ export namespace Prisma {
     OR?: CompanyWhereInput[]
     NOT?: CompanyWhereInput | CompanyWhereInput[]
     name?: StringFilter<"Company"> | string
-    slug?: StringNullableFilter<"Company"> | string | null
+    slug?: StringFilter<"Company"> | string
     logo?: StringNullableFilter<"Company"> | string | null
     createdAt?: DateTimeFilter<"Company"> | Date | string
     metadata?: StringNullableFilter<"Company"> | string | null
@@ -13727,7 +13727,7 @@ export namespace Prisma {
   export type CompanyOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
-    slug?: SortOrderInput | SortOrder
+    slug?: SortOrder
     logo?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     metadata?: SortOrderInput | SortOrder
@@ -13743,7 +13743,7 @@ export namespace Prisma {
     NOT?: CompanyScalarWhereWithAggregatesInput | CompanyScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Company"> | string
     name?: StringWithAggregatesFilter<"Company"> | string
-    slug?: StringNullableWithAggregatesFilter<"Company"> | string | null
+    slug?: StringWithAggregatesFilter<"Company"> | string
     logo?: StringNullableWithAggregatesFilter<"Company"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Company"> | Date | string
     metadata?: StringNullableWithAggregatesFilter<"Company"> | string | null
@@ -14442,7 +14442,7 @@ export namespace Prisma {
   export type CompanyCreateInput = {
     id?: string
     name: string
-    slug?: string | null
+    slug: string
     logo?: string | null
     createdAt?: Date | string
     metadata?: string | null
@@ -14454,7 +14454,7 @@ export namespace Prisma {
   export type CompanyUncheckedCreateInput = {
     id?: string
     name: string
-    slug?: string | null
+    slug: string
     logo?: string | null
     createdAt?: Date | string
     metadata?: string | null
@@ -14466,7 +14466,7 @@ export namespace Prisma {
   export type CompanyUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    slug?: NullableStringFieldUpdateOperationsInput | string | null
+    slug?: StringFieldUpdateOperationsInput | string
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     metadata?: NullableStringFieldUpdateOperationsInput | string | null
@@ -14478,7 +14478,7 @@ export namespace Prisma {
   export type CompanyUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    slug?: NullableStringFieldUpdateOperationsInput | string | null
+    slug?: StringFieldUpdateOperationsInput | string
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     metadata?: NullableStringFieldUpdateOperationsInput | string | null
@@ -14490,7 +14490,7 @@ export namespace Prisma {
   export type CompanyCreateManyInput = {
     id?: string
     name: string
-    slug?: string | null
+    slug: string
     logo?: string | null
     createdAt?: Date | string
     metadata?: string | null
@@ -14500,7 +14500,7 @@ export namespace Prisma {
   export type CompanyUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    slug?: NullableStringFieldUpdateOperationsInput | string | null
+    slug?: StringFieldUpdateOperationsInput | string
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     metadata?: NullableStringFieldUpdateOperationsInput | string | null
@@ -14509,7 +14509,7 @@ export namespace Prisma {
   export type CompanyUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    slug?: NullableStringFieldUpdateOperationsInput | string | null
+    slug?: StringFieldUpdateOperationsInput | string
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     metadata?: NullableStringFieldUpdateOperationsInput | string | null
@@ -16360,7 +16360,7 @@ export namespace Prisma {
   export type CompanyCreateWithoutUserInput = {
     id?: string
     name: string
-    slug?: string | null
+    slug: string
     logo?: string | null
     createdAt?: Date | string
     metadata?: string | null
@@ -16371,7 +16371,7 @@ export namespace Prisma {
   export type CompanyUncheckedCreateWithoutUserInput = {
     id?: string
     name: string
-    slug?: string | null
+    slug: string
     logo?: string | null
     createdAt?: Date | string
     metadata?: string | null
@@ -16547,7 +16547,7 @@ export namespace Prisma {
     NOT?: CompanyScalarWhereInput | CompanyScalarWhereInput[]
     id?: StringFilter<"Company"> | string
     name?: StringFilter<"Company"> | string
-    slug?: StringNullableFilter<"Company"> | string | null
+    slug?: StringFilter<"Company"> | string
     logo?: StringNullableFilter<"Company"> | string | null
     createdAt?: DateTimeFilter<"Company"> | Date | string
     metadata?: StringNullableFilter<"Company"> | string | null
@@ -16970,7 +16970,7 @@ export namespace Prisma {
   export type CompanyCreateWithoutAchievementsInput = {
     id?: string
     name: string
-    slug?: string | null
+    slug: string
     logo?: string | null
     createdAt?: Date | string
     metadata?: string | null
@@ -16981,7 +16981,7 @@ export namespace Prisma {
   export type CompanyUncheckedCreateWithoutAchievementsInput = {
     id?: string
     name: string
-    slug?: string | null
+    slug: string
     logo?: string | null
     createdAt?: Date | string
     metadata?: string | null
@@ -17122,7 +17122,7 @@ export namespace Prisma {
   export type CompanyUpdateWithoutAchievementsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    slug?: NullableStringFieldUpdateOperationsInput | string | null
+    slug?: StringFieldUpdateOperationsInput | string
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     metadata?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17133,7 +17133,7 @@ export namespace Prisma {
   export type CompanyUncheckedUpdateWithoutAchievementsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    slug?: NullableStringFieldUpdateOperationsInput | string | null
+    slug?: StringFieldUpdateOperationsInput | string
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     metadata?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17499,7 +17499,7 @@ export namespace Prisma {
   export type CompanyCreateWithoutGoalsInput = {
     id?: string
     name: string
-    slug?: string | null
+    slug: string
     logo?: string | null
     createdAt?: Date | string
     metadata?: string | null
@@ -17510,7 +17510,7 @@ export namespace Prisma {
   export type CompanyUncheckedCreateWithoutGoalsInput = {
     id?: string
     name: string
-    slug?: string | null
+    slug: string
     logo?: string | null
     createdAt?: Date | string
     metadata?: string | null
@@ -17616,7 +17616,7 @@ export namespace Prisma {
   export type CompanyUpdateWithoutGoalsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    slug?: NullableStringFieldUpdateOperationsInput | string | null
+    slug?: StringFieldUpdateOperationsInput | string
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     metadata?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17627,7 +17627,7 @@ export namespace Prisma {
   export type CompanyUncheckedUpdateWithoutGoalsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    slug?: NullableStringFieldUpdateOperationsInput | string | null
+    slug?: StringFieldUpdateOperationsInput | string
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     metadata?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17680,7 +17680,7 @@ export namespace Prisma {
   export type CompanyCreateManyUserInput = {
     id?: string
     name: string
-    slug?: string | null
+    slug: string
     logo?: string | null
     createdAt?: Date | string
     metadata?: string | null
@@ -17789,7 +17789,7 @@ export namespace Prisma {
   export type CompanyUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    slug?: NullableStringFieldUpdateOperationsInput | string | null
+    slug?: StringFieldUpdateOperationsInput | string
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     metadata?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17800,7 +17800,7 @@ export namespace Prisma {
   export type CompanyUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    slug?: NullableStringFieldUpdateOperationsInput | string | null
+    slug?: StringFieldUpdateOperationsInput | string
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     metadata?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17811,7 +17811,7 @@ export namespace Prisma {
   export type CompanyUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
-    slug?: NullableStringFieldUpdateOperationsInput | string | null
+    slug?: StringFieldUpdateOperationsInput | string
     logo?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     metadata?: NullableStringFieldUpdateOperationsInput | string | null
