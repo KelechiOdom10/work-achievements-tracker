@@ -1,21 +1,6 @@
-import {
-  BarChart,
-  Briefcase,
-  Calendar,
-  ChevronDown,
-  Milestone,
-  Target,
-  Trophy,
-} from "lucide-react";
+import { BarChart, Calendar, Milestone, Target, Trophy } from "lucide-react";
 import React, { useState } from "react";
 
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import {
   Sidebar,
   SidebarContent,
@@ -25,59 +10,12 @@ import {
   SidebarMenuItem,
   SidebarProvider,
   SidebarTrigger,
-  useSidebar,
 } from "@/components/ui/sidebar";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 
+import { CompanySwitcher } from "./CompanySwitcher";
 import { NavUser } from "./NavUser";
-
-const CompanySwitcher: React.FC = () => {
-  const { state } = useSidebar();
-  const isCollapsed = state === "collapsed";
-
-  return (
-    <TooltipProvider>
-      <DropdownMenu>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                className={cn(
-                  "w-full text-left justify-between px-2 py-2",
-                  isCollapsed && "justify-center -ml-2.5"
-                )}
-              >
-                <Briefcase className="h-5 w-5" />
-                {!isCollapsed && (
-                  <>
-                    <span className="flex-grow ml-2">Current Company</span>
-                    <ChevronDown className="h-4 w-4" />
-                  </>
-                )}
-              </Button>
-            </DropdownMenuTrigger>
-          </TooltipTrigger>
-          {isCollapsed && (
-            <TooltipContent side="right">Current Company</TooltipContent>
-          )}
-        </Tooltip>
-        <DropdownMenuContent>
-          <DropdownMenuItem>Company A</DropdownMenuItem>
-          <DropdownMenuItem>Company B</DropdownMenuItem>
-          <DropdownMenuItem>Add New Company</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </TooltipProvider>
-  );
-};
 
 interface AppLayoutProps {
   children: React.ReactNode;

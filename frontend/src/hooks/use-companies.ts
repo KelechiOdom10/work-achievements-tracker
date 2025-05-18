@@ -39,7 +39,13 @@ export function useCompany(id?: string) {
       if (!id) return null;
       const response = await apiClient.companies[":id"].$get({ param: { id } });
       if (!response.ok) {
-        throw new Error(`Failed to fetch company with ID: ${id}`);
+        const error = await response.json();
+        throw new Error(
+          error.message ?? `Failed to fetch company with ID: ${id}`,
+          {
+            cause: error,
+          }
+        );
       }
       return response.json();
     },
@@ -56,10 +62,16 @@ export function useCompanyBySlug(slug?: string) {
         query: { where: { slug } },
       });
       if (!response.ok) {
-        throw new Error(`Failed to fetch company with slug: ${slug}`);
+        const error = await response.json();
+        throw new Error(
+          error.message ?? `Failed to fetch company with slug: ${slug}`,
+          {
+            cause: error,
+          }
+        );
       }
-      const data = await response.json();
-      return data[0] || null; // Assuming we get an array and want the first match
+      const { data } = await response.json();
+      return data?.companies?.[0] || null;
     },
     enabled: !!slug,
   });
@@ -81,7 +93,10 @@ export function useCreateCompany() {
       if (!response.ok) {
         const error = await response.json();
         throw new Error(
-          error.message || "We couldn't create your company. Please try again."
+          error.message || "We couldn't create your company. Please try again.",
+          {
+            cause: error,
+          }
         );
       }
 
@@ -118,7 +133,10 @@ export function useUpdateCompany() {
       if (!response.ok) {
         const error = await response.json();
         throw new Error(
-          error.message || "Failed to update company. Please try again."
+          error.message || "Failed to update company. Please try again.",
+          {
+            cause: error,
+          }
         );
       }
 
@@ -147,7 +165,10 @@ export function useDeleteCompany() {
       if (!response.ok) {
         const error = await response.json();
         throw new Error(
-          error.message || "Failed to delete company. Please try again."
+          error.message || "Failed to delete company. Please try again.",
+          {
+            cause: error,
+          }
         );
       }
     },
@@ -178,7 +199,9 @@ export function useUpdateCompanyLogo() {
 
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.message || "Failed to update company logo");
+        throw new Error(error.message || "Failed to update company logo", {
+          cause: error,
+        });
       }
 
       return await response.json();
@@ -188,10 +211,55 @@ export function useUpdateCompanyLogo() {
       queryClient.invalidateQueries({
         queryKey: companyKeys.detail(data.data.id),
       });
-      toast.success("Company logo updated successfully!");
     },
     onError: (error: Error) => {
-      toast.error(error.message || "Failed to update company logo");
+      console.error(error);
+    },
+  });
+}
+
+export function useSwitchCompany() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (companyId: string) => {
+      const response = await apiClient.companies.active[":companyId"].$post({
+        param: { companyId },
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Failed to switch company", {
+          cause: error,
+        });
+      }
+
+      const data = await response.json();
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: companyKeys.active() });
+      queryClient.invalidateQueries({ queryKey: companyKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: companyKeys.details() });
+    },
+  });
+}
+
+export function useActiveCompany() {
+  return useQuery({
+    queryKey: companyKeys.active(),
+    queryFn: async () => {
+      const response = await apiClient.companies.active.$get();
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message, {
+          cause: error,
+        });
+      }
+
+      const { data } = await response.json();
+      return data;
     },
   });
 }

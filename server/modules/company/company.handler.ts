@@ -52,6 +52,27 @@ export const createCompanyHandler: AppRouteHandler<CreateCompanyRoute> = async (
   const body = c.req.valid("json");
 
   try {
+    if (body.slug) {
+      const existingCompany = await prisma.company.findFirst({
+        where: {
+          userId: user?.id,
+          slug: body.slug,
+        },
+      });
+
+      if (existingCompany) {
+        return c.json(
+          {
+            success: false,
+            message:
+              "You already have a company with this handle. Please choose a different one.",
+            code: "COMPANY_SLUG_EXISTS",
+          },
+          400
+        );
+      }
+    }
+
     const company = await prisma.company.create({
       data: {
         ...body,
@@ -71,7 +92,8 @@ export const createCompanyHandler: AppRouteHandler<CreateCompanyRoute> = async (
       },
       201
     );
-  } catch {
+  } catch (error) {
+    console.error("Error creating company:", error);
     return c.json(
       {
         success: false,

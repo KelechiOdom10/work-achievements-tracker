@@ -15,47 +15,47 @@ export const Route = createFileRoute("/app")({
       });
     }
 
-    try {
-      const activeCompanyData = await context.queryClient.ensureQueryData({
-        queryKey: companyKeys.active(),
-        queryFn: async () => {
-          const response = await apiClient.companies.active.$get();
+    const activeCompanyData = await context.queryClient.ensureQueryData({
+      queryKey: companyKeys.active(),
+      queryFn: async () => {
+        const response = await apiClient.companies.active.$get();
 
-          if (!response.ok) {
-            throw new Error((await response.json()).message);
-          }
-
-          const { data } = await response.json();
-          return data;
-        },
-      });
-
-      if (!activeCompanyData) {
-        throw redirect({ to: "/onboarding" });
-      }
-
-      // If user has no companies, redirect to onboarding
-      if (!activeCompanyData.hasCompanies) {
-        throw redirect({ to: "/onboarding" });
-      }
-
-      // If user visits /app directly, try to get active company from session
-      if (location.pathname === "/app") {
-        if (activeCompanyData.company) {
-          // Redirect to the active company if available
-          const company = activeCompanyData.company;
-          throw redirect({
-            to: "/app/companies/$companySlug",
-            params: {
-              companySlug: company.slug || company.id,
-            },
+        if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.message, {
+            cause: error,
           });
-        } else {
-          // If no active company, go to selection page
-          throw redirect({ to: "/app/companies" });
         }
+
+        const { data } = await response.json();
+        return data;
+      },
+    });
+
+    console.log("Active company data", activeCompanyData);
+
+    if (!activeCompanyData) {
+      throw redirect({ to: "/onboarding" });
+    }
+
+    // If user has no companies, redirect to onboarding
+    if (!activeCompanyData.hasCompanies) {
+      throw redirect({ to: "/onboarding" });
+    }
+
+    // If user visits /app directly, try to get active company from session
+    if (location.pathname === "/app") {
+      if (activeCompanyData.company) {
+        // Redirect to the active company if available
+        const company = activeCompanyData.company;
+        throw redirect({
+          to: "/app/companies/$companySlug",
+          params: {
+            companySlug: company.slug || company.id,
+          },
+        });
       }
-    } catch {
+    } else {
       throw redirect({ to: "/onboarding" });
     }
   },

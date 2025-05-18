@@ -20,6 +20,7 @@ import { Route as authVerifyImport } from './routes/(auth)/verify'
 import { Route as authRegisterImport } from './routes/(auth)/register'
 import { Route as authLoginImport } from './routes/(auth)/login'
 import { Route as AppCompaniesIndexImport } from './routes/app/companies/index'
+import { Route as AppCompaniesNewImport } from './routes/app/companies/new'
 import { Route as AppCompaniesCompanySlugRouteImport } from './routes/app/companies/$companySlug/route'
 
 // Create/Update Routes
@@ -74,6 +75,12 @@ const authLoginRoute = authLoginImport.update({
 const AppCompaniesIndexRoute = AppCompaniesIndexImport.update({
   id: '/companies/',
   path: '/companies/',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+
+const AppCompaniesNewRoute = AppCompaniesNewImport.update({
+  id: '/companies/new',
+  path: '/companies/new',
   getParentRoute: () => AppRouteRoute,
 } as any)
 
@@ -151,6 +158,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppCompaniesCompanySlugRouteImport
       parentRoute: typeof AppRouteImport
     }
+    '/app/companies/new': {
+      id: '/app/companies/new'
+      path: '/companies/new'
+      fullPath: '/app/companies/new'
+      preLoaderRoute: typeof AppCompaniesNewImport
+      parentRoute: typeof AppRouteImport
+    }
     '/app/companies/': {
       id: '/app/companies/'
       path: '/companies'
@@ -181,11 +195,13 @@ const authRouteRouteWithChildren = authRouteRoute._addFileChildren(
 
 interface AppRouteRouteChildren {
   AppCompaniesCompanySlugRouteRoute: typeof AppCompaniesCompanySlugRouteRoute
+  AppCompaniesNewRoute: typeof AppCompaniesNewRoute
   AppCompaniesIndexRoute: typeof AppCompaniesIndexRoute
 }
 
 const AppRouteRouteChildren: AppRouteRouteChildren = {
   AppCompaniesCompanySlugRouteRoute: AppCompaniesCompanySlugRouteRoute,
+  AppCompaniesNewRoute: AppCompaniesNewRoute,
   AppCompaniesIndexRoute: AppCompaniesIndexRoute,
 }
 
@@ -202,6 +218,7 @@ export interface FileRoutesByFullPath {
   '/register': typeof authRegisterRoute
   '/verify': typeof authVerifyRoute
   '/app/companies/$companySlug': typeof AppCompaniesCompanySlugRouteRoute
+  '/app/companies/new': typeof AppCompaniesNewRoute
   '/app/companies': typeof AppCompaniesIndexRoute
 }
 
@@ -214,6 +231,7 @@ export interface FileRoutesByTo {
   '/register': typeof authRegisterRoute
   '/verify': typeof authVerifyRoute
   '/app/companies/$companySlug': typeof AppCompaniesCompanySlugRouteRoute
+  '/app/companies/new': typeof AppCompaniesNewRoute
   '/app/companies': typeof AppCompaniesIndexRoute
 }
 
@@ -228,6 +246,7 @@ export interface FileRoutesById {
   '/(auth)/register': typeof authRegisterRoute
   '/(auth)/verify': typeof authVerifyRoute
   '/app/companies/$companySlug': typeof AppCompaniesCompanySlugRouteRoute
+  '/app/companies/new': typeof AppCompaniesNewRoute
   '/app/companies/': typeof AppCompaniesIndexRoute
 }
 
@@ -242,6 +261,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/verify'
     | '/app/companies/$companySlug'
+    | '/app/companies/new'
     | '/app/companies'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -253,6 +273,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/verify'
     | '/app/companies/$companySlug'
+    | '/app/companies/new'
     | '/app/companies'
   id:
     | '__root__'
@@ -265,6 +286,7 @@ export interface FileRouteTypes {
     | '/(auth)/register'
     | '/(auth)/verify'
     | '/app/companies/$companySlug'
+    | '/app/companies/new'
     | '/app/companies/'
   fileRoutesById: FileRoutesById
 }
@@ -317,6 +339,7 @@ export const routeTree = rootRoute
       "filePath": "app/route.tsx",
       "children": [
         "/app/companies/$companySlug",
+        "/app/companies/new",
         "/app/companies/"
       ]
     },
@@ -340,6 +363,10 @@ export const routeTree = rootRoute
     },
     "/app/companies/$companySlug": {
       "filePath": "app/companies/$companySlug/route.tsx",
+      "parent": "/app"
+    },
+    "/app/companies/new": {
+      "filePath": "app/companies/new.tsx",
       "parent": "/app"
     },
     "/app/companies/": {

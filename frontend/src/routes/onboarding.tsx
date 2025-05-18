@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { siteConfig } from "@shared/constants";
 import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { Loader2, Upload } from "lucide-react";
@@ -37,7 +38,10 @@ export const Route = createFileRoute("/onboarding")({
         const response = await apiClient.companies.active.$get();
 
         if (!response.ok) {
-          throw new Error((await response.json()).message);
+          const error = await response.json();
+          throw new Error(error.message, {
+            cause: error,
+          });
         }
 
         const { data } = await response.json();
@@ -46,13 +50,13 @@ export const Route = createFileRoute("/onboarding")({
     });
 
     if (activeCompanyData?.company) {
-      throw redirect({
-        to: "/app/companies/$companySlug",
-        params: {
-          companySlug:
-            activeCompanyData.company.slug || activeCompanyData.company.id,
-        },
-      });
+      //   throw redirect({
+      //     to: "/app/companies/$companySlug",
+      //     params: {
+      //       companySlug:
+      //         activeCompanyData.company.slug || activeCompanyData.company.id,
+      //     },
+      //   });
     }
   },
 });
@@ -66,6 +70,9 @@ const formSchema = z.object({
     .min(2, {
       message: "Slug must be at least 2 characters.",
     })
+    .max(15, {
+      message: "Slug must be at most 15 characters.",
+    })
     .regex(/^[a-z0-9-]+$/, {
       message: "Slug can only contain lowercase letters, numbers, and hyphens.",
     }),
@@ -77,8 +84,8 @@ type CompanyFormValues = z.infer<typeof formSchema>;
 function Onboarding() {
   const navigate = useNavigate();
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
+  const [isSlugManuallyEdited, setIsSlugManuallyEdited] = useState(false);
 
-  // Form setup
   const form = useForm<CompanyFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -88,12 +95,10 @@ function Onboarding() {
     },
   });
 
-  // Hooks
   const { uploadLogo, finalizeLogo } = useLogoUpload();
   const { mutate: createCompany, isPending: isCreating } = useCreateCompany();
 
-  // Watch for slug changes
-  form.watch("slug"); // This is needed for form reactivity
+  form.watch("slug");
 
   console.log(form.getValues("logo"));
 
@@ -105,19 +110,20 @@ function Onboarding() {
       .replace(/(^-|-$)/g, "");
   };
 
-  // Handle company name change
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const name = e.target.value;
     form.setValue("name", name);
 
-    // Only auto-generate slug if the slug field is empty or hasn't been manually modified
-    const currentSlug = form.getValues("slug");
-    if (!currentSlug || currentSlug === generateSlug(form.getValues("name"))) {
+    // Only auto-generate slug if it hasn't been manually modified
+    if (!isSlugManuallyEdited) {
       form.setValue("slug", generateSlug(name));
     }
   };
 
-  // Handle logo upload
+  const handleSlugChange = () => {
+    setIsSlugManuallyEdited(true);
+  };
+
   const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -169,6 +175,19 @@ function Onboarding() {
           const companySlug = result.data?.company?.slug || companyId;
           if (companySlug) {
             navigate({ to: `/app/companies/${companySlug}` });
+          }
+        },
+        onError: (error: Error) => {
+          const apiError = error.cause as {
+            code?: string;
+          };
+          if (apiError?.code === "COMPANY_SLUG_EXISTS") {
+            form.setError("slug", {
+              type: "manual",
+              message: error.message,
+            });
+          } else {
+            toast.error("Failed to create company. Please try again.");
           }
         },
       }
@@ -244,9 +263,9 @@ function Onboarding() {
                     />
 
                     {logoPreview && (
-                      <button
+                      <Button
                         type="button"
-                        className="ml-4 text-sm text-gray-500 hover:text-gray-700"
+                        variant="link"
                         onClick={async () => {
                           const fileId = form.getValues("logo");
                           if (fileId) {
@@ -264,7 +283,7 @@ function Onboarding() {
                         }}
                       >
                         Remove
-                      </button>
+                      </Button>
                     )}
                   </div>
                   <p className="text-xs text-muted-foreground">
@@ -304,19 +323,25 @@ function Onboarding() {
                     <FormLabel>Workspace handle</FormLabel>
                     <FormControl>
                       <div className="flex items-center">
-                        <div className="bg-muted px-3 py-2 rounded-l-md text-muted-foreground text-sm border border-r-0 border-input">
-                          app.achievelog.com/
+                        <div className="bg-muted px-3 py-2 rounded-l-md text-muted-foreground text-sm border border-r-0 border-input whitespace-nowrap">
+                          {siteConfig.url}/
                         </div>
                         <Input
                           className="rounded-l-none"
                           placeholder="my-workspace"
                           fullWidth
                           {...field}
+                          onChange={(e) => {
+                            field.onChange(e);
+                            handleSlugChange();
+                          }}
                         />
                       </div>
                     </FormControl>
                     <FormDescription>
-                      This will be your company's unique URL.
+                      This will be your company's unique URL. You can use the
+                      same handle for different companies if they belong to
+                      different accounts.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
