@@ -1,6 +1,7 @@
 import { Link, useNavigate, useParams } from "@tanstack/react-router";
-import { Briefcase, ChevronDown, Plus } from "lucide-react";
+import { ChevronDown, Plus } from "lucide-react";
 
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -50,15 +51,21 @@ export const CompanySwitcher: React.FC = () => {
             <DropdownMenuTrigger asChild>
               <Button
                 variant="ghost"
+                size="lg"
                 className={cn(
-                  "w-full text-left justify-between px-2 py-2",
-                  isCollapsed && "justify-center -ml-2.5"
+                  "w-full text-left justify-between pl-0.5 my-1 py-4",
+                  isCollapsed && "justify-center -ml-0.5 pr-1"
                 )}
               >
-                <Briefcase className="h-5 w-5" />
+                <Avatar className="h-9 w-9 rounded-sm">
+                  <AvatarImage src={activeCompany?.logo ?? ""} />
+                  <AvatarFallback className="rounded-sm">
+                    {activeCompany?.name?.slice(0, 2).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
                 {!isCollapsed && (
                   <>
-                    <span className="flex-grow ml-2 truncate">
+                    <span className="flex-grow ml-2 truncate text-foreground">
                       {activeCompany?.name || "Select Company"}
                     </span>
                     <ChevronDown className="h-4 w-4" />
