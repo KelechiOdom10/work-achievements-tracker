@@ -23,7 +23,7 @@ export function useFileUpload() {
   const uploadFile = useMutation<UploadResponse, Error, File>({
     mutationFn: async (file) => {
       const formData = new FormData();
-      const upload_preset = "ml_default";
+      const upload_preset = "achievements_preset";
       formData.append("file", file);
       formData.append("upload_preset", upload_preset);
 

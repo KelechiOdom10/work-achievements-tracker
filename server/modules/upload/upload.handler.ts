@@ -86,7 +86,7 @@ export const uploadTempFileHandler: AppRouteHandler<
     const preset =
       typeof upload_preset === "string" && upload_preset.trim() !== ""
         ? upload_preset.trim()
-        : "ml_default";
+        : "achievements_preset";
 
     const uploadOptions = {
       folder: "temp",
