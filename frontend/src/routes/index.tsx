@@ -1,4 +1,4 @@
-import { createFileRoute, useLocation } from "@tanstack/react-router";
+import { createFileRoute, redirect, useLocation } from "@tanstack/react-router";
 import { useEffect } from "react";
 
 import { FeaturesSection } from "@/components/landing/FeaturesSection";
@@ -10,6 +10,11 @@ import { GuestLayout } from "@/components/layouts/GuestLayout";
 
 export const Route = createFileRoute("/")({
   component: Index,
+  beforeLoad({ context }) {
+    if (context.auth?.isAuthenticated) {
+      return redirect({ to: "/app" });
+    }
+  },
 });
 
 function Index() {

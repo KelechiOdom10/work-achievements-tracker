@@ -35,8 +35,11 @@ export const CompanySwitcher: React.FC = () => {
     companyId: string,
     companySlug: string
   ) => {
-    await switchCompany.mutateAsync(companyId);
-    navigate({ to: `/app/companies/${companySlug}` });
+    await switchCompany.mutateAsync(companyId, {
+      onSuccess: () => {
+        navigate({ to: `/app/companies/${companySlug}` });
+      },
+    });
   };
 
   return (

@@ -1,9 +1,11 @@
 import { siteConfig } from "@shared/constants";
-import { Link, useRouter } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { Sparkles } from "lucide-react";
 
-import { Button, buttonVariants } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
+
+import { buttonVariants } from "../ui/button";
+import { UserMenu } from "./UserMenu";
 
 export interface NavProps {
   logoOnly?: boolean;
@@ -16,8 +18,6 @@ export function Nav({
   showAuthLinks = true,
   navLinks,
 }: NavProps) {
-  const router = useRouter();
-  const navigate = router.navigate;
   const { data: session } = authClient.useSession();
 
   return (
@@ -80,18 +80,7 @@ export function Nav({
                 </Link>
               </>
             ) : (
-              <Button
-                onClick={() => {
-                  authClient.signOut().then(() => {
-                    router.invalidate().finally(() => {
-                      navigate({ to: "/" });
-                    });
-                  });
-                }}
-                className={buttonVariants({ variant: "default" })}
-              >
-                Sign out
-              </Button>
+              <UserMenu />
             )}
           </div>
         )}
