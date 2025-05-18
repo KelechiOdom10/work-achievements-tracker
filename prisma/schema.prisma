@@ -97,7 +97,7 @@ model Company {
   achievements Achievement[]
   goals        Goal[]
 
-  @@unique([slug])
+  @@unique([userId, slug])
   @@index([slug])
   @@map("companies")
 }

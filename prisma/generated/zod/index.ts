@@ -899,22 +899,23 @@ export const CompanyOrderByWithRelationInputSchema: z.ZodType<Prisma.CompanyOrde
 export const CompanyWhereUniqueInputSchema: z.ZodType<Prisma.CompanyWhereUniqueInput> = z.union([
   z.object({
     id: z.string().cuid(),
-    slug: z.string()
+    userId_slug: z.lazy(() => CompanyUserIdSlugCompoundUniqueInputSchema)
   }),
   z.object({
     id: z.string().cuid(),
   }),
   z.object({
-    slug: z.string(),
+    userId_slug: z.lazy(() => CompanyUserIdSlugCompoundUniqueInputSchema),
   }),
 ])
 .and(z.object({
   id: z.string().cuid().optional(),
-  slug: z.string().optional(),
+  userId_slug: z.lazy(() => CompanyUserIdSlugCompoundUniqueInputSchema).optional(),
   AND: z.union([ z.lazy(() => CompanyWhereInputSchema),z.lazy(() => CompanyWhereInputSchema).array() ]).optional(),
   OR: z.lazy(() => CompanyWhereInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => CompanyWhereInputSchema),z.lazy(() => CompanyWhereInputSchema).array() ]).optional(),
   name: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
+  slug: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   logo: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
   createdAt: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   metadata: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
@@ -2419,6 +2420,11 @@ export const VerificationMinOrderByAggregateInputSchema: z.ZodType<Prisma.Verifi
   expiresAt: z.lazy(() => SortOrderSchema).optional(),
   createdAt: z.lazy(() => SortOrderSchema).optional(),
   updatedAt: z.lazy(() => SortOrderSchema).optional()
+}).strict();
+
+export const CompanyUserIdSlugCompoundUniqueInputSchema: z.ZodType<Prisma.CompanyUserIdSlugCompoundUniqueInput> = z.object({
+  userId: z.string(),
+  slug: z.string()
 }).strict();
 
 export const CompanyCountOrderByAggregateInputSchema: z.ZodType<Prisma.CompanyCountOrderByAggregateInput> = z.object({

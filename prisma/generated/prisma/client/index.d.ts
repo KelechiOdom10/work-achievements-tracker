@@ -13709,11 +13709,12 @@ export namespace Prisma {
 
   export type CompanyWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    slug?: string
+    userId_slug?: CompanyUserIdSlugCompoundUniqueInput
     AND?: CompanyWhereInput | CompanyWhereInput[]
     OR?: CompanyWhereInput[]
     NOT?: CompanyWhereInput | CompanyWhereInput[]
     name?: StringFilter<"Company"> | string
+    slug?: StringNullableFilter<"Company"> | string | null
     logo?: StringNullableFilter<"Company"> | string | null
     createdAt?: DateTimeFilter<"Company"> | Date | string
     metadata?: StringNullableFilter<"Company"> | string | null
@@ -13721,7 +13722,7 @@ export namespace Prisma {
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     achievements?: AchievementListRelationFilter
     goals?: GoalListRelationFilter
-  }, "id" | "slug">
+  }, "id" | "userId_slug">
 
   export type CompanyOrderByWithAggregationInput = {
     id?: SortOrder
@@ -15194,6 +15195,11 @@ export namespace Prisma {
     expiresAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type CompanyUserIdSlugCompoundUniqueInput = {
+    userId: string
+    slug: string
   }
 
   export type CompanyCountOrderByAggregateInput = {
