@@ -1,6 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { Loader2, Upload } from "lucide-react";
 import { useState } from "react";
@@ -9,7 +8,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 import { GuestLayout } from "@/components/layouts/GuestLayout";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -20,35 +19,68 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { companyKeys, useCreateCompany } from "@/hooks/use-companies";
+import { useLogoUpload } from "@/hooks/use-file-upload";
 import { apiClient } from "@/lib/api-client";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/onboarding")({
   component: Onboarding,
+  beforeLoad: async ({ context, location }) => {
+    if (!context.auth?.isAuthenticated) {
+      throw redirect({ to: "/login", search: { next: location.pathname } });
+    }
+
+    const activeCompanyData = await context.queryClient.ensureQueryData({
+      queryKey: companyKeys.active(),
+      queryFn: async () => {
+        const response = await apiClient.companies.active.$get();
+
+        if (!response.ok) {
+          throw new Error((await response.json()).message);
+        }
+
+        const { data } = await response.json();
+        return data;
+      },
+    });
+
+    if (activeCompanyData?.company) {
+      throw redirect({
+        to: "/app/companies/$companySlug",
+        params: {
+          companySlug:
+            activeCompanyData.company.slug || activeCompanyData.company.id,
+        },
+      });
+    }
+  },
 });
 
-const companyFormSchema = z.object({
-  name: z.string().min(1, "Company name is required"),
+const formSchema = z.object({
+  name: z.string().min(2, {
+    message: "Company name must be at least 2 characters.",
+  }),
   slug: z
     .string()
-    .min(1, "Company URL is required")
-    .max(10, "Company URL must be at most 10 characters long")
-    .regex(
-      /^[a-z0-9-]+$/,
-      "Only lowercase letters, numbers, and hyphens are allowed"
-    ),
+    .min(2, {
+      message: "Slug must be at least 2 characters.",
+    })
+    .regex(/^[a-z0-9-]+$/, {
+      message: "Slug can only contain lowercase letters, numbers, and hyphens.",
+    }),
   logo: z.string().optional(),
 });
 
-type CompanyFormValues = z.infer<typeof companyFormSchema>;
+type CompanyFormValues = z.infer<typeof formSchema>;
 
 function Onboarding() {
   const navigate = useNavigate();
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
 
-  // Initialize form
+  // Form setup
   const form = useForm<CompanyFormValues>({
-    resolver: zodResolver(companyFormSchema),
+    resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
       slug: "",
@@ -56,70 +88,91 @@ function Onboarding() {
     },
   });
 
-  // Watch company name to generate slug suggestion
-  const companyName = form.watch("name");
+  // Hooks
+  const { uploadLogo, finalizeLogo } = useLogoUpload();
+  const { mutate: createCompany, isPending: isCreating } = useCreateCompany();
+
+  // Watch for slug changes
+  form.watch("slug"); // This is needed for form reactivity
+
+  console.log(form.getValues("logo"));
 
   // Generate slug from company name
   const generateSlug = (name: string) => {
     return name
       .toLowerCase()
-      .replace(/\s+/g, "-")
-      .replace(/[^a-z0-9-]/g, "");
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "");
   };
 
-  // Update slug when company name changes
-  const updateSlug = () => {
-    if (companyName) {
-      form.setValue("slug", generateSlug(companyName));
+  // Handle company name change
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const name = e.target.value;
+    form.setValue("name", name);
+
+    // Only auto-generate slug if the slug field is empty or hasn't been manually modified
+    const currentSlug = form.getValues("slug");
+    if (!currentSlug || currentSlug === generateSlug(form.getValues("name"))) {
+      form.setValue("slug", generateSlug(name));
     }
   };
 
   // Handle logo upload
-  const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      // For now, just create a preview URL
-      // In a real app, you'd upload this to a server and get back a URL
+    if (!file) return;
+
+    try {
+      // Create a preview
       const reader = new FileReader();
       reader.onload = () => {
         if (typeof reader.result === "string") {
           setLogoPreview(reader.result);
-          form.setValue("logo", reader.result);
         }
       };
       reader.readAsDataURL(file);
+
+      // Upload the file
+      const result = await uploadLogo(file);
+      form.setValue("logo", result?.fileId || "");
+    } catch (error) {
+      console.error("Logo upload failed:", error);
+      toast.error("Failed to upload logo. Please try again.");
     }
   };
 
-  const createCompanyMutation = useMutation({
-    mutationFn: async (data: CompanyFormValues) => {
-      const response = await apiClient.companies.$post({
-        json: data,
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || "Failed to create company");
-      }
-
-      return await response.json();
-    },
-    onSuccess: ({ data }) => {
-      toast.success("Company created successfully!");
-
-      // Redirect to the company dashboard
-      navigate({
-        to: `/app/companies/${data?.company?.slug || data?.company?.id}`,
-      });
-    },
-    onError: (error) => {
-      toast.error(error.message || "Failed to create company");
-    },
-  });
-
   // Form submission handler
-  const onSubmit = (data: CompanyFormValues) => {
-    createCompanyMutation.mutate(data);
+  const onSubmit = async (data: CompanyFormValues) => {
+    createCompany(
+      {
+        name: data.name,
+        slug: data.slug,
+        logo: data.logo || "",
+      },
+      {
+        onSuccess: async (result) => {
+          const companyId = result.data?.company?.id;
+          const logoId = data.logo;
+
+          // If we have both company ID and logo, finalize the upload
+          if (companyId && logoId) {
+            try {
+              await finalizeLogo(logoId, companyId);
+              // The company update is handled by the finalizeLogo function
+            } catch (error) {
+              console.error("Logo finalization failed:", error);
+              // Continue even if logo finalization fails
+            }
+          }
+
+          // Redirect to the company dashboard
+          const companySlug = result.data?.company?.slug || companyId;
+          if (companySlug) {
+            navigate({ to: `/app/companies/${companySlug}` });
+          }
+        },
+      }
+    );
   };
 
   return (
@@ -170,16 +223,18 @@ function Onboarding() {
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <Label
-                      htmlFor="logo-upload"
-                      className={buttonVariants({
-                        variant: "outline",
-                        className:
-                          "cursor-pointer hover:bg-transparent hover:text-primary w-32",
-                      })}
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className={cn(
+                        "cursor-pointer hover:bg-transparent hover:text-primary w-32"
+                      )}
+                      onClick={() =>
+                        document.getElementById("logo-upload")?.click()
+                      }
                     >
                       {logoPreview ? "Replace" : "Upload"} image
-                    </Label>
+                    </Button>
                     <input
                       id="logo-upload"
                       type="file"
@@ -188,18 +243,29 @@ function Onboarding() {
                       onChange={handleLogoUpload}
                     />
 
-                    <Button
-                      variant="link"
-                      disabled={!logoPreview}
-                      onClick={() => {
-                        if (!logoPreview) return;
-
-                        setLogoPreview(null);
-                        form.setValue("logo", "");
-                      }}
-                    >
-                      Remove
-                    </Button>
+                    {logoPreview && (
+                      <button
+                        type="button"
+                        className="ml-4 text-sm text-gray-500 hover:text-gray-700"
+                        onClick={async () => {
+                          const fileId = form.getValues("logo");
+                          if (fileId) {
+                            // Delete the temporary file from the server
+                            try {
+                              await apiClient.uploads.temp[":fileId"].$delete({
+                                param: { fileId },
+                              });
+                            } catch (error) {
+                              console.error("Error deleting temp file:", error);
+                            }
+                          }
+                          setLogoPreview(null);
+                          form.setValue("logo", "");
+                        }}
+                      >
+                        Remove
+                      </button>
+                    )}
                   </div>
                   <p className="text-xs text-muted-foreground">
                     *png, *jpeg files up to 10MB at least 400px by 400px
@@ -220,13 +286,7 @@ function Onboarding() {
                         {...field}
                         onChange={(e) => {
                           field.onChange(e);
-                          // Update slug when name changes if user hasn't manually edited slug
-                          if (
-                            !form.getValues("slug") ||
-                            form.getValues("slug") === generateSlug(field.value)
-                          ) {
-                            updateSlug();
-                          }
+                          handleNameChange(e);
                         }}
                       />
                     </FormControl>
@@ -263,18 +323,14 @@ function Onboarding() {
                 )}
               />
 
-              <Button
-                type="submit"
-                className="w-full"
-                disabled={createCompanyMutation.isPending}
-              >
-                {createCompanyMutation.isPending ? (
+              <Button type="submit" className="w-full" disabled={isCreating}>
+                {isCreating ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     Creating...
                   </>
                 ) : (
-                  "Continue"
+                  "Create Company"
                 )}
               </Button>
             </form>

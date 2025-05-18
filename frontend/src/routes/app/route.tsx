@@ -1,5 +1,6 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 
+import { companyKeys } from "@/hooks/use-companies";
 import { apiClient } from "@/lib/api-client";
 
 export const Route = createFileRoute("/app")({
@@ -16,7 +17,7 @@ export const Route = createFileRoute("/app")({
 
     try {
       const activeCompanyData = await context.queryClient.ensureQueryData({
-        queryKey: ["companies"],
+        queryKey: companyKeys.active(),
         queryFn: async () => {
           const response = await apiClient.companies.active.$get();
 
