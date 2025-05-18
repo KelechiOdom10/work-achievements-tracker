@@ -29,4 +29,7 @@ export default defineConfig(({ mode }) => ({
       "~": path.resolve(__dirname, "../server"),
     },
   },
+  esbuild: {
+    drop: ["console", "debugger"],
+  },
 }));

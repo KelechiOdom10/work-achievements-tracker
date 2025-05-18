@@ -79,6 +79,56 @@ export const getUserCompaniesRoute = createRoute({
   middleware: [requireAuth],
 });
 
+// GET /companies/:companySlug
+export const getCompanyRoute = createRoute({
+  method: "get",
+  path: "/{companySlug}",
+  description: "Get a company by slug",
+  tags: ["Company"],
+  request: {
+    params: z.object({ companySlug: z.string() }).openapi({
+      param: {
+        name: "companySlug",
+        in: "path",
+      },
+      example: {
+        companySlug: "1",
+      },
+    }),
+  },
+  responses: {
+    200: {
+      description: "Company found",
+      content: {
+        "application/json": {
+          schema: SuccessResponseSchema(
+            z.object({ company: CompanySchema })
+          ).openapi("CompanySuccessResponse"),
+        },
+      },
+    },
+    401: {
+      description: "Unauthorized",
+      content: {
+        "application/json": { schema: ErrorResponseSchema },
+      },
+    },
+    404: {
+      description: "Company not found",
+      content: {
+        "application/json": { schema: ErrorResponseSchema },
+      },
+    },
+    500: {
+      description: "Internal server error",
+      content: {
+        "application/json": { schema: ErrorResponseSchema },
+      },
+    },
+  },
+  middleware: [requireAuth],
+});
+
 // POST /companies
 export const createCompanyRoute = createRoute({
   method: "post",
@@ -335,6 +385,7 @@ export const setActiveCompanyRoute = createRoute({
 });
 
 export type GetCompaniesRoute = typeof getUserCompaniesRoute;
+export type GetCompanyRoute = typeof getCompanyRoute;
 export type CreateCompanyRoute = typeof createCompanyRoute;
 export type UpdateCompanyRoute = typeof updateCompanyRoute;
 export type DeleteCompanyRoute = typeof deleteCompanyRoute;

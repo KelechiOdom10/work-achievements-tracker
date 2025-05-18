@@ -6,6 +6,7 @@ import {
   type DeleteCompanyRoute,
   type GetActiveCompanyRoute,
   type GetCompaniesRoute,
+  type GetCompanyRoute,
   type SetActiveCompanyRoute,
   type UpdateCompanyRoute,
 } from "./company.route";
@@ -38,6 +39,51 @@ export const getUserCompaniesHandler: AppRouteHandler<
       {
         success: false,
         message: "Failed to fetch companies",
+        code: "COMPANY_FETCH_ERROR",
+      },
+      500
+    );
+  }
+};
+
+export const getCompanyHandler: AppRouteHandler<GetCompanyRoute> = async (
+  c
+) => {
+  const user = c.var.user;
+  const { companySlug } = c.req.valid("param");
+
+  try {
+    const company = await prisma.company.findFirst({
+      where: {
+        slug: companySlug,
+        userId: user?.id,
+      },
+    });
+
+    if (!company) {
+      return c.json(
+        {
+          success: false,
+          message: "Company not found",
+          code: "COMPANY_NOT_FOUND",
+        },
+        404
+      );
+    }
+
+    return c.json(
+      {
+        success: true,
+        message: "Company found",
+        data: { company },
+      },
+      200
+    );
+  } catch {
+    return c.json(
+      {
+        success: false,
+        message: "Failed to fetch company",
         code: "COMPANY_FETCH_ERROR",
       },
       500

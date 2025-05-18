@@ -58,28 +58,27 @@ export function useCompany(id?: string) {
   });
 }
 
-export function useCompanyBySlug(slug?: string) {
-  return useQuery({
-    queryKey: companyKeys.bySlug(slug || ""),
+export const getCompanyBySlugOptions = (slug: string) =>
+  queryOptions({
+    queryKey: companyKeys.bySlug(slug),
     queryFn: async () => {
-      if (!slug) return null;
-      const response = await apiClient.companies.$get({
-        query: { where: { slug } },
+      const response = await apiClient.companies[":companySlug"].$get({
+        param: { companySlug: slug },
       });
+
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(
-          error.message ?? `Failed to fetch company with slug: ${slug}`,
-          {
-            cause: error,
-          }
-        );
+        console.error(error);
+        return null;
       }
       const { data } = await response.json();
-      return data?.companies?.[0] || null;
+      return data?.company;
     },
     enabled: !!slug,
   });
+
+export function useCompanyBySlug(slug?: string) {
+  return useQuery(getCompanyBySlugOptions(slug || ""));
 }
 
 export function useCreateCompany() {
