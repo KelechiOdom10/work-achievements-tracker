@@ -179,7 +179,11 @@ export const getUserActiveCompanyHandler: AppRouteHandler<
   GetActiveCompanyRoute
 > = async (c) => {
   const user = c.var.user;
-  const session = c.var.session;
+  const sessionId = c.var.session?.id;
+
+  const session = await prisma.session.findUnique({
+    where: { id: sessionId },
+  });
 
   try {
     // Check if user has an active company in session
