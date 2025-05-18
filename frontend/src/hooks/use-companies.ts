@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  queryOptions,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { toast } from "sonner";
 
 import { apiClient } from "@/lib/api-client";
@@ -245,21 +250,23 @@ export function useSwitchCompany() {
   });
 }
 
+export const activeCompanyQueryOptions = queryOptions({
+  queryKey: companyKeys.active(),
+  queryFn: async () => {
+    const response = await apiClient.companies.active.$get();
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message, {
+        cause: error,
+      });
+    }
+
+    const { data } = await response.json();
+    return data;
+  },
+});
+
 export function useActiveCompany() {
-  return useQuery({
-    queryKey: companyKeys.active(),
-    queryFn: async () => {
-      const response = await apiClient.companies.active.$get();
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message, {
-          cause: error,
-        });
-      }
-
-      const { data } = await response.json();
-      return data;
-    },
-  });
+  return useQuery(activeCompanyQueryOptions);
 }

@@ -1,7 +1,6 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 
-import { companyKeys } from "@/hooks/use-companies";
-import { apiClient } from "@/lib/api-client";
+import { activeCompanyQueryOptions } from "@/hooks/use-companies";
 
 export const Route = createFileRoute("/app")({
   component: RouteComponent,
@@ -15,22 +14,9 @@ export const Route = createFileRoute("/app")({
       });
     }
 
-    const activeCompanyData = await context.queryClient.ensureQueryData({
-      queryKey: companyKeys.active(),
-      queryFn: async () => {
-        const response = await apiClient.companies.active.$get();
-
-        if (!response.ok) {
-          const error = await response.json();
-          throw new Error(error.message, {
-            cause: error,
-          });
-        }
-
-        const { data } = await response.json();
-        return data;
-      },
-    });
+    const activeCompanyData = await context.queryClient.ensureQueryData(
+      activeCompanyQueryOptions
+    );
 
     console.log("Active company data", activeCompanyData);
 
@@ -55,8 +41,6 @@ export const Route = createFileRoute("/app")({
           },
         });
       }
-    } else {
-      throw redirect({ to: "/onboarding" });
     }
   },
 });

@@ -20,7 +20,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { companyKeys, useCreateCompany } from "@/hooks/use-companies";
+import {
+  activeCompanyQueryOptions,
+  useCreateCompany,
+} from "@/hooks/use-companies";
 import { useLogoUpload } from "@/hooks/use-file-upload";
 import { apiClient } from "@/lib/api-client";
 import { cn } from "@/lib/utils";
@@ -32,22 +35,9 @@ export const Route = createFileRoute("/onboarding")({
       throw redirect({ to: "/login", search: { next: location.pathname } });
     }
 
-    const activeCompanyData = await context.queryClient.ensureQueryData({
-      queryKey: companyKeys.active(),
-      queryFn: async () => {
-        const response = await apiClient.companies.active.$get();
-
-        if (!response.ok) {
-          const error = await response.json();
-          throw new Error(error.message, {
-            cause: error,
-          });
-        }
-
-        const { data } = await response.json();
-        return data;
-      },
-    });
+    const activeCompanyData = await context.queryClient.ensureQueryData(
+      activeCompanyQueryOptions
+    );
 
     if (activeCompanyData?.company) {
       //   throw redirect({
@@ -147,6 +137,22 @@ function Onboarding() {
     }
   };
 
+  const handleDeleteLogo = async () => {
+    const fileId = form.getValues("logo");
+    if (fileId) {
+      // Delete the temporary file from the server
+      try {
+        await apiClient.uploads.temp[":fileId"].$delete({
+          param: { fileId },
+        });
+      } catch (error) {
+        console.error("Error deleting temp file:", error);
+      }
+    }
+    setLogoPreview(null);
+    form.setValue("logo", "");
+  };
+
   // Form submission handler
   const onSubmit = async (data: CompanyFormValues) => {
     createCompany(
@@ -180,14 +186,19 @@ function Onboarding() {
         onError: (error: Error) => {
           const apiError = error.cause as {
             code?: string;
+            isFormError?: boolean;
           };
-          if (apiError?.code === "COMPANY_SLUG_EXISTS") {
-            form.setError("slug", {
-              type: "manual",
-              message: error.message,
-            });
-          } else {
-            toast.error("Failed to create company. Please try again.");
+
+          console.log(apiError);
+
+          if (apiError?.isFormError) {
+            if (apiError?.code === "COMPANY_SLUG_EXISTS") {
+              form.setError("slug", {
+                type: "manual",
+                message: error.message,
+              });
+              return;
+            }
           }
         },
       }
@@ -266,28 +277,14 @@ function Onboarding() {
                       <Button
                         type="button"
                         variant="link"
-                        onClick={async () => {
-                          const fileId = form.getValues("logo");
-                          if (fileId) {
-                            // Delete the temporary file from the server
-                            try {
-                              await apiClient.uploads.temp[":fileId"].$delete({
-                                param: { fileId },
-                              });
-                            } catch (error) {
-                              console.error("Error deleting temp file:", error);
-                            }
-                          }
-                          setLogoPreview(null);
-                          form.setValue("logo", "");
-                        }}
+                        onClick={handleDeleteLogo}
                       >
                         Remove
                       </Button>
                     )}
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    *png, *jpeg files up to 10MB at least 400px by 400px
+                    *png, *jpeg files up to 5MB at least 400px by 400px
                   </p>
                 </div>
               </div>

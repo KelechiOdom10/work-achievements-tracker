@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate, useParams } from "@tanstack/react-router";
 import { Briefcase, ChevronDown, Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -15,25 +15,28 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import {
-  useActiveCompany,
-  useCompanies,
-  useSwitchCompany,
-} from "@/hooks/use-companies";
+import { useCompanies, useSwitchCompany } from "@/hooks/use-companies";
 import { cn } from "@/lib/utils";
 
 export const CompanySwitcher: React.FC = () => {
+  const { companySlug } = useParams({ strict: false });
+  const navigate = useNavigate();
   const { state } = useSidebar();
   const isCollapsed = state === "collapsed";
-  const { data: activeCompanyData } = useActiveCompany();
   const { data: companiesData } = useCompanies();
   const switchCompany = useSwitchCompany();
 
-  const activeCompany = activeCompanyData?.company;
   const companies = companiesData?.data?.companies ?? [];
+  const activeCompany = companies.find(
+    (company) => company.slug === companySlug
+  );
 
-  const handleCompanyChange = async (companyId: string) => {
+  const handleCompanyChange = async (
+    companyId: string,
+    companySlug: string
+  ) => {
     await switchCompany.mutateAsync(companyId);
+    navigate({ to: `/app/companies/${companySlug}` });
   };
 
   return (
@@ -71,7 +74,7 @@ export const CompanySwitcher: React.FC = () => {
           {companies.map((company) => (
             <DropdownMenuItem
               key={company.id}
-              onClick={() => handleCompanyChange(company.id)}
+              onClick={() => handleCompanyChange(company.id, company.slug)}
               className={cn(
                 "cursor-pointer",
                 company.id === activeCompany?.id && "bg-input"

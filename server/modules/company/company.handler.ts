@@ -67,6 +67,7 @@ export const createCompanyHandler: AppRouteHandler<CreateCompanyRoute> = async (
             message:
               "You already have a company with this handle. Please choose a different one.",
             code: "COMPANY_SLUG_EXISTS",
+            isFormError: true,
           },
           400
         );
