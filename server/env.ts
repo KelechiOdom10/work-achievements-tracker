@@ -28,6 +28,10 @@ const EnvSchema = z.object({
     .default("info"),
 
   PLUNK_API_KEY: z.string(),
+
+  CLOUDINARY_CLOUD_NAME: z.string(),
+  CLOUDINARY_API_KEY: z.string(),
+  CLOUDINARY_API_SECRET: z.string(),
 });
 
 export type env = z.infer<typeof EnvSchema>;

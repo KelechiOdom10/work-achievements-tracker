@@ -3,6 +3,7 @@ import { createHonoApp } from "./lib/create-app";
 import { achievementRoute } from "./modules/achievement";
 import { authRoute } from "./modules/auth";
 import { companyRoute } from "./modules/company";
+import { uploadRoute } from "./modules/upload";
 import { userRoute } from "./modules/user";
 
 const app = createHonoApp();
@@ -16,7 +17,13 @@ app.get("/", (c) => {
   });
 });
 
-const routes = [authRoute, userRoute, achievementRoute, companyRoute] as const;
+const routes = [
+  authRoute,
+  userRoute,
+  achievementRoute,
+  companyRoute,
+  uploadRoute,
+] as const;
 
 routes.forEach((route) => {
   app.route("/api", route);
