@@ -6,12 +6,8 @@ cloudinary.config({
   cloud_name: env.CLOUDINARY_CLOUD_NAME,
   api_key: env.CLOUDINARY_API_KEY,
   api_secret: env.CLOUDINARY_API_SECRET,
-  secure: true,
-  // Enable unsigned uploads with a default preset
-  upload_preset: "ml_default", // This should match a preset you've created in your Cloudinary settings
 });
 
-// Define the response type based on Cloudinary's API
 type CloudinaryUploadResponse = {
   public_id: string;
   version: number;
@@ -30,32 +26,46 @@ type CloudinaryUploadResponse = {
 
 /**
  * Upload a file to Cloudinary
- * @param file The file buffer to upload
+ * @param buffer The file buffer to upload
  * @param options Upload options
  * @returns The upload result
  */
 export const uploadToCloudinary = async (
   buffer: Buffer,
-  options: UploadApiOptions
+  options: UploadApiOptions & { upload_preset: string }
 ) => {
+  const uploadOptions: UploadApiOptions = {
+    folder: options.folder,
+    public_id: options.public_id,
+    resource_type: options.resource_type || "auto",
+    upload_preset: options.upload_preset,
+    tags: options.tags,
+    overwrite: options.overwrite ?? false,
+    invalidate: options.invalidate ?? true,
+  };
+
   return new Promise<CloudinaryUploadResponse>((resolve, reject) => {
+    // Using upload_stream which is ideal for buffer uploads
     const uploadStream = cloudinary.uploader.upload_stream(
-      {
-        folder: options.folder,
-        public_id: options.public_id,
-        resource_type: options.resource_type || "image",
-        upload_preset: options.upload_preset,
-        tags: options.tags,
-        overwrite: options.overwrite,
-        invalidate: options.invalidate,
-      },
+      uploadOptions,
       (error, result) => {
-        if (error) return reject(error);
-        if (!result) return reject(new Error("Upload failed"));
+        if (error) {
+          console.error("Cloudinary upload error:", error);
+          return reject(error);
+        }
+        if (!result)
+          return reject(new Error("Upload failed: No result returned"));
         resolve(result);
       }
     );
 
+    // Handle potential stream errors
+    uploadStream.on("error", (error) => {
+      console.error("Stream error during upload:", error);
+      reject(error);
+    });
+
+    // Pipe the buffer to the upload stream
     uploadStream.end(buffer);
   });
 };

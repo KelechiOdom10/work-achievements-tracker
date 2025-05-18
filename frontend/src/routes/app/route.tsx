@@ -18,8 +18,6 @@ export const Route = createFileRoute("/app")({
       activeCompanyQueryOptions
     );
 
-    console.log("Active company data", activeCompanyData);
-
     if (!activeCompanyData) {
       throw redirect({ to: "/onboarding" });
     }

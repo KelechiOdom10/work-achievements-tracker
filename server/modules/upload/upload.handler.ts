@@ -34,7 +34,10 @@ export const uploadTempFileHandler: AppRouteHandler<
 
   try {
     // Parse the multipart form data
-    const { file } = await c.req.parseBody();
+    const { file, upload_preset } = await c.req.parseBody();
+
+    console.log("upload_preset", upload_preset);
+    console.log("file", file);
 
     if (!file || !(file instanceof File)) {
       return c.json(
@@ -59,13 +62,13 @@ export const uploadTempFileHandler: AppRouteHandler<
       );
     }
 
-    // Validate file size (max 10MB)
-    const MAX_SIZE = 10 * 1024 * 1024; // 10MB
+    // Validate file size (max 5MB)
+    const MAX_SIZE = 5 * 1024 * 1024; // 5MB
     if (file.size > MAX_SIZE) {
       return c.json(
         {
           success: false,
-          message: "File size exceeds the 10MB limit",
+          message: "File size exceeds the 5MB limit",
           code: "FILE_TOO_LARGE",
         },
         400
@@ -79,11 +82,17 @@ export const uploadTempFileHandler: AppRouteHandler<
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
+    // Ensure upload_preset is always set and valid
+    const preset =
+      typeof upload_preset === "string" && upload_preset.trim() !== ""
+        ? upload_preset.trim()
+        : "ml_default";
+
     const uploadOptions = {
       folder: "temp",
       public_id: fileId,
       resource_type: "image" as const,
-      upload_preset: "ml_default",
+      upload_preset: preset,
       tags: ["temp", `user_${user?.id}`],
       overwrite: false,
       invalidate: true,

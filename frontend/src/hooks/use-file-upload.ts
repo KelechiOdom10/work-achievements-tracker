@@ -23,13 +23,14 @@ export function useFileUpload() {
   const uploadFile = useMutation<UploadResponse, Error, File>({
     mutationFn: async (file) => {
       const formData = new FormData();
+      const upload_preset = "ml_default";
       formData.append("file", file);
-      formData.append("upload_preset", "ml_default");
+      formData.append("upload_preset", upload_preset);
 
       const response = await apiClient.uploads.temp.$post({
         form: {
-          file: formData.get("file") as File,
-          upload_preset: formData.get("upload_preset") as string,
+          file,
+          upload_preset,
         },
       });
 
