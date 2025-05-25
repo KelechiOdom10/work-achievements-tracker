@@ -53,7 +53,7 @@ function RouteComponent() {
     dashboardData?.achievementCategories?.reduce(
       (sum, category) => sum + category.count,
       0
-    ) || 1; // Avoid division by zero
+    ) || 1;
 
   // Check if user has any data
   const hasNoData =
