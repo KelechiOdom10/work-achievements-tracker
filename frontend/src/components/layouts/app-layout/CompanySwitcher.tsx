@@ -57,7 +57,7 @@ export const CompanySwitcher: React.FC = () => {
                   isCollapsed && "justify-center -ml-0.5 pr-1"
                 )}
               >
-                <Avatar className="h-9 w-9 rounded-sm">
+                <Avatar key={activeCompany?.id} className="h-9 w-9 rounded-sm">
                   <AvatarImage src={activeCompany?.logo ?? ""} />
                   <AvatarFallback className="rounded-sm">
                     {activeCompany?.name?.slice(0, 2).toUpperCase()}

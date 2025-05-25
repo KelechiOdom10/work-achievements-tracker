@@ -84,6 +84,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
           <SidebarFooter className="list-none">
             {session && (
               <NavUser
+                key={session.user.id}
                 user={{
                   name: session.user.name,
                   email: session.user.email,
