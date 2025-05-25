@@ -6,6 +6,7 @@ import {
   type DeleteCompanyRoute,
   type GetActiveCompanyRoute,
   type GetCompaniesRoute,
+  type GetCompanyDashboardRoute,
   type GetCompanyRoute,
   type SetActiveCompanyRoute,
   type UpdateCompanyRoute,
@@ -215,6 +216,153 @@ export const deleteCompanyHandler: AppRouteHandler<DeleteCompanyRoute> = async (
         success: false,
         message: "Failed to delete company",
         code: "COMPANY_DELETE_ERROR",
+      },
+      500
+    );
+  }
+};
+
+export const getCompanyDashboardHandler: AppRouteHandler<
+  GetCompanyDashboardRoute
+> = async (c) => {
+  const user = c.var.user;
+  const { companySlug } = c.req.valid("param");
+
+  try {
+    // Get company
+    const company = await prisma.company.findFirst({
+      where: {
+        slug: companySlug,
+        userId: user?.id,
+      },
+    });
+
+    if (!company) {
+      return c.json(
+        {
+          success: false,
+          message: "Company not found",
+          code: "COMPANY_NOT_FOUND",
+        },
+        404
+      );
+    }
+
+    // Get achievements for the company
+    const achievements = await prisma.achievement.findMany({
+      where: {
+        companyId: company.id,
+        userId: user?.id,
+      },
+      include: {
+        tags: {
+          include: {
+            tag: true,
+          },
+        },
+      },
+    });
+
+    // Get goals for the company
+    const goals = await prisma.goal.findMany({
+      where: {
+        companyId: company.id,
+        userId: user?.id,
+      },
+      include: {
+        achievements: true,
+      },
+    });
+
+    // Calculate total achievements
+    const totalAchievements = achievements.length;
+
+    // Calculate days tracked (days since first achievement or company creation)
+    const firstAchievementDate = achievements.length > 0
+      ? new Date(Math.min(...achievements.map(a => new Date(a.achievedAt).getTime())))
+      : new Date(company.createdAt);
+    const daysTracked = Math.ceil(
+      (new Date().getTime() - firstAchievementDate.getTime()) / (1000 * 60 * 60 * 24)
+    );
+
+    // Calculate average achievements per week
+    const weeksTracked = daysTracked / 7;
+    const avgAchievementsPerWeek = weeksTracked > 0
+      ? parseFloat((totalAchievements / weeksTracked).toFixed(1))
+      : 0;
+
+    // Calculate achievement categories
+    const tagCounts = new Map();
+    achievements.forEach(achievement => {
+      achievement.tags.forEach(tagRel => {
+        const tagName = tagRel.tag.name;
+        tagCounts.set(tagName, (tagCounts.get(tagName) || 0) + 1);
+      });
+    });
+    
+    const achievementCategories = Array.from(tagCounts.entries())
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 5); // Top 5 categories
+
+    // Calculate upcoming milestones (using goals as milestones)
+    const today = new Date();
+    const upcomingMilestones = goals
+      .filter(goal => goal.updatedAt > today) // Only future goals
+      .map(goal => {
+        const daysRemaining = Math.ceil(
+          (new Date(goal.updatedAt).getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
+        );
+        return {
+          id: goal.id,
+          title: goal.title,
+          daysRemaining,
+        };
+      })
+      .sort((a, b) => a.daysRemaining - b.daysRemaining)
+      .slice(0, 3); // Top 3 upcoming milestones
+
+    // Calculate goal progress
+    const goalProgress = goals.map(goal => {
+      // Simple calculation: achievements count / target (assuming 10 achievements = 100%)
+      const targetAchievements = 10;
+      const achievementsCount = goal.achievements.length;
+      const progress = Math.min(100, Math.round((achievementsCount / targetAchievements) * 100));
+      
+      return {
+        id: goal.id,
+        title: goal.title,
+        category: goal.description?.split(' ')[0] || undefined, // Use first word of description as category
+        progress,
+        achievementsCount,
+        targetDate: goal.updatedAt.toISOString(),
+      };
+    });
+
+    const dashboardData = {
+      totalAchievements,
+      daysTracked,
+      avgAchievementsPerWeek,
+      achievementCategories,
+      upcomingMilestones,
+      goalProgress,
+    };
+
+    return c.json(
+      {
+        success: true,
+        message: "Dashboard data fetched",
+        data: { dashboardData },
+      },
+      200
+    );
+  } catch (error) {
+    console.error("Error fetching dashboard data:", error);
+    return c.json(
+      {
+        success: false,
+        message: "Failed to fetch dashboard data",
+        code: "DASHBOARD_FETCH_ERROR",
       },
       500
     );
