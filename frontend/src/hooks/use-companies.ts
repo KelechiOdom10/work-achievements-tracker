@@ -22,6 +22,7 @@ export const companyKeys = {
   details: () => [...companyKeys.all, "detail"] as const,
   detail: (id: string) => [...companyKeys.details(), id] as const,
   bySlug: (slug: string) => [...companyKeys.all, "slug", slug] as const,
+  dashboard: (slug: string) => [...companyKeys.all, "dashboard", slug] as const,
 };
 
 export function useCompanies(filters = {}) {
@@ -71,6 +72,7 @@ export const getCompanyBySlugOptions = (slug: string) =>
         console.error(error);
         return null;
       }
+
       const { data } = await response.json();
       return data?.company;
     },
@@ -268,4 +270,52 @@ export const activeCompanyQueryOptions = queryOptions({
 
 export function useActiveCompany() {
   return useQuery(activeCompanyQueryOptions);
+}
+
+export type DashboardData = {
+  totalAchievements: number;
+  daysTracked: number;
+  avgAchievementsPerWeek: number;
+  achievementCategories: Array<{
+    name: string;
+    count: number;
+  }>;
+  upcomingMilestones: Array<{
+    id: string;
+    title: string;
+    daysRemaining: number;
+  }>;
+  goalProgress: Array<{
+    id: string;
+    title: string;
+    category?: string;
+    progress: number;
+    achievementsCount: number;
+    targetDate?: string;
+  }>;
+};
+
+export const getCompanyDashboardOptions = (slug: string) =>
+  queryOptions({
+    queryKey: companyKeys.dashboard(slug),
+    queryFn: async () => {
+      const response = await apiClient.companies[":companySlug"].dashboard.$get(
+        {
+          param: { companySlug: slug },
+        }
+      );
+
+      if (!response.ok) {
+        const error = await response.json();
+        console.error(error);
+        throw new Error(error.message || "Failed to fetch dashboard data");
+      }
+      const { data } = await response.json();
+      return data?.dashboardData as DashboardData;
+    },
+    enabled: !!slug,
+  });
+
+export function useCompanyDashboard(slug?: string) {
+  return useQuery(getCompanyDashboardOptions(slug || ""));
 }
