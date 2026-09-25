@@ -9,3 +9,6 @@ dist/
 
 # Generated local files
 .DS_Store
+
+# TypeScript incremental build cache
+*.tsbuildinfo
