@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "../ui/card";
 import { Gmail } from "./email-providers/Gmail";
-import { Outlook } from "./email-providers/Outlook";
+import { Outlook } from "./email-providers/outlook";
 
 const providers = [
   {

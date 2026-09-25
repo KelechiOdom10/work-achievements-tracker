@@ -11,36 +11,6 @@ import {
   CompanyWhereInputSchema,
 } from "../../../prisma/generated/zod";
 
-// Dashboard data schema
-const DashboardDataSchema = z.object({
-  totalAchievements: z.number(),
-  daysTracked: z.number(),
-  avgAchievementsPerWeek: z.number(),
-  achievementCategories: z.array(
-    z.object({
-      name: z.string(),
-      count: z.number(),
-    })
-  ),
-  upcomingMilestones: z.array(
-    z.object({
-      id: z.string(),
-      title: z.string(),
-      daysRemaining: z.number(),
-    })
-  ),
-  goalProgress: z.array(
-    z.object({
-      id: z.string(),
-      title: z.string(),
-      category: z.string().optional(),
-      progress: z.number(),
-      achievementsCount: z.number(),
-      targetDate: z.string().optional(),
-    })
-  ),
-});
-
 const requireCompanyOwner = requireOwnership({
   model: "company",
   idParam: "companyId",
@@ -95,56 +65,6 @@ export const getUserCompaniesRoute = createRoute({
     },
     401: {
       description: "Unauthorized",
-      content: {
-        "application/json": { schema: ErrorResponseSchema },
-      },
-    },
-    500: {
-      description: "Internal server error",
-      content: {
-        "application/json": { schema: ErrorResponseSchema },
-      },
-    },
-  },
-  middleware: [requireAuth],
-});
-
-// GET /companies/:companySlug/dashboard
-export const getCompanyDashboardRoute = createRoute({
-  method: "get",
-  path: "/{companySlug}/dashboard",
-  description: "Get dashboard data for a company",
-  tags: ["Company"],
-  request: {
-    params: z.object({ companySlug: z.string() }).openapi({
-      param: {
-        name: "companySlug",
-        in: "path",
-      },
-      example: {
-        companySlug: "acme-inc",
-      },
-    }),
-  },
-  responses: {
-    200: {
-      description: "Dashboard data",
-      content: {
-        "application/json": {
-          schema: SuccessResponseSchema(
-            z.object({ dashboardData: DashboardDataSchema })
-          ).openapi("DashboardDataSuccessResponse"),
-        },
-      },
-    },
-    401: {
-      description: "Unauthorized",
-      content: {
-        "application/json": { schema: ErrorResponseSchema },
-      },
-    },
-    404: {
-      description: "Company not found",
       content: {
         "application/json": { schema: ErrorResponseSchema },
       },
@@ -469,6 +389,5 @@ export type GetCompanyRoute = typeof getCompanyRoute;
 export type CreateCompanyRoute = typeof createCompanyRoute;
 export type UpdateCompanyRoute = typeof updateCompanyRoute;
 export type DeleteCompanyRoute = typeof deleteCompanyRoute;
-export type GetCompanyDashboardRoute = typeof getCompanyDashboardRoute;
 export type GetActiveCompanyRoute = typeof getUserActiveCompanyRoute;
 export type SetActiveCompanyRoute = typeof setActiveCompanyRoute;
