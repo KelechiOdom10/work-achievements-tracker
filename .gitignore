@@ -1,3 +1,14 @@
-# deps
+# Dependencies
 node_modules/
+
+# Build output
+dist/
+
+# Environment
 .env
+
+# Generated local files
+.DS_Store
+
+# TypeScript incremental build cache
+*.tsbuildinfo

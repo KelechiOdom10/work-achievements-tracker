@@ -19,9 +19,10 @@ import { Route as IndexImport } from './routes/index'
 import { Route as authVerifyImport } from './routes/(auth)/verify'
 import { Route as authRegisterImport } from './routes/(auth)/register'
 import { Route as authLoginImport } from './routes/(auth)/login'
-import { Route as AppCompaniesIndexImport } from './routes/app/companies/index'
 import { Route as AppCompaniesNewImport } from './routes/app/companies/new'
 import { Route as AppCompaniesCompanySlugRouteImport } from './routes/app/companies/$companySlug/route'
+import { Route as AppCompaniesCompanySlugIndexImport } from './routes/app/companies/$companySlug/index'
+import { Route as AppCompaniesCompanySlugTimelineImport } from './routes/app/companies/$companySlug/timeline'
 
 // Create/Update Routes
 
@@ -72,12 +73,6 @@ const authLoginRoute = authLoginImport.update({
   getParentRoute: () => authRouteRoute,
 } as any)
 
-const AppCompaniesIndexRoute = AppCompaniesIndexImport.update({
-  id: '/companies/',
-  path: '/companies/',
-  getParentRoute: () => AppRouteRoute,
-} as any)
-
 const AppCompaniesNewRoute = AppCompaniesNewImport.update({
   id: '/companies/new',
   path: '/companies/new',
@@ -89,6 +84,20 @@ const AppCompaniesCompanySlugRouteRoute =
     id: '/companies/$companySlug',
     path: '/companies/$companySlug',
     getParentRoute: () => AppRouteRoute,
+  } as any)
+
+const AppCompaniesCompanySlugIndexRoute =
+  AppCompaniesCompanySlugIndexImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AppCompaniesCompanySlugRouteRoute,
+  } as any)
+
+const AppCompaniesCompanySlugTimelineRoute =
+  AppCompaniesCompanySlugTimelineImport.update({
+    id: '/timeline',
+    path: '/timeline',
+    getParentRoute: () => AppCompaniesCompanySlugRouteRoute,
   } as any)
 
 // Populate the FileRoutesByPath interface
@@ -165,12 +174,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppCompaniesNewImport
       parentRoute: typeof AppRouteImport
     }
-    '/app/companies/': {
-      id: '/app/companies/'
-      path: '/companies'
-      fullPath: '/app/companies'
-      preLoaderRoute: typeof AppCompaniesIndexImport
-      parentRoute: typeof AppRouteImport
+    '/app/companies/$companySlug/timeline': {
+      id: '/app/companies/$companySlug/timeline'
+      path: '/timeline'
+      fullPath: '/app/companies/$companySlug/timeline'
+      preLoaderRoute: typeof AppCompaniesCompanySlugTimelineImport
+      parentRoute: typeof AppCompaniesCompanySlugRouteImport
+    }
+    '/app/companies/$companySlug/': {
+      id: '/app/companies/$companySlug/'
+      path: '/'
+      fullPath: '/app/companies/$companySlug/'
+      preLoaderRoute: typeof AppCompaniesCompanySlugIndexImport
+      parentRoute: typeof AppCompaniesCompanySlugRouteImport
     }
   }
 }
@@ -193,16 +209,31 @@ const authRouteRouteWithChildren = authRouteRoute._addFileChildren(
   authRouteRouteChildren,
 )
 
+interface AppCompaniesCompanySlugRouteRouteChildren {
+  AppCompaniesCompanySlugTimelineRoute: typeof AppCompaniesCompanySlugTimelineRoute
+  AppCompaniesCompanySlugIndexRoute: typeof AppCompaniesCompanySlugIndexRoute
+}
+
+const AppCompaniesCompanySlugRouteRouteChildren: AppCompaniesCompanySlugRouteRouteChildren =
+  {
+    AppCompaniesCompanySlugTimelineRoute: AppCompaniesCompanySlugTimelineRoute,
+    AppCompaniesCompanySlugIndexRoute: AppCompaniesCompanySlugIndexRoute,
+  }
+
+const AppCompaniesCompanySlugRouteRouteWithChildren =
+  AppCompaniesCompanySlugRouteRoute._addFileChildren(
+    AppCompaniesCompanySlugRouteRouteChildren,
+  )
+
 interface AppRouteRouteChildren {
-  AppCompaniesCompanySlugRouteRoute: typeof AppCompaniesCompanySlugRouteRoute
+  AppCompaniesCompanySlugRouteRoute: typeof AppCompaniesCompanySlugRouteRouteWithChildren
   AppCompaniesNewRoute: typeof AppCompaniesNewRoute
-  AppCompaniesIndexRoute: typeof AppCompaniesIndexRoute
 }
 
 const AppRouteRouteChildren: AppRouteRouteChildren = {
-  AppCompaniesCompanySlugRouteRoute: AppCompaniesCompanySlugRouteRoute,
+  AppCompaniesCompanySlugRouteRoute:
+    AppCompaniesCompanySlugRouteRouteWithChildren,
   AppCompaniesNewRoute: AppCompaniesNewRoute,
-  AppCompaniesIndexRoute: AppCompaniesIndexRoute,
 }
 
 const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(
@@ -217,9 +248,10 @@ export interface FileRoutesByFullPath {
   '/login': typeof authLoginRoute
   '/register': typeof authRegisterRoute
   '/verify': typeof authVerifyRoute
-  '/app/companies/$companySlug': typeof AppCompaniesCompanySlugRouteRoute
+  '/app/companies/$companySlug': typeof AppCompaniesCompanySlugRouteRouteWithChildren
   '/app/companies/new': typeof AppCompaniesNewRoute
-  '/app/companies': typeof AppCompaniesIndexRoute
+  '/app/companies/$companySlug/timeline': typeof AppCompaniesCompanySlugTimelineRoute
+  '/app/companies/$companySlug/': typeof AppCompaniesCompanySlugIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -230,9 +262,9 @@ export interface FileRoutesByTo {
   '/login': typeof authLoginRoute
   '/register': typeof authRegisterRoute
   '/verify': typeof authVerifyRoute
-  '/app/companies/$companySlug': typeof AppCompaniesCompanySlugRouteRoute
   '/app/companies/new': typeof AppCompaniesNewRoute
-  '/app/companies': typeof AppCompaniesIndexRoute
+  '/app/companies/$companySlug/timeline': typeof AppCompaniesCompanySlugTimelineRoute
+  '/app/companies/$companySlug': typeof AppCompaniesCompanySlugIndexRoute
 }
 
 export interface FileRoutesById {
@@ -245,9 +277,10 @@ export interface FileRoutesById {
   '/(auth)/login': typeof authLoginRoute
   '/(auth)/register': typeof authRegisterRoute
   '/(auth)/verify': typeof authVerifyRoute
-  '/app/companies/$companySlug': typeof AppCompaniesCompanySlugRouteRoute
+  '/app/companies/$companySlug': typeof AppCompaniesCompanySlugRouteRouteWithChildren
   '/app/companies/new': typeof AppCompaniesNewRoute
-  '/app/companies/': typeof AppCompaniesIndexRoute
+  '/app/companies/$companySlug/timeline': typeof AppCompaniesCompanySlugTimelineRoute
+  '/app/companies/$companySlug/': typeof AppCompaniesCompanySlugIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -262,7 +295,8 @@ export interface FileRouteTypes {
     | '/verify'
     | '/app/companies/$companySlug'
     | '/app/companies/new'
-    | '/app/companies'
+    | '/app/companies/$companySlug/timeline'
+    | '/app/companies/$companySlug/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -272,9 +306,9 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/verify'
-    | '/app/companies/$companySlug'
     | '/app/companies/new'
-    | '/app/companies'
+    | '/app/companies/$companySlug/timeline'
+    | '/app/companies/$companySlug'
   id:
     | '__root__'
     | '/'
@@ -287,7 +321,8 @@ export interface FileRouteTypes {
     | '/(auth)/verify'
     | '/app/companies/$companySlug'
     | '/app/companies/new'
-    | '/app/companies/'
+    | '/app/companies/$companySlug/timeline'
+    | '/app/companies/$companySlug/'
   fileRoutesById: FileRoutesById
 }
 
@@ -339,8 +374,7 @@ export const routeTree = rootRoute
       "filePath": "app/route.tsx",
       "children": [
         "/app/companies/$companySlug",
-        "/app/companies/new",
-        "/app/companies/"
+        "/app/companies/new"
       ]
     },
     "/about": {
@@ -363,15 +397,23 @@ export const routeTree = rootRoute
     },
     "/app/companies/$companySlug": {
       "filePath": "app/companies/$companySlug/route.tsx",
-      "parent": "/app"
+      "parent": "/app",
+      "children": [
+        "/app/companies/$companySlug/timeline",
+        "/app/companies/$companySlug/"
+      ]
     },
     "/app/companies/new": {
       "filePath": "app/companies/new.tsx",
       "parent": "/app"
     },
-    "/app/companies/": {
-      "filePath": "app/companies/index.tsx",
-      "parent": "/app"
+    "/app/companies/$companySlug/timeline": {
+      "filePath": "app/companies/$companySlug/timeline.tsx",
+      "parent": "/app/companies/$companySlug"
+    },
+    "/app/companies/$companySlug/": {
+      "filePath": "app/companies/$companySlug/index.tsx",
+      "parent": "/app/companies/$companySlug"
     }
   }
 }

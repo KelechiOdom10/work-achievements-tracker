@@ -14,5 +14,4 @@ export const companyRoute = createRouter()
     handlers.getUserActiveCompanyHandler
   )
   .openapi(routes.setActiveCompanyRoute, handlers.setActiveCompanyHandler)
-  .openapi(routes.getCompanyRoute, handlers.getCompanyHandler)
-  .openapi(routes.getCompanyDashboardRoute, handlers.getCompanyDashboardHandler);
+  .openapi(routes.getCompanyRoute, handlers.getCompanyHandler);

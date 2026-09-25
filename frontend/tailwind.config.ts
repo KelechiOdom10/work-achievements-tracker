@@ -19,6 +19,9 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ["var(--font-sans)"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -44,6 +47,13 @@ export default {
         accent: {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
+        },
+        desk: {
+          feature: "hsl(var(--desk-feature))",
+          note: "hsl(var(--desk-note))",
+          focus: "hsl(var(--desk-focus))",
+          source: "hsl(var(--desk-source))",
+          review: "hsl(var(--desk-review))",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
