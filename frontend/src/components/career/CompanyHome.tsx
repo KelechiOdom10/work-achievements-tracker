@@ -4,37 +4,39 @@ import {
   Check,
   CircleDot,
   GitPullRequest,
-  NotebookPen,
-  Plus,
   Sparkles,
+  type LucideIcon,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
-type PreviewState = "populated" | "empty" | "loading" | "error";
+import {
+  sampleMoments,
+  sampleProjects,
+  type PreviewState,
+  type TimelineMonth,
+} from "./fixtures";
+import { NoteCapture } from "./NoteCapture";
 
 interface CompanyHomeProps {
   companyName: string;
   userName: string;
-  onAddNote: () => void;
-  onOpenTimeline: (month?: "sep") => void;
+  captureOpen?: boolean;
+  onOpenTimeline: (month?: TimelineMonth, momentId?: string) => void;
   onRetry: () => void;
   preview?: PreviewState;
 }
 
-const recentMoments = [
-  { date: "18 Sep", title: "Safer payroll reviews" },
-  { date: "11 Sep", title: "Permissions rollout" },
-  { date: "03 Sep", title: "New-starter setup" },
-];
+const recentMoments = sampleMoments.filter((moment) => moment.month === "sep");
 
 export function CompanyHome({
   companyName,
   userName,
-  onAddNote,
+  captureOpen = false,
   onOpenTimeline,
   onRetry,
-  preview = "populated",
+  preview = "empty",
 }: CompanyHomeProps) {
   return (
     <div className="mx-auto max-w-[960px] pb-20 pt-5 sm:pt-8">
@@ -45,31 +47,24 @@ export function CompanyHome({
         <h1 className="mt-2 text-balance text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
           Hello, {userName} <span aria-hidden="true">👋</span>
         </h1>
-        {preview !== "empty" && (
-          <Button
-            className="pressable mt-5 min-h-10 rounded-full px-5"
-            onClick={onAddNote}
-          >
-            <Plus /> Add a note
-          </Button>
-        )}
       </header>
 
       {preview === "loading" ? (
-        <div
-          className="mt-10 space-y-4"
-          role="status"
-          aria-label="Loading Home"
-        >
-          <div className="h-56 animate-pulse rounded-xl bg-secondary motion-reduce:animate-none" />
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="h-40 animate-pulse rounded-xl bg-secondary motion-reduce:animate-none" />
-            <div className="h-40 animate-pulse rounded-xl bg-secondary motion-reduce:animate-none" />
+        <div className="mt-10 space-y-4" aria-busy="true">
+          <div className="grid gap-4 lg:grid-cols-12">
+            <div className="h-56 animate-pulse rounded-xl bg-secondary motion-reduce:animate-none lg:col-span-8" />
+            <div className="h-56 animate-pulse rounded-xl bg-secondary motion-reduce:animate-none lg:col-span-4" />
           </div>
-          <span className="sr-only">Loading Home…</span>
+          <div className="h-40 animate-pulse rounded-xl bg-secondary motion-reduce:animate-none" />
+          <span className="sr-only" role="status">
+            Loading Home…
+          </span>
         </div>
       ) : preview === "error" ? (
-        <section className="mt-10 rounded-xl border bg-card px-6 py-12 text-center">
+        <section
+          className="mt-10 rounded-xl border bg-card px-6 py-12 text-center"
+          role="alert"
+        >
           <h2 className="text-xl font-semibold">Home is unavailable</h2>
           <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">
             Check your connection and try again.
@@ -79,23 +74,17 @@ export function CompanyHome({
           </Button>
         </section>
       ) : preview === "empty" ? (
-        <section className="mt-10 rounded-xl bg-desk-feature px-6 py-12 text-center sm:px-10">
-          <NotebookPen className="mx-auto size-6" aria-hidden="true" />
-          <h2 className="mt-4 text-2xl font-semibold tracking-tight">
-            Start with one thing you want to remember
-          </h2>
-          <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-muted-foreground">
-            A small note is enough. You can add context and evidence later.
-          </p>
-          <Button className="pressable mt-6 rounded-full" onClick={onAddNote}>
-            <Plus /> Add a note
-          </Button>
-        </section>
+        <NoteCapture
+          variant="hero"
+          projects={[]}
+          initiallyOpen={captureOpen}
+          className="mx-auto mt-10 max-w-2xl"
+        />
       ) : (
-        <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-12">
-          <section className="rounded-xl bg-desk-feature p-5 sm:col-span-2 sm:p-7 lg:col-span-8">
-            <div className="flex flex-wrap items-start justify-between gap-4">
-              <div>
+        <div className="mt-9 grid gap-4 lg:grid-cols-12">
+          <section className="rounded-xl bg-desk-feature p-5 sm:p-7 lg:col-span-8">
+            <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-3">
+              <div className="min-w-0 flex-1 basis-56">
                 <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground">
                   September
                 </p>
@@ -105,50 +94,41 @@ export function CompanyHome({
               </div>
               <Button
                 variant="secondary"
-                size="sm"
-                className="pressable min-h-10 rounded-full"
+                size="default"
+                className="pressable"
                 onClick={() => onOpenTimeline("sep")}
               >
                 See September <ArrowRight />
               </Button>
             </div>
-            <div className="mt-7 grid gap-2 sm:grid-cols-3">
+            <ul className="mt-6 grid gap-2 sm:mt-7 sm:grid-cols-3">
               {recentMoments.map((moment) => (
-                <button
-                  type="button"
-                  key={moment.title}
-                  onClick={() => onOpenTimeline("sep")}
-                  className="pressable min-h-20 rounded-lg bg-card/80 p-3 text-left text-card-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-desk-feature"
-                >
-                  <span className="block text-xs text-muted-foreground">
-                    {moment.date}
-                  </span>
-                  <span className="mt-1 block text-sm font-semibold leading-snug">
-                    {moment.title}
-                  </span>
-                </button>
+                <li key={moment.id}>
+                  <button
+                    type="button"
+                    onClick={() => onOpenTimeline(moment.month, moment.id)}
+                    className="pressable flex min-h-11 w-full items-baseline gap-3 rounded-lg bg-card/80 px-3 py-2.5 text-left text-card-foreground outline-none transition-colors hover:bg-card focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-desk-feature sm:block sm:min-h-20 sm:p-3"
+                  >
+                    <span className="w-12 shrink-0 text-xs tabular-nums text-muted-foreground sm:block sm:w-auto">
+                      {moment.date}
+                    </span>
+                    <span className="text-sm font-semibold leading-snug sm:mt-1 sm:block">
+                      {moment.shortTitle}
+                    </span>
+                  </button>
+                </li>
               ))}
-            </div>
+            </ul>
           </section>
 
-          <button
-            type="button"
-            onClick={onAddNote}
-            className="pressable relative flex min-h-56 flex-col rounded-xl bg-desk-note p-6 text-left outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:col-span-1 lg:col-span-4"
-          >
-            <NotebookPen className="size-5" aria-hidden="true" />
-            <span className="mt-5 text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground">
-              Personal note
-            </span>
-            <span className="mt-2 max-w-64 text-xl font-medium leading-snug">
-              What should future you remember from this week?
-            </span>
-            <span className="mt-auto flex items-center gap-1.5 pt-5 text-sm font-semibold">
-              Add a note <ArrowRight className="size-4" aria-hidden="true" />
-            </span>
-          </button>
+          <NoteCapture
+            projects={sampleProjects}
+            defaultProject="Permissions redesign"
+            initiallyOpen={captureOpen}
+            className="order-first lg:order-none lg:col-span-4"
+          />
 
-          <section className="rounded-xl border bg-desk-focus p-5 sm:col-span-1 lg:col-span-5">
+          <section className="rounded-xl bg-desk-focus p-5 sm:p-6 lg:col-span-7">
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <BookOpen className="size-4" aria-hidden="true" />
               <span>Current focus</span>
@@ -156,42 +136,72 @@ export function CompanyHome({
             <h2 className="mt-4 text-xl font-semibold tracking-tight">
               Permissions redesign
             </h2>
-            <div className="mt-4 space-y-2 text-sm">
-              <p className="flex items-start gap-2">
+            <ul className="mt-4 space-y-2 text-sm">
+              <li className="flex items-start gap-2">
                 <Check className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
                 Architecture agreed
-              </p>
-              <p className="flex items-start gap-2">
+              </li>
+              <li className="flex items-start gap-2">
                 <Check className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
                 Migration path shipped
-              </p>
-              <p className="flex items-start gap-2 text-muted-foreground">
+              </li>
+              <li className="flex items-start gap-2 text-muted-foreground">
                 <CircleDot
                   className="mt-0.5 size-4 shrink-0"
                   aria-hidden="true"
                 />
                 Rollout in progress
-              </p>
-            </div>
+              </li>
+            </ul>
           </section>
 
-          <section className="rounded-xl border bg-desk-source p-5 sm:col-span-1 lg:col-span-3">
-            <GitPullRequest className="size-5" aria-hidden="true" />
-            <h2 className="mt-5 text-lg font-semibold">From your tools</h2>
-            <p className="mt-1 text-sm leading-6 text-muted-foreground">
-              6 items to review · 4 GitHub, 2 Linear
-            </p>
-          </section>
-
-          <section className="rounded-xl border bg-desk-review p-5 sm:col-span-2 lg:col-span-4">
-            <Sparkles className="size-5" aria-hidden="true" />
-            <h2 className="mt-5 text-lg font-semibold">Mid-year review</h2>
-            <p className="mt-1 text-sm leading-6 text-muted-foreground">
-              6 weeks away · 9 pieces of work selected
-            </p>
-          </section>
+          <div className="grid content-start gap-4 self-start sm:grid-cols-2 lg:col-span-5 lg:grid-cols-1">
+            <DeskRow
+              icon={GitPullRequest}
+              iconClassName="bg-desk-source"
+              title="From your tools"
+              meta={["6 to review", "4 GitHub", "2 Linear"]}
+            />
+            <DeskRow
+              icon={Sparkles}
+              iconClassName="bg-desk-review"
+              title="Mid-year review"
+              meta={["6 weeks away", "9 pieces of work selected"]}
+            />
+          </div>
         </div>
       )}
     </div>
+  );
+}
+
+function DeskRow({
+  icon: Icon,
+  iconClassName,
+  title,
+  meta,
+}: {
+  icon: LucideIcon;
+  iconClassName: string;
+  title: string;
+  meta: string[];
+}) {
+  return (
+    <section className="flex items-start gap-3 rounded-xl border p-4">
+      <span
+        className={cn(
+          "flex size-9 shrink-0 items-center justify-center rounded-lg",
+          iconClassName
+        )}
+      >
+        <Icon className="size-4" aria-hidden="true" />
+      </span>
+      <div className="min-w-0">
+        <h2 className="text-sm font-semibold">{title}</h2>
+        <p className="mt-0.5 text-sm text-muted-foreground">
+          {meta.join(" · ")}
+        </p>
+      </div>
+    </section>
   );
 }

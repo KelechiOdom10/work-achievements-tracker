@@ -23,7 +23,6 @@ import { Route as AppCompaniesNewImport } from './routes/app/companies/new'
 import { Route as AppCompaniesCompanySlugRouteImport } from './routes/app/companies/$companySlug/route'
 import { Route as AppCompaniesCompanySlugIndexImport } from './routes/app/companies/$companySlug/index'
 import { Route as AppCompaniesCompanySlugTimelineImport } from './routes/app/companies/$companySlug/timeline'
-import { Route as AppCompaniesCompanySlugAchievementsNewImport } from './routes/app/companies/$companySlug/achievements/new'
 
 // Create/Update Routes
 
@@ -98,13 +97,6 @@ const AppCompaniesCompanySlugTimelineRoute =
   AppCompaniesCompanySlugTimelineImport.update({
     id: '/timeline',
     path: '/timeline',
-    getParentRoute: () => AppCompaniesCompanySlugRouteRoute,
-  } as any)
-
-const AppCompaniesCompanySlugAchievementsNewRoute =
-  AppCompaniesCompanySlugAchievementsNewImport.update({
-    id: '/achievements/new',
-    path: '/achievements/new',
     getParentRoute: () => AppCompaniesCompanySlugRouteRoute,
   } as any)
 
@@ -196,13 +188,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppCompaniesCompanySlugIndexImport
       parentRoute: typeof AppCompaniesCompanySlugRouteImport
     }
-    '/app/companies/$companySlug/achievements/new': {
-      id: '/app/companies/$companySlug/achievements/new'
-      path: '/achievements/new'
-      fullPath: '/app/companies/$companySlug/achievements/new'
-      preLoaderRoute: typeof AppCompaniesCompanySlugAchievementsNewImport
-      parentRoute: typeof AppCompaniesCompanySlugRouteImport
-    }
   }
 }
 
@@ -227,15 +212,12 @@ const authRouteRouteWithChildren = authRouteRoute._addFileChildren(
 interface AppCompaniesCompanySlugRouteRouteChildren {
   AppCompaniesCompanySlugTimelineRoute: typeof AppCompaniesCompanySlugTimelineRoute
   AppCompaniesCompanySlugIndexRoute: typeof AppCompaniesCompanySlugIndexRoute
-  AppCompaniesCompanySlugAchievementsNewRoute: typeof AppCompaniesCompanySlugAchievementsNewRoute
 }
 
 const AppCompaniesCompanySlugRouteRouteChildren: AppCompaniesCompanySlugRouteRouteChildren =
   {
     AppCompaniesCompanySlugTimelineRoute: AppCompaniesCompanySlugTimelineRoute,
     AppCompaniesCompanySlugIndexRoute: AppCompaniesCompanySlugIndexRoute,
-    AppCompaniesCompanySlugAchievementsNewRoute:
-      AppCompaniesCompanySlugAchievementsNewRoute,
   }
 
 const AppCompaniesCompanySlugRouteRouteWithChildren =
@@ -270,7 +252,6 @@ export interface FileRoutesByFullPath {
   '/app/companies/new': typeof AppCompaniesNewRoute
   '/app/companies/$companySlug/timeline': typeof AppCompaniesCompanySlugTimelineRoute
   '/app/companies/$companySlug/': typeof AppCompaniesCompanySlugIndexRoute
-  '/app/companies/$companySlug/achievements/new': typeof AppCompaniesCompanySlugAchievementsNewRoute
 }
 
 export interface FileRoutesByTo {
@@ -284,7 +265,6 @@ export interface FileRoutesByTo {
   '/app/companies/new': typeof AppCompaniesNewRoute
   '/app/companies/$companySlug/timeline': typeof AppCompaniesCompanySlugTimelineRoute
   '/app/companies/$companySlug': typeof AppCompaniesCompanySlugIndexRoute
-  '/app/companies/$companySlug/achievements/new': typeof AppCompaniesCompanySlugAchievementsNewRoute
 }
 
 export interface FileRoutesById {
@@ -301,7 +281,6 @@ export interface FileRoutesById {
   '/app/companies/new': typeof AppCompaniesNewRoute
   '/app/companies/$companySlug/timeline': typeof AppCompaniesCompanySlugTimelineRoute
   '/app/companies/$companySlug/': typeof AppCompaniesCompanySlugIndexRoute
-  '/app/companies/$companySlug/achievements/new': typeof AppCompaniesCompanySlugAchievementsNewRoute
 }
 
 export interface FileRouteTypes {
@@ -318,7 +297,6 @@ export interface FileRouteTypes {
     | '/app/companies/new'
     | '/app/companies/$companySlug/timeline'
     | '/app/companies/$companySlug/'
-    | '/app/companies/$companySlug/achievements/new'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -331,7 +309,6 @@ export interface FileRouteTypes {
     | '/app/companies/new'
     | '/app/companies/$companySlug/timeline'
     | '/app/companies/$companySlug'
-    | '/app/companies/$companySlug/achievements/new'
   id:
     | '__root__'
     | '/'
@@ -346,7 +323,6 @@ export interface FileRouteTypes {
     | '/app/companies/new'
     | '/app/companies/$companySlug/timeline'
     | '/app/companies/$companySlug/'
-    | '/app/companies/$companySlug/achievements/new'
   fileRoutesById: FileRoutesById
 }
 
@@ -424,8 +400,7 @@ export const routeTree = rootRoute
       "parent": "/app",
       "children": [
         "/app/companies/$companySlug/timeline",
-        "/app/companies/$companySlug/",
-        "/app/companies/$companySlug/achievements/new"
+        "/app/companies/$companySlug/"
       ]
     },
     "/app/companies/new": {
@@ -438,10 +413,6 @@ export const routeTree = rootRoute
     },
     "/app/companies/$companySlug/": {
       "filePath": "app/companies/$companySlug/index.tsx",
-      "parent": "/app/companies/$companySlug"
-    },
-    "/app/companies/$companySlug/achievements/new": {
-      "filePath": "app/companies/$companySlug/achievements/new.tsx",
       "parent": "/app/companies/$companySlug"
     }
   }

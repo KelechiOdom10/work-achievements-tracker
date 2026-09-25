@@ -1,6 +1,8 @@
-import { createFileRoute, notFound } from "@tanstack/react-router";
+import { createFileRoute, notFound, useLocation } from "@tanstack/react-router";
 
 import { CompanyTimeline } from "@/components/career/CompanyTimeline";
+import type { TimelineMonth } from "@/components/career/fixtures";
+import { parsePreview } from "@/components/career/preview";
 import { getCompanyBySlugOptions } from "@/hooks/use-companies";
 
 export const Route = createFileRoute("/app/companies/$companySlug/timeline")({
@@ -8,17 +10,14 @@ export const Route = createFileRoute("/app/companies/$companySlug/timeline")({
   validateSearch: (
     search: Record<string, unknown>
   ): {
-    month?: "sep" | "aug";
-    preview?: "empty" | "loading" | "error";
+    month?: TimelineMonth;
+    preview?: ReturnType<typeof parsePreview>;
   } => ({
     ...(search.month === "sep" || search.month === "aug"
       ? { month: search.month }
       : {}),
-    ...(import.meta.env.DEV &&
-    (search.preview === "empty" ||
-      search.preview === "loading" ||
-      search.preview === "error")
-      ? { preview: search.preview }
+    ...(parsePreview(search.preview)
+      ? { preview: parsePreview(search.preview) }
       : {}),
   }),
   loader: async ({ context, params }) => {
@@ -34,10 +33,11 @@ function CompanyTimelinePage() {
   const company = Route.useLoaderData();
   const { companySlug } = Route.useParams();
   const { month, preview } = Route.useSearch();
+  const hash = useLocation({ select: (location) => location.hash });
   const navigate = Route.useNavigate();
 
   return (
-    <div className="mx-auto max-w-[960px] pb-20 pt-5 sm:pt-8">
+    <div className="mx-auto max-w-[800px] pb-20 pt-5 sm:pt-8">
       <header>
         <p className="text-sm font-medium text-muted-foreground">
           {company.name}
@@ -51,6 +51,7 @@ function CompanyTimelinePage() {
       </header>
       <CompanyTimeline
         initialMonth={month}
+        highlightId={hash.startsWith("moment-") ? hash.slice(7) : undefined}
         preview={preview}
         onRetry={() => {
           void navigate({
@@ -69,8 +70,9 @@ function CompanyTimelinePage() {
         }}
         onAddNote={() => {
           void navigate({
-            to: "/app/companies/$companySlug/achievements/new",
+            to: "/app/companies/$companySlug",
             params: { companySlug },
+            search: { capture: true, preview },
           });
         }}
       />

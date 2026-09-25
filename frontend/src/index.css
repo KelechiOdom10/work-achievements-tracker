@@ -32,7 +32,7 @@
 
     --border: 45 17% 91%;
     --input: 45 17% 91%;
-    --ring: 217.2 91.2% 59.8%;
+    --ring: 30 6% 25%;
 
     --desk-feature: 45 100% 93%;
     --desk-note: 50 100% 82%;
@@ -107,11 +107,11 @@
     --input: 60 1% 25%;
     --ring: 47 10% 83%;
 
-    --desk-feature: 42 34% 23%;
-    --desk-note: 48 34% 31%;
-    --desk-focus: 252 18% 23%;
-    --desk-source: 204 22% 23%;
-    --desk-review: 18 19% 22%;
+    --desk-feature: 36 22% 17%;
+    --desk-note: 38 62% 27%;
+    --desk-focus: 252 16% 20%;
+    --desk-source: 205 20% 19%;
+    --desk-review: 20 14% 19%;
 
     --chart-1: 220 70% 50%;
     --chart-2: 340 75% 55%;
@@ -164,6 +164,28 @@
   .pressable:active {
     transform: scale(0.96);
   }
+
+  .pressable-soft {
+    transition: transform 160ms cubic-bezier(0.2, 0, 0, 1);
+  }
+
+  .pressable-soft:active {
+    transform: scale(0.985);
+  }
+
+  .moment-highlight {
+    animation: moment-highlight 1600ms cubic-bezier(0.2, 0, 0, 1);
+  }
+}
+
+@keyframes moment-highlight {
+  0%,
+  35% {
+    background-color: hsl(var(--desk-feature));
+  }
+  100% {
+    background-color: transparent;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -171,11 +193,17 @@
     scroll-behavior: auto;
   }
 
-  .pressable {
+  .pressable,
+  .pressable-soft {
     transition: none;
   }
 
-  .pressable:active {
+  .pressable:active,
+  .pressable-soft:active {
     transform: none;
+  }
+
+  .moment-highlight {
+    animation: none;
   }
 }

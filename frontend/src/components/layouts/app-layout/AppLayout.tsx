@@ -1,4 +1,5 @@
 import { Link, useLocation, useParams } from "@tanstack/react-router";
+import { MotionConfig } from "framer-motion";
 import { History, House } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 
@@ -36,9 +37,11 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   }, []);
 
   return (
-    <SidebarProvider open={sidebarOpen} onOpenChange={setSidebarOpen}>
-      <AppShell>{children}</AppShell>
-    </SidebarProvider>
+    <MotionConfig reducedMotion="user">
+      <SidebarProvider open={sidebarOpen} onOpenChange={setSidebarOpen}>
+        <AppShell>{children}</AppShell>
+      </SidebarProvider>
+    </MotionConfig>
   );
 };
 

@@ -19,6 +19,15 @@ import {
 import { useCompanies, useSwitchCompany } from "@/hooks/use-companies";
 import { cn } from "@/lib/utils";
 
+const companyInitials = (name = "") =>
+  name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((word) => word[0])
+    .join("")
+    .toUpperCase();
+
 export const CompanySwitcher: React.FC = () => {
   const { companySlug } = useParams({ strict: false });
   const navigate = useNavigate();
@@ -60,7 +69,7 @@ export const CompanySwitcher: React.FC = () => {
                 <Avatar key={activeCompany?.id} className="h-9 w-9 rounded-sm">
                   <AvatarImage src={activeCompany?.logo ?? ""} />
                   <AvatarFallback className="rounded-sm">
-                    {activeCompany?.name?.slice(0, 2).toUpperCase()}
+                    {companyInitials(activeCompany?.name)}
                   </AvatarFallback>
                 </Avatar>
                 {!isCollapsed && (
